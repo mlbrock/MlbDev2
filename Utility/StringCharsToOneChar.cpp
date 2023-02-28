@@ -1,0 +1,80 @@
+// ////////////////////////////////////////////////////////////////////////////
+// ////////////////////////////////////////////////////////////////////////////
+// MLB Utility Library Module File
+// ////////////////////////////////////////////////////////////////////////////
+/*
+   File Name         :  StringCharsToOneChar.cpp
+
+   File Description  :  Implementation for the mapping sub-strings to a
+                        single character.
+
+   Revision History  :  1993-10-02 --- Creation.
+                           Michael L. Brock
+                        2023-01-12 --- Migration to C++ MlbDev2/Utility.
+                           Michael L. Brock
+
+      Copyright Michael L. Brock 1998 - 2023.
+      Distributed under the Boost Software License, Version 1.0.
+      (See accompanying file LICENSE_1_0.txt or copy at
+      http://www.boost.org/LICENSE_1_0.txt)
+
+*/
+// ////////////////////////////////////////////////////////////////////////////
+ 
+// ////////////////////////////////////////////////////////////////////////////
+// ////////////////////////////////////////////////////////////////////////////
+// Required include files...
+// ////////////////////////////////////////////////////////////////////////////
+
+#include <Utility/StringCharsToOneChar.hpp>
+
+#include <cstring>
+
+// ////////////////////////////////////////////////////////////////////////////
+
+namespace MLB {
+
+namespace Utility {
+
+// ////////////////////////////////////////////////////////////////////////////
+MultipleCharsToOneCharGenericFunctor::MultipleCharsToOneCharGenericFunctor(
+	const char *multi_chars, std::size_t multi_chars_length)
+	:multi_chars_(multi_chars)
+	,multi_chars_length_(multi_chars_length)
+{
+	if (!multi_chars_length_)
+		multi_chars_length_ = ::strlen(multi_chars_);
+}
+// ////////////////////////////////////////////////////////////////////////////
+
+// ////////////////////////////////////////////////////////////////////////////
+bool MultipleCharsToOneCharGenericFunctor::operator () (
+	std::string::value_type in_char) const
+{
+	return(::memchr(multi_chars_, in_char, multi_chars_length_) != NULL);
+}
+// ////////////////////////////////////////////////////////////////////////////
+
+// ////////////////////////////////////////////////////////////////////////////
+std::string &MultipleCharsToOneChar(const std::string &in_string,
+	std::string &out_string, const char *multiple_chars,
+	std::string::value_type single_char)
+{
+	return(MultipleCharsToOneChar(in_string, out_string,
+		MultipleCharsToOneCharGenericFunctor(multiple_chars), single_char));
+}
+// ////////////////////////////////////////////////////////////////////////////
+
+// ////////////////////////////////////////////////////////////////////////////
+std::string MultipleCharsToOneChar(const std::string &in_string,
+	const char *multiple_chars, std::string::value_type single_char)
+{
+	return(MultipleCharsToOneChar(in_string,
+		MultipleCharsToOneCharGenericFunctor(multiple_chars), single_char));
+}
+// ////////////////////////////////////////////////////////////////////////////
+
+} // namespace Utility
+
+} // namespace MLB
+

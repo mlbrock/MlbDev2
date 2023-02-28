@@ -1,0 +1,66 @@
+// ////////////////////////////////////////////////////////////////////////////
+// ////////////////////////////////////////////////////////////////////////////
+// MLB Utility Library Include File
+// ////////////////////////////////////////////////////////////////////////////
+/*
+   File Name         :  ToStreamSystemError.hpp
+
+   File Description  :  Include for streaming system-related exceptions text.
+
+   Revision History  :  1998-04-08 --- Implementation in MlbDev/Utility in
+                                       file Utility/Utility_Exception.hpp.
+                           Michael L. Brock
+                        2023-02-22 --- Migration to C++ MlbDev2/Utility.
+                           Michael L. Brock
+
+      Copyright Michael L. Brock 1986 - 2023.
+      Distributed under the Boost Software License, Version 1.0.
+      (See accompanying file LICENSE_1_0.txt or copy at
+      http://www.boost.org/LICENSE_1_0.txt)
+
+*/
+// ////////////////////////////////////////////////////////////////////////////
+
+#ifndef HH__MLB__Utility__ToStreamSystemError_hpp__HH
+
+#define HH__MLB__Utility__ToStreamSystemError_hpp__HH 1
+
+// ////////////////////////////////////////////////////////////////////////////
+// ////////////////////////////////////////////////////////////////////////////
+/**
+   \file ToStreamSystemError.hpp
+
+   \brief   Functions which support streaming system errors.
+*/
+// ////////////////////////////////////////////////////////////////////////////
+
+// ////////////////////////////////////////////////////////////////////////////
+// ////////////////////////////////////////////////////////////////////////////
+// Required include files...
+// ////////////////////////////////////////////////////////////////////////////
+
+#include <Utility/Utility.hpp>
+
+#include <ostream>
+#include <system_error>
+
+// ////////////////////////////////////////////////////////////////////////////
+
+namespace MLB {
+
+namespace Utility {
+
+// ////////////////////////////////////////////////////////////////////////////
+API_UTILITY std::ostream &ToStreamSystemError(std::ostream &o_str,
+	const std::error_condition &err_cond, const char *err_text = nullptr,
+	bool with_message = true);
+API_UTILITY std::ostream &ToStreamSystemError(std::ostream &o_str, int err_code,
+	const char *err_text = nullptr, bool with_message = true);
+// ////////////////////////////////////////////////////////////////////////////
+
+} // namespace Utility
+
+} // namespace MLB
+
+#endif // #ifndef HH__MLB__Utility__ToStreamSystemError_hpp__HH
+

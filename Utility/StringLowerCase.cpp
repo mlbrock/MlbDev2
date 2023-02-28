@@ -1,0 +1,80 @@
+// ////////////////////////////////////////////////////////////////////////////
+// ////////////////////////////////////////////////////////////////////////////
+// MLB Utility Library Module File
+// ////////////////////////////////////////////////////////////////////////////
+/*
+   File Name         :  StringLowerCase.cpp
+
+   File Description  :  Implementation of lower-case string functions.
+
+   Revision History  :  1993-10-02 --- Creation.
+                           Michael L. Brock
+                        2023-01-12 --- Migration to C++ MlbDev2/Utility.
+                           Michael L. Brock
+
+      Copyright Michael L. Brock 1998 - 2023.
+      Distributed under the Boost Software License, Version 1.0.
+      (See accompanying file LICENSE_1_0.txt or copy at
+      http://www.boost.org/LICENSE_1_0.txt)
+
+*/
+// ////////////////////////////////////////////////////////////////////////////
+ 
+// ////////////////////////////////////////////////////////////////////////////
+// ////////////////////////////////////////////////////////////////////////////
+// Required include files...
+// ////////////////////////////////////////////////////////////////////////////
+
+#include <Utility/StringLowerCase.hpp>
+
+#include <algorithm>
+
+// ////////////////////////////////////////////////////////////////////////////
+
+namespace MLB {
+
+namespace Utility {
+
+namespace {
+
+//	//////////////////////////////////////////////////////////////////////////
+struct PRIVATE_tolower {
+	std::string::value_type operator () (std::string::value_type in_char) const {
+		return(static_cast<std::string::value_type>(std::tolower(in_char)));
+	}
+};
+//	//////////////////////////////////////////////////////////////////////////
+
+} // Anonymous namespace
+
+/*
+	IMPLEMENTATION NOTE: An alternative approach.
+	std::transform(element_name_normal_.begin(), element_name_normal_.end(),
+		element_name_normal_.begin(), static_cast<int (*)(int)>(std::tolower));
+*/
+//	//////////////////////////////////////////////////////////////////////////
+std::string &LowerCase(const std::string &in_string,
+	std::string &out_string)
+{
+	out_string = in_string;
+
+	std::transform(out_string.begin(), out_string.end(),
+		out_string.begin(), PRIVATE_tolower());
+
+	return(out_string);
+}
+//	//////////////////////////////////////////////////////////////////////////
+
+//	//////////////////////////////////////////////////////////////////////////
+std::string LowerCase(const std::string &in_string)
+{
+	std::string out_string;
+
+	return(LowerCase(in_string, out_string));
+}
+//	//////////////////////////////////////////////////////////////////////////
+
+} // namespace Utility
+
+} // namespace MLB
+
