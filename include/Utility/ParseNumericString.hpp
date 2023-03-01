@@ -42,6 +42,8 @@
 #include <Utility/NumericSupport.hpp>
 
 #include <cstdlib>
+#include <cstring>
+#include <sstream>
 #include <string>
 
 // ////////////////////////////////////////////////////////////////////////////
