@@ -31,9 +31,12 @@ PENDING_SRCS	=	\
 			LogHandlerFileMMap.cpp
 
 SRCS		=	\
+			CheckCmdLineArgs.cpp		\
 			CurrentPath.cpp			\
 			DemangleCppName.cpp		\
 			EnvElement.cpp			\
+			GetCmdLineArg.cpp		\
+			GetCmdLineHelp.cpp		\
 			GetEnvironment.cpp		\
 			GetSystemErrorCode.cpp		\
 			HostName.cpp			\
@@ -41,6 +44,7 @@ SRCS		=	\
 			Ita2ToAscii.cpp			\
 			LogEmitControl.cpp		\
 			LogHandler.cpp			\
+			LogHandlerConsole.cpp		\
 			LogHandlerFile.cpp		\
 			LogHandlerFileBase.cpp		\
 			LogLevel.cpp			\

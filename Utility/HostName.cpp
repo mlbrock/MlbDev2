@@ -28,6 +28,8 @@
 
 #include <Utility/HostName.hpp>
 
+#include <Utility/StringLowerCase.hpp>
+#include <Utility/StringTrim.hpp>
 #include <Utility/ThrowErrno.hpp>
 #include <Utility/ThrowSystemError.hpp>
 
@@ -117,11 +119,7 @@ std::string ConvertHostNameToCanonical(const std::string &host_name)
 	if (dot_index != std::string::npos)
 		tmp_host_name.erase(dot_index);
 
-/*
-	// CODE NOTE: MUST FIX ME!!!
 	return(LowerCase(Trim(tmp_host_name)));
-*/
-	return(tmp_host_name);
 }
 // ////////////////////////////////////////////////////////////////////////////
 

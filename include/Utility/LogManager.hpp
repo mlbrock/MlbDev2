@@ -39,9 +39,7 @@
 //	Required include files...
 // ////////////////////////////////////////////////////////////////////////////
 
-#include <Utility/LogEmitControl.hpp>
-
-#include <Utility/LogHandler.hpp>
+#include <Utility/LogHandlerConsole.hpp>
 #include <Utility/ThreadId.hpp>			// CODE NOTE: Needed by LogStream.hpp ONLY.
 
 #include <fstream>
@@ -58,55 +56,24 @@ namespace Utility {
 // ////////////////////////////////////////////////////////////////////////////
 class API_UTILITY LogManager {
 public:
-	LogManager(LogFlag log_flags = Default,
+	explicit LogManager(LogFlag log_flags = Default,
 		LogLevel min_log_level_screen = LogLevel_Info,
 		LogLevel max_log_level_screen = LogLevel_Fatal,
 		LogLevel min_log_level_persistent = LogLevel_Spam,
-		LogLevel max_log_level_persistent = LogLevel_Fatal) :
-		 log_handler_ptr_()
-		,log_flags_(log_flags)
-		,log_level_screen_(GetLogLevelMask(min_log_level_screen,
-			max_log_level_screen))
-		,log_level_persistent_(GetLogLevelMask(min_log_level_persistent,
-			max_log_level_persistent))
-		,the_lock_() {
-	}
+		LogLevel max_log_level_persistent = LogLevel_Fatal);
+
 	explicit LogManager(LogHandlerPtr log_handler_ptr,
 		LogFlag log_flags = Default,
 		LogLevel min_log_level_screen = LogLevel_Info,
 		LogLevel max_log_level_screen = LogLevel_Fatal,
 		LogLevel min_log_level_persistent = LogLevel_Spam,
-		LogLevel max_log_level_persistent = LogLevel_Fatal) :
-		 log_handler_ptr_()
-		,log_flags_(log_flags)
-		,log_level_screen_(GetLogLevelMask(min_log_level_screen,
-			max_log_level_screen))
-		,log_level_persistent_(GetLogLevelMask(min_log_level_persistent,
-			max_log_level_persistent))
-		,the_lock_() {
-		HandlerInstall(log_handler_ptr);
-	}
-	~LogManager() {
-		HandlerRemove();
-	}
+		LogLevel max_log_level_persistent = LogLevel_Fatal);
 
-	LogHandlerPtr HandlerInstall(LogHandlerPtr log_handler_ptr) {
-		LogLockScoped my_lock(the_lock_);
-		LogHandlerPtr old_log_handler_ptr = log_handler_ptr_;
-		if (log_handler_ptr_ != NULL)
-			log_handler_ptr_->RemoveHandler();
-		log_handler_ptr_ = log_handler_ptr;
-		if (log_handler_ptr_ != NULL)
-			log_handler_ptr_->InstallHandler();
-		return(old_log_handler_ptr);
-	}
-	LogHandlerPtr HandlerRemove() {
-		return(HandlerInstall(LogHandlerPtr()));
-	}
-	LogHandlerPtr GetHandlerPtr() {
-		LogLockScoped my_lock(the_lock_);
-		return(log_handler_ptr_);
-	}
+	~LogManager();
+
+	LogHandlerPtr HandlerInstall(LogHandlerPtr log_handler_ptr);
+	LogHandlerPtr HandlerRemove();
+	LogHandlerPtr GetHandlerPtr();
 
 	LogLevelPair GetLogLevelConsole() const;
 	LogLevelPair GetLogLevelFile() const;
@@ -116,66 +83,18 @@ public:
 	LogLevelPair SetLogLevelFile(LogLevel min_log_level,
 		LogLevel max_log_level = LogLevel_Maximum);
 
-	void SetLogLevelConsoleAll() {
-		SetLogLevelConsole(LogLevel_Minimum, LogLevel_Maximum);
-	}
-	void SetLogLevelFileAll() {
-		SetLogLevelFile(LogLevel_Minimum, LogLevel_Maximum);
-	}
+	void SetLogLevelConsoleAll();
+	void SetLogLevelFileAll();
 
 	void EmitLine(const TimeSpec &line_start_time, LogLevel log_level,
-		const std::string &line_buffer) {
-		LogLevelFlag log_level_flag = static_cast<LogLevelFlag>
-			((1 << log_level) & LogFlag_Mask);
-		LogLockScoped my_lock(the_lock_);
-		if ((log_handler_ptr_ != NULL) && ((log_level_flag & log_level_screen_) ||
-			(log_level_flag & log_level_persistent_))) {
-			LogEmitControl emit_ctl(log_flags_, log_level_screen_,
-				log_level_persistent_, line_start_time, log_level, log_level_flag,
-				line_buffer);
-/*
-	Can't early-release std::lock_guard.
-
-	But should have taken a copy of log_handler_ptr_ before the early
-	release and used that anyway.
-
-	To be re-factored.
-//			my_lock.unlock();
-*/
-			log_handler_ptr_->EmitLine(emit_ctl);
-		}
-	}
+		const std::string &line_buffer);
 	void EmitLine(const std::string &line_buffer,
-		LogLevel log_level = LogLevel_Info) {
-		EmitLine(TimeSpec(), log_level, line_buffer);
-	}
-	void EmitLiteral(const std::string &literal_string) {
-		EmitLiteral(static_cast<unsigned int>(literal_string.size()),
-			literal_string.c_str());
-	}
-	void EmitLiteral(unsigned int literal_length, const char *literal_ptr) {
-		literal_ptr = (literal_ptr == NULL) ? "" : literal_ptr;
-		LogLockScoped my_lock(the_lock_);
-		if (log_handler_ptr_ != NULL)
-			log_handler_ptr_->EmitLiteral(literal_length, literal_ptr);
-	}
-	void EmitLiteral(LogLevel log_level, const std::string &literal_string) {
-		EmitLiteral(log_level, static_cast<unsigned int>(literal_string.size()),
-			literal_string.c_str());
-	}
+		LogLevel log_level = LogLevel_Info);
+	void EmitLiteral(const std::string &literal_string);
+	void EmitLiteral(unsigned int literal_length, const char *literal_ptr);
+	void EmitLiteral(LogLevel log_level, const std::string &literal_string);
 	void EmitLiteral(LogLevel log_level, unsigned int literal_length,
-		const char *literal_ptr) {
-		literal_ptr = (literal_ptr == NULL) ? "" : literal_ptr;
-		LogLevelFlag log_level_flag = static_cast<LogLevelFlag>
-			((1 << log_level) & LogFlag_Mask);
-		LogLockScoped my_lock(the_lock_);
-		if ((log_handler_ptr_ != NULL) && ((log_level_flag & log_level_screen_) ||
-			(log_level_flag & log_level_persistent_))) {
-			LogEmitControl emit_ctl(log_flags_, log_level_screen_,
-				log_level_persistent_, log_level, log_level_flag);
-			log_handler_ptr_->EmitLiteral(emit_ctl, literal_length, literal_ptr);
-		}
-	}
+		const char *literal_ptr);
 
 	//	Public to provide speed by permitting access to a pointer to will be
 	//	const memory on most systems. Don't ever try to write through the
@@ -195,49 +114,10 @@ private:
 	LogLevelFlag  log_level_persistent_;
 	LogLock       the_lock_;
 
-	static LogLevelFlag GetLogLevelMask(LogLevel min_level, LogLevel max_level) {
-		min_level = std::max(min_level, LogLevel_Minimum);
-		max_level = std::min(max_level, LogLevel_Maximum);
-		if (min_level > max_level)
-			std::swap(min_level, max_level);
-		unsigned int level_flags = 0;
-		while (min_level <= max_level) {
-			level_flags |= 1 << static_cast<unsigned int>(min_level);
-			min_level    =
-				static_cast<LogLevel>(static_cast<unsigned int>(min_level) + 1);
-		}
-		return(static_cast<LogLevelFlag>(level_flags));
-	}
+	static LogLevelFlag GetLogLevelMask(LogLevel min_level, LogLevel max_level);
 
 	LogManager(const LogManager &) = delete;
 	LogManager & operator = (const LogManager &) = delete;
-};
-// ////////////////////////////////////////////////////////////////////////////
-
-// ////////////////////////////////////////////////////////////////////////////
-class API_UTILITY LogHandlerConsole : public LogHandler {
-public:
-	LogHandlerConsole();
-
-	virtual ~LogHandlerConsole();
-
-	virtual void InstallHandler();
-	virtual void RemoveHandler();
-
-	virtual void EmitLine(const LogEmitControl &emit_control);
-	virtual void EmitLiteral(unsigned int literal_length,
-		const char *literal_string);
-	virtual void EmitLiteral(const LogEmitControl &emit_control,
-		unsigned int literal_length, const char *literal_string);
-
-protected:
-	mutable LogLock the_lock_;
-
-private:
-	std::ios_base::Init iostreams_init_;
-
-	LogHandlerConsole(const LogHandlerConsole &) = delete;
-	LogHandlerConsole & operator = (const LogHandlerConsole &) = delete;
 };
 // ////////////////////////////////////////////////////////////////////////////
 

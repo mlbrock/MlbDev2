@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClInclude Include="..\..\..\..\include\mbcompat.h" />
     <ClInclude Include="..\..\..\..\include\Utility\AnyToString.hpp" />
+    <ClInclude Include="..\..\..\..\include\Utility\CheckCmdLineArgs.hpp" />
     <ClInclude Include="..\..\..\..\include\Utility\CurrentPath.hpp" />
     <ClInclude Include="..\..\..\..\include\Utility\DemangleCppName.hpp" />
     <ClInclude Include="..\..\..\..\include\Utility\EmitterCommentCpp.hpp" />
@@ -29,6 +30,8 @@
     <ClInclude Include="..\..\..\..\include\Utility\EnvElement.hpp" />
     <ClInclude Include="..\..\..\..\include\Utility\ExceptionRethrow.hpp" />
     <ClInclude Include="..\..\..\..\include\Utility\FloatingPointSupport.hpp" />
+    <ClInclude Include="..\..\..\..\include\Utility\GetCmdLineArg.hpp" />
+    <ClInclude Include="..\..\..\..\include\Utility\GetCmdLineHelp.hpp" />
     <ClInclude Include="..\..\..\..\include\Utility\GetEnvironment.hpp" />
     <ClInclude Include="..\..\..\..\include\Utility\GetSystemErrorCode.hpp" />
     <ClInclude Include="..\..\..\..\include\Utility\GranularRound.hpp" />
@@ -39,6 +42,7 @@
     <ClInclude Include="..\..\..\..\include\Utility\Ita2ToAscii.hpp" />
     <ClInclude Include="..\..\..\..\include\Utility\LogEmitControl.hpp" />
     <ClInclude Include="..\..\..\..\include\Utility\LogHandler.hpp" />
+    <ClInclude Include="..\..\..\..\include\Utility\LogHandlerConsole.hpp" />
     <ClInclude Include="..\..\..\..\include\Utility\LogHandlerFile.hpp" />
     <ClInclude Include="..\..\..\..\include\Utility\LogHandlerFileBase.hpp" />
     <ClInclude Include="..\..\..\..\include\Utility\LogHandlerFileMMap.hpp" />
@@ -92,9 +96,12 @@
     <ClInclude Include="..\..\..\..\include\Utility\ValueToStringRadix.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\..\Utility\CheckCmdLineArgs.cpp" />
     <ClCompile Include="..\..\..\..\Utility\CurrentPath.cpp" />
     <ClCompile Include="..\..\..\..\Utility\DemangleCppName.cpp" />
     <ClCompile Include="..\..\..\..\Utility\EnvElement.cpp" />
+    <ClCompile Include="..\..\..\..\Utility\GetCmdLineArg.cpp" />
+    <ClCompile Include="..\..\..\..\Utility\GetCmdLineHelp.cpp" />
     <ClCompile Include="..\..\..\..\Utility\GetEnvironment.cpp" />
     <ClCompile Include="..\..\..\..\Utility\GetSystemErrorCode.cpp" />
     <ClCompile Include="..\..\..\..\Utility\HostName.cpp" />
@@ -102,6 +109,7 @@
     <ClCompile Include="..\..\..\..\Utility\Ita2ToAscii.cpp" />
     <ClCompile Include="..\..\..\..\Utility\LogEmitControl.cpp" />
     <ClCompile Include="..\..\..\..\Utility\LogHandler.cpp" />
+    <ClCompile Include="..\..\..\..\Utility\LogHandlerConsole.cpp" />
     <ClCompile Include="..\..\..\..\Utility\LogHandlerFile.cpp" />
     <ClCompile Include="..\..\..\..\Utility\LogHandlerFileBase.cpp" />
     <ClCompile Include="..\..\..\..\Utility\LogLevel.cpp" />

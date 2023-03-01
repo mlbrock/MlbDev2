@@ -50,7 +50,7 @@ std::string &ReadFileData(const std::string &file_name, std::string &file_data)
 			throw std::runtime_error("Attempt to seek to the end of the "
 				"file failed.");
 /*
-		// CODE NOTE: Was using this with MSVC 2003...
+		// IMPL NOTE: Was using this with MSVC 2003...
 		std::ifstream::streamoff file_size = in_file.tellg();
 */
 		std::ifstream::pos_type file_size = in_file.tellg();

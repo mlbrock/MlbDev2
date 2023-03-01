@@ -3,16 +3,17 @@
 // MLB Utility Library Include File
 // ////////////////////////////////////////////////////////////////////////////
 /*
-   File Name         :  LogTestSupport.hpp
+   File Name         :  GetCmdLineArg.hpp
 
-   File Description  :  Function prototypes for shared log tests.
+   File Description  :  Include file for command line parameter retrieval
+                        functions.
 
-   Revision History  :  2005-01-02 --- Creation
+   Revision History  :  1998-04-08 --- Creation.
                            Michael L. Brock
-                        2023-02-25 --- Migration to C++ MlbDev2/Utility.
+                        2023-02-27 --- Migration to C++ MlbDev2/Utility.
                            Michael L. Brock
 
-      Copyright Michael L. Brock 2005 - 2023.
+      Copyright Michael L. Brock 1998 - 2023.
       Distributed under the Boost Software License, Version 1.0.
       (See accompanying file LICENSE_1_0.txt or copy at
       http://www.boost.org/LICENSE_1_0.txt)
@@ -20,16 +21,16 @@
 */
 // ////////////////////////////////////////////////////////////////////////////
 
-#ifndef HH__MLB__Utility__LogTestSupport_hpp__HH
+#ifndef HH__MLB__Utility__GetCmdLineArg_hpp__HH
 
-#define HH__MLB__Utility__LogTestSupport_hpp__HH   1
+#define HH__MLB__Utility__GetCmdLineArg_hpp__HH 1
 
 // ////////////////////////////////////////////////////////////////////////////
 // ////////////////////////////////////////////////////////////////////////////
 /**
-   \file LogTestSupport.hpp
+   \file GetCmdLineArg.hpp
 
-   \brief   Function prototypes for shared log tests.
+   \brief   The command line parameter retrieval functions header file.
 */
 // ////////////////////////////////////////////////////////////////////////////
 
@@ -38,7 +39,7 @@
 // Required include files...
 // ////////////////////////////////////////////////////////////////////////////
 
-#include <Utility/LogHandler.hpp>
+#include <Utility/Utility.hpp>
 
 // ////////////////////////////////////////////////////////////////////////////
 
@@ -47,21 +48,17 @@ namespace MLB {
 namespace Utility {
 
 // ////////////////////////////////////////////////////////////////////////////
-API_UTILITY void TEST_MultiLineOperation();
-API_UTILITY void TEST_IsolationThreadProc();
-API_UTILITY void TEST_Isolation();
-API_UTILITY void TEST_NoEOL();
-API_UTILITY void TEST_StressLines();
-API_UTILITY void TEST_StressSize();
-
-API_UTILITY void TEST_TestControl(LogHandlerPtr my_log_handler,
-	std::size_t stress_count_1 = 0, std::size_t stress_length_1 = 200,
-	std::size_t stress_count_2 = 0, std::size_t stress_length_2 = 2000000);
+API_UTILITY int         GetCmdLineArgIdx(const char *target_arg, int argc,
+	char **argv, bool case_sensitive = true, int first_index = 1);
+API_UTILITY const char *GetCmdLineArgPtr(const char *target_arg, int argc,
+	char **argv, bool case_sensitive = true, int first_index = 1);
+API_UTILITY const char *HasCmdLineArgPtr(const char *target_arg, int argc,
+	char **argv, bool case_sensitive = true, int first_index = 1);
 // ////////////////////////////////////////////////////////////////////////////
 
 } // namespace Utility
 
 } // namespace MLB
 
-#endif // #ifndef HH__MLB__Utility__LogTestSupport_hpp__HH
+#endif // #ifndef HH__MLB__Utility__GetCmdLineArg_hpp__HH
 

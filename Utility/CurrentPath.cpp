@@ -96,3 +96,4 @@ void SetCurrentPath(const std::string &new_path)
 } // namespace Utility
 
 } // namespace MLB
+
