@@ -34,10 +34,10 @@ namespace MLB {
 namespace Utility {
 
 namespace {
+
 // ////////////////////////////////////////////////////////////////////////////
-// Move into Utility/Ita2ToAscii.cpp.
 /*
-	From http://www.kekatos.com/teletype/gil/docs/smith--teletype-codes.txt
+   From http://www.kekatos.com/teletype/gil/docs/smith--teletype-codes.txt
 
           USTTY                         ASCII translation
 ---------------------------           ---------------------
@@ -112,6 +112,7 @@ const char ITA2_To_AsciiMap[32][2] = {
 	{ 0x0F, 0x0F },	// ASCII = 0x1F, LTRS = SI,  FIGS = SI
 };
 // ////////////////////////////////////////////////////////////////////////////
+
 } // Anonymous namespace
 
 // ////////////////////////////////////////////////////////////////////////////

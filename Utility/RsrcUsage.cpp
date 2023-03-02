@@ -742,7 +742,6 @@ void RsrcUsage::GetRsrcUsageByWindowsHandle(HANDLE selector, RsrcUsage &datum)
 
 						ProcessId selector;
 
-
    DESCRIPTION :	Determines the values of a number of operating system
 						dependent usage metrics.
 
@@ -767,7 +766,6 @@ void RsrcUsage::GetRsrcUsageByWindowsHandle(HANDLE selector, RsrcUsage &datum)
 						''GENFUNCS_MAX_ERROR_TEXT'' characters in length.
 
    RETURNS     :	Void.
-
 
    NOTES       :	Not all of the usage metrics supplied as members in
 						''RsrcUsage'' are available on all operating systems.
@@ -875,8 +873,7 @@ void RsrcUsage::GetRsrcUsage(ProcessId selector)
 	if ((file_handle = open(proc_file_name.c_str(), O_RDONLY)) == -1)
 		ThrowErrno("Unable to open process control file '" +
 			proc_file_name + "' for reading.");
-	
-	
+
 	if (ioctl(file_handle, PIOCUSAGE, &tmp_prusage) == -1) {
 		close(file_handle);
 		ThrowErrno("Attempt to retrieve the process usage information "

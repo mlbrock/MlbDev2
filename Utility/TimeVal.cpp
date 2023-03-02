@@ -581,19 +581,3 @@ std::ostream & operator << (std::ostream &o_str, const TimeVal &datum)
 
 } // namespace MLB
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

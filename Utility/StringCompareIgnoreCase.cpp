@@ -6,7 +6,7 @@
    File Name         :  StringCompareIgnoreCase.cpp
 
    File Description  :  Implementation of case-insensitive string comparison
-								functions.
+                        functions.
 
    Revision History  :  1993-10-02 --- Creation.
                            Michael L. Brock
@@ -20,7 +20,7 @@
 
 */
 // ////////////////////////////////////////////////////////////////////////////
- 
+
 // ////////////////////////////////////////////////////////////////////////////
 // ////////////////////////////////////////////////////////////////////////////
 // Required include files...

@@ -1,41 +1,41 @@
 // ////////////////////////////////////////////////////////////////////////////
 // ////////////////////////////////////////////////////////////////////////////
-//	MLB Utility Library Include File
+// MLB Utility Library Include File
 // ////////////////////////////////////////////////////////////////////////////
 /*
-	File Name			:	UserName.hpp
+   File Name         :  UserName.hpp
 
-   File Description	:	Include file for the portable page size functions.
+   File Description  :  Include file for the portable page size functions.
 
-	Revision History	:	1998-04-08 --- Creation
-									Michael L. Brock
+   Revision History  :  1998-04-08 --- Creation
+                           Michael L. Brock
                         2023-01-09 --- Migration to C++ MlbDev2/Utility.
                            Michael L. Brock
 
-		Copyright Michael L. Brock 1998 - 2023.
-		Distributed under the Boost Software License, Version 1.0.
-		(See accompanying file LICENSE_1_0.txt or copy at
-		http://www.boost.org/LICENSE_1_0.txt)
+      Copyright Michael L. Brock 1998 - 2023.
+      Distributed under the Boost Software License, Version 1.0.
+      (See accompanying file LICENSE_1_0.txt or copy at
+      http://www.boost.org/LICENSE_1_0.txt)
 
 */
 // ////////////////////////////////////////////////////////////////////////////
 
 #ifndef HH__MLB__Utility__UserName_hpp__HH
 
-#define HH__MLB__Utility__UserName_hpp__HH	1
+#define HH__MLB__Utility__UserName_hpp__HH   1
 
 // ////////////////////////////////////////////////////////////////////////////
 // ////////////////////////////////////////////////////////////////////////////
 /**
-	\file UserName.hpp
+   \file UserName.hpp
 
-	\brief	The page aize functions header file.
+   \brief   The page aize functions header file.
 */
 // ////////////////////////////////////////////////////////////////////////////
 
 // ////////////////////////////////////////////////////////////////////////////
 // ////////////////////////////////////////////////////////////////////////////
-//	Required include files...
+// Required include files...
 // ////////////////////////////////////////////////////////////////////////////
 
 #include <Utility/Utility.hpp>

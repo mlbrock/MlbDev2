@@ -1,42 +1,42 @@
 // ////////////////////////////////////////////////////////////////////////////
 // ////////////////////////////////////////////////////////////////////////////
-//	MLB Utility Library Include File
+// MLB Utility Library Include File
 // ////////////////////////////////////////////////////////////////////////////
 /*
-   File Name			:	ToString.hpp
+   File Name         :  ToString.hpp
 
-   Revision History	:	1998-04-08 --- Creation of original AnyToString()
-												   function templates.
-									Michael L. Brock
-   							2023-01-06 --- Change names of core functions to
-													ToString() and make AnyToString()
-												   forward to those functions.
-									Michael L. Brock
+   Revision History  :  1998-04-08 --- Creation of original AnyToString()
+                                       function templates.
+                           Michael L. Brock
+                        2023-01-06 --- Change names of core functions to
+                                       ToString() and make AnyToString()
+                                       forward to those functions.
+                           Michael L. Brock
 
-		Copyright Michael L. Brock 1998 - 2023.
-		Distributed under the Boost Software License, Version 1.0.
-		(See accompanying file LICENSE_1_0.txt or copy at
-		http://www.boost.org/LICENSE_1_0.txt)
+      Copyright Michael L. Brock 1998 - 2023.
+      Distributed under the Boost Software License, Version 1.0.
+      (See accompanying file LICENSE_1_0.txt or copy at
+      http://www.boost.org/LICENSE_1_0.txt)
 
 */
 // ////////////////////////////////////////////////////////////////////////////
 
 #ifndef HH__MLB__Utility__ToString_hpp__HH
 
-#define HH__MLB__Utility__ToString_hpp__HH	1
+#define HH__MLB__Utility__ToString_hpp__HH   1
 
 // ////////////////////////////////////////////////////////////////////////////
 // ////////////////////////////////////////////////////////////////////////////
 /**
-	\file ToString.hpp
+   \file ToString.hpp
 
-	\brief	The ToString functions header file.
+   \brief   The ToString functions header file.
 */
 // ////////////////////////////////////////////////////////////////////////////
 
 // ////////////////////////////////////////////////////////////////////////////
 // ////////////////////////////////////////////////////////////////////////////
-//	Required include files...
+// Required include files...
 // ////////////////////////////////////////////////////////////////////////////
 
 #include <Utility/Utility.hpp>
@@ -87,7 +87,7 @@ template <>
 
 /*
 	Specialization work-around for MSVC 64-bit std::size_t compatibility...
- 
+
 	CODE NOTE: May not be required under MSVC++ 8.x. To be determined.
 */
 #if defined(_MSC_VER) && (_MSC_VER >= 1300) && (_MSC_VER <= 1310)

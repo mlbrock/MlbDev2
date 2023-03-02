@@ -1,43 +1,43 @@
 // ////////////////////////////////////////////////////////////////////////////
 // ////////////////////////////////////////////////////////////////////////////
-//	MLB Utility Library Include File
+// MLB Utility Library Include File
 // ////////////////////////////////////////////////////////////////////////////
 /*
-   File Name			:	TimeSpec.hpp
+   File Name         :  TimeSpec.hpp
 
-   File Description	:	Definition of the TimeSpec class.
+   File Description  :  Definition of the TimeSpec class.
 
-   Revision History	:	1994-05-21 --- Added to C genfuncs.h include file.
-									Michael L. Brock
-								1998-04-08 --- Revision for the MlbDev Utility library.
-									Michael L. Brock
-   							2022-10-01 --- Added to MlbDev3 Utility library.
-									Michael L. Brock
+   Revision History  :  1994-05-21 --- Added to C genfuncs.h include file.
+                           Michael L. Brock
+                        1998-04-08 --- Revision for the MlbDev Utility library.
+                           Michael L. Brock
+                        2022-10-01 --- Added to MlbDev3 Utility library.
+                           Michael L. Brock
 
-		Copyright Michael L. Brock 1998 - 2023.
-		Distributed under the Boost Software License, Version 1.0.
-		(See accompanying file LICENSE_1_0.txt or copy at
-		http://www.boost.org/LICENSE_1_0.txt)
+      Copyright Michael L. Brock 1998 - 2023.
+      Distributed under the Boost Software License, Version 1.0.
+      (See accompanying file LICENSE_1_0.txt or copy at
+      http://www.boost.org/LICENSE_1_0.txt)
 
 */
 // ////////////////////////////////////////////////////////////////////////////
 
 #ifndef HH__MLB__Utility__TimeSpec_hpp__HH
 
-#define HH__MLB__Utility__TimeSpec_hpp__HH	1
+#define HH__MLB__Utility__TimeSpec_hpp__HH   1
 
 // ////////////////////////////////////////////////////////////////////////////
 // ////////////////////////////////////////////////////////////////////////////
 /**
-	\file TimeSpec.hpp
+   \file TimeSpec.hpp
 
-   \brief	The TimeSpec class definition include file.
+   \brief   The TimeSpec class definition include file.
 */
 // ////////////////////////////////////////////////////////////////////////////
 
 // ////////////////////////////////////////////////////////////////////////////
 // ////////////////////////////////////////////////////////////////////////////
-//	Required include files...
+// Required include files...
 // ////////////////////////////////////////////////////////////////////////////
 
 #include <Utility/TimeVal.hpp>
@@ -47,8 +47,8 @@
 #if defined(_MSC_VER)
 # if (_MSC_VER < 1900)
 struct timespec {
-	time_t tv_sec;
-	long   tv_nsec;
+   time_t tv_sec;
+   long   tv_nsec;
 };
 # endif // # if (_MSC_VER < 1900)
 #else

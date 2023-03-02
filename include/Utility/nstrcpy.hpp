@@ -1,43 +1,43 @@
 // ////////////////////////////////////////////////////////////////////////////
 // ////////////////////////////////////////////////////////////////////////////
-//	MLB Utility Library Include File
+// MLB Utility Library Include File
 // ////////////////////////////////////////////////////////////////////////////
 /*
-	File Name			:	nstrcpy.hpp
+   File Name         :  nstrcpy.hpp
 
-   File Description	:	Include file for the nstrcpy function.
+   File Description  :  Include file for the nstrcpy function.
 
-	Revision History	:	1986-10-27 --- Creation in the C strfuncs library.
-   								Michael L. Brock
-								1998-04-08 --- Revision for the C++ Utility library.
-   								Michael L. Brock
+   Revision History  :  1986-10-27 --- Creation in the C strfuncs library.
+                           Michael L. Brock
+                        1998-04-08 --- Revision for the C++ Utility library.
+                           Michael L. Brock
                         2023-01-04 --- Migration to C++ MlbDev2/Utility.
                            Michael L. Brock
 
-		Copyright Michael L. Brock 1986 - 2023.
-		Distributed under the Boost Software License, Version 1.0.
-		(See accompanying file LICENSE_1_0.txt or copy at
-		http://www.boost.org/LICENSE_1_0.txt)
+      Copyright Michael L. Brock 1986 - 2023.
+      Distributed under the Boost Software License, Version 1.0.
+      (See accompanying file LICENSE_1_0.txt or copy at
+      http://www.boost.org/LICENSE_1_0.txt)
 
 */
 // ////////////////////////////////////////////////////////////////////////////
 
 #ifndef HH__MLB__Utility__nstrcpy_hpp__HH
 
-#define HH__MLB__Utility__nstrcpy_hpp__HH	1
+#define HH__MLB__Utility__nstrcpy_hpp__HH 1
 
 // ////////////////////////////////////////////////////////////////////////////
 // ////////////////////////////////////////////////////////////////////////////
 /**
-	\file nstrcpy.hpp
+   \file nstrcpy.hpp
 
-	\brief	The nstrcpy function header file.
+   \brief   The nstrcpy function header file.
 */
 // ////////////////////////////////////////////////////////////////////////////
 
 // ////////////////////////////////////////////////////////////////////////////
 // ////////////////////////////////////////////////////////////////////////////
-//	Required include files...
+// Required include files...
 // ////////////////////////////////////////////////////////////////////////////
 
 #include <Utility/Utility.hpp>

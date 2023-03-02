@@ -1,46 +1,44 @@
 // ////////////////////////////////////////////////////////////////////////////
 // ////////////////////////////////////////////////////////////////////////////
-//	MLB Utility Library Include File
+// MLB Utility Library Include File
 // ////////////////////////////////////////////////////////////////////////////
 /*
-	File Name			:	GranularRound.hpp
+   File Name         :  GranularRound.hpp
 
-	File Description	:	Include file for data type alignment.
+   File Description  :  Include file for data type alignment.
 
-	Revision History	:	1992-09-13 --- Creation in AlignmentSupport.hpp.
-   								Michael L. Brock
-   							2023-01-06 --- New file with just granular functions.
-   								Michael L. Brock
+   Revision History  :  1992-09-13 --- Creation in AlignmentSupport.hpp.
+                           Michael L. Brock
+                        2023-01-06 --- New file with just granular functions.
+                           Michael L. Brock
 
-		Copyright Michael L. Brock 1992 - 2023.
-		Distributed under the Boost Software License, Version 1.0.
-		(See accompanying file LICENSE_1_0.txt or copy at
-		http://www.boost.org/LICENSE_1_0.txt)
+      Copyright Michael L. Brock 1992 - 2023.
+      Distributed under the Boost Software License, Version 1.0.
+      (See accompanying file LICENSE_1_0.txt or copy at
+      http://www.boost.org/LICENSE_1_0.txt)
 
 */
 // ////////////////////////////////////////////////////////////////////////////
 
 #ifndef HH__MLB__Utility__GranularRound_hpp__HH
 
-#define HH__MLB__Utility__GranularRound_hpp__HH	1
+#define HH__MLB__Utility__GranularRound_hpp__HH 1
 
 // ////////////////////////////////////////////////////////////////////////////
 // ////////////////////////////////////////////////////////////////////////////
 /**
-	\file 	GranularRound.hpp
+   \file    GranularRound.hpp
 
-   \brief	Logic to support of round-up/round-down by granular quanta.
+   \brief   Logic to support of round-up/round-down by granular quanta.
 */
 // ////////////////////////////////////////////////////////////////////////////
 
 // ////////////////////////////////////////////////////////////////////////////
 // ////////////////////////////////////////////////////////////////////////////
-//	Required include files...
+// Required include files...
 // ////////////////////////////////////////////////////////////////////////////
 
 #include <Utility/Utility.hpp>
-
-//#include <stddef.h>
 
 // ////////////////////////////////////////////////////////////////////////////
 

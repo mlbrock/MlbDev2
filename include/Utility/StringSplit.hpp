@@ -1,42 +1,41 @@
 // ////////////////////////////////////////////////////////////////////////////
 // ////////////////////////////////////////////////////////////////////////////
-//	MLB Utility Library Include File
+// MLB Utility Library Include File
 // ////////////////////////////////////////////////////////////////////////////
 /*
-   File Name			:	StringSplit.hpp
+   File Name         :  StringSplit.hpp
 
-	File Description	:	Function prototypes for split string functions.
+   File Description  :  Function prototypes for split string functions.
 
-	Revision History	:	1993-10-02 --- Creation.
-									Michael L. Brock
+   Revision History  :  1993-10-02 --- Creation.
+                           Michael L. Brock
                         2023-01-12 --- Migration to C++ MlbDev2/Utility.
                            Michael L. Brock
 
-		Copyright Michael L. Brock 1998 - 2023.
-		Distributed under the Boost Software License, Version 1.0.
-		(See accompanying file LICENSE_1_0.txt or copy at
-		http://www.boost.org/LICENSE_1_0.txt)
+      Copyright Michael L. Brock 1998 - 2023.
+      Distributed under the Boost Software License, Version 1.0.
+      (See accompanying file LICENSE_1_0.txt or copy at
+      http://www.boost.org/LICENSE_1_0.txt)
 
 */
 // ////////////////////////////////////////////////////////////////////////////
 
-
 #ifndef HH__MLB__Utility__StringSplit_hpp__HH
 
-#define HH__MLB__Utility__StringSplit_hpp__HH	1
+#define HH__MLB__Utility__StringSplit_hpp__HH   1
 
 // ////////////////////////////////////////////////////////////////////////////
 // ////////////////////////////////////////////////////////////////////////////
 /**
-	\file 	StringSplit.hpp
+   \file    StringSplit.hpp
 
-	\brief	The MLB Utility C++ split string functions header file.
+   \brief   The MLB Utility C++ split string functions header file.
 */
 // ////////////////////////////////////////////////////////////////////////////
 
 // ////////////////////////////////////////////////////////////////////////////
 // ////////////////////////////////////////////////////////////////////////////
-//	Required include files...
+// Required include files...
 // ////////////////////////////////////////////////////////////////////////////
 
 #include <Utility/Utility.hpp>

@@ -1,43 +1,43 @@
 // ////////////////////////////////////////////////////////////////////////////
 // ////////////////////////////////////////////////////////////////////////////
-//	MLB Utility Library Include File
+// MLB Utility Library Include File
 // ////////////////////////////////////////////////////////////////////////////
 /*
-   File Name			:	ToStringRadix.hpp
+   File Name         :  ToStringRadix.hpp
 
-   File Description	:	Maximum radix digits for two's complement integers.
+   File Description  :  Maximum radix digits for two's complement integers.
 
-   Revision History	:	1998-04-08 --- Creation as ValueToStringRadix()
-													function templates.
-									Michael L. Brock
-   							2023-01-04 --- Implemented as more-general function
-													templates name ToStringRadix().
-									Michael L. Brock
+   Revision History  :  1998-04-08 --- Creation as ValueToStringRadix()
+                                       function templates.
+                           Michael L. Brock
+                        2023-01-04 --- Implemented as more-general function
+                                       templates name ToStringRadix().
+                           Michael L. Brock
 
-		Copyright Michael L. Brock 1998 - 2023.
-		Distributed under the Boost Software License, Version 1.0.
-		(See accompanying file LICENSE_1_0.txt or copy at
-		http://www.boost.org/LICENSE_1_0.txt)
+      Copyright Michael L. Brock 1998 - 2023.
+      Distributed under the Boost Software License, Version 1.0.
+      (See accompanying file LICENSE_1_0.txt or copy at
+      http://www.boost.org/LICENSE_1_0.txt)
 
 */
 // ////////////////////////////////////////////////////////////////////////////
 
 #ifndef HH__MLB__Utility__ToStringRadix_hpp__HH
 
-#define HH__MLB__Utility__ToStringRadix_hpp__HH	1
+#define HH__MLB__Utility__ToStringRadix_hpp__HH 1
 
 // ////////////////////////////////////////////////////////////////////////////
 // ////////////////////////////////////////////////////////////////////////////
 /**
-	\file ToStringRadix.hpp
+   \file ToStringRadix.hpp
 
-	\brief	The ToStringRadix[Bin|Oct|Dec|Hex]() functions header.
+   \brief   The ToStringRadix[Bin|Oct|Dec|Hex]() functions header.
 */
 // ////////////////////////////////////////////////////////////////////////////
 
 // ////////////////////////////////////////////////////////////////////////////
 // ////////////////////////////////////////////////////////////////////////////
-//	Required include files...
+// Required include files...
 // ////////////////////////////////////////////////////////////////////////////
 
 #include <Utility/IntegralValueMaxLength.hpp>

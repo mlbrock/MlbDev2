@@ -70,7 +70,6 @@ inline int IsEolChar(const char *datum_ptr, std::size_t datum_length)
 }
 // ////////////////////////////////////////////////////////////////////////////
 
-
 } // namespace Utility
 
 } // namespace MLB

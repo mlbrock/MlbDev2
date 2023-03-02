@@ -1,42 +1,42 @@
 // ////////////////////////////////////////////////////////////////////////////
 // ////////////////////////////////////////////////////////////////////////////
-//	MLB Utility Library Include File
+// MLB Utility Library Include File
 // ////////////////////////////////////////////////////////////////////////////
 /*
-	File Name			:	ReadFile.hpp
+   File Name         :  ReadFile.hpp
 
-   File Description	:	Function prototypes of logic for the reading of
-								operating system file contents.
+   File Description  :  Function prototypes of logic for the reading of
+                        operating system file contents.
 
-	Revision History	:	1998-04-08 --- Creation
-									Michael L. Brock
+   Revision History  :  1998-04-08 --- Creation
+                           Michael L. Brock
                         2023-01-05 --- Migration to C++ MlbDev2/Utility.
                            Michael L. Brock
 
-		Copyright Michael L. Brock 1998 - 2023.
-		Distributed under the Boost Software License, Version 1.0.
-		(See accompanying file LICENSE_1_0.txt or copy at
-		http://www.boost.org/LICENSE_1_0.txt)
+      Copyright Michael L. Brock 1998 - 2023.
+      Distributed under the Boost Software License, Version 1.0.
+      (See accompanying file LICENSE_1_0.txt or copy at
+      http://www.boost.org/LICENSE_1_0.txt)
 
 */
 // ////////////////////////////////////////////////////////////////////////////
 
 #ifndef HH__MLB__Utility__ReadFile_hpp__HH
 
-#define HH__MLB__Utility__ReadFile_hpp__HH	1
+#define HH__MLB__Utility__ReadFile_hpp__HH   1
 
 // ////////////////////////////////////////////////////////////////////////////
 // ////////////////////////////////////////////////////////////////////////////
 /**
-	\file ReadFile.hpp
+   \file ReadFile.hpp
 
-	\brief	The page aize functions header file.
+   \brief   The page aize functions header file.
 */
 // ////////////////////////////////////////////////////////////////////////////
 
 // ////////////////////////////////////////////////////////////////////////////
 // ////////////////////////////////////////////////////////////////////////////
-//	Required include files...
+// Required include files...
 // ////////////////////////////////////////////////////////////////////////////
 
 #include <Utility/Utility.hpp>

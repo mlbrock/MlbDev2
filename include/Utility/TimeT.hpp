@@ -1,41 +1,41 @@
 // ////////////////////////////////////////////////////////////////////////////
 // ////////////////////////////////////////////////////////////////////////////
-//	MLB Utility Library Include File
+// MLB Utility Library Include File
 // ////////////////////////////////////////////////////////////////////////////
 /*
-   File Name			:	TimeT.hpp
+   File Name         :  TimeT.hpp
 
-   File Description	:	Definition of the TimeT class.
+   File Description  :  Definition of the TimeT class.
 
-	Revision History	:	1998-04-08 --- Creation
-									Michael L. Brock
+   Revision History  :  1998-04-08 --- Creation
+                           Michael L. Brock
                         2023-01-04 --- Migration to C++ MlbDev2/Utility.
                            Michael L. Brock
 
-		Copyright Michael L. Brock 1998 - 2023.
-		Distributed under the Boost Software License, Version 1.0.
-		(See accompanying file LICENSE_1_0.txt or copy at
-		http://www.boost.org/LICENSE_1_0.txt)
+      Copyright Michael L. Brock 1998 - 2023.
+      Distributed under the Boost Software License, Version 1.0.
+      (See accompanying file LICENSE_1_0.txt or copy at
+      http://www.boost.org/LICENSE_1_0.txt)
 
 */
 // ////////////////////////////////////////////////////////////////////////////
 
 #ifndef HH__MLB__Utility__TimeT_hpp__HH
 
-#define HH__MLB__Utility__TimeT_hpp__HH	1
+#define HH__MLB__Utility__TimeT_hpp__HH   1
 
 // ////////////////////////////////////////////////////////////////////////////
 // ////////////////////////////////////////////////////////////////////////////
 /**
-	\file TimeT.hpp
+   \file TimeT.hpp
 
-   \brief	The TimeT class definition include file.
+   \brief   The TimeT class definition include file.
 */
 // ////////////////////////////////////////////////////////////////////////////
 
 // ////////////////////////////////////////////////////////////////////////////
 // ////////////////////////////////////////////////////////////////////////////
-//	Required include files...
+// Required include files...
 // ////////////////////////////////////////////////////////////////////////////
 
 #include <Utility/TimeSupport.hpp>

@@ -1,30 +1,30 @@
 // ////////////////////////////////////////////////////////////////////////////
 // ////////////////////////////////////////////////////////////////////////////
-//	MLB Utility Library Module File
+// MLB Utility Library Module File
 // ////////////////////////////////////////////////////////////////////////////
 /*
-	File Name			:	nstrcpy.cpp
+   File Name         :  nstrcpy.cpp
 
-	File Description	:	Implementation of limited-length string copying.
+   File Description  :  Implementation of limited-length string copying.
 
-	Revision History	:	1986-10-27 --- Creation in the C strfuncs library.
-   								Michael L. Brock
-								1998-04-08 --- Revision for the C++ Utility library.
-   								Michael L. Brock
+   Revision History  :  1986-10-27 --- Creation in the C strfuncs library.
+                           Michael L. Brock
+                        1998-04-08 --- Revision for the C++ Utility library.
+                           Michael L. Brock
                         2023-01-04 --- Migration to C++ MlbDev2/Utility.
                            Michael L. Brock
 
-		Copyright Michael L. Brock 1986 - 2023.
-		Distributed under the Boost Software License, Version 1.0.
-		(See accompanying file LICENSE_1_0.txt or copy at
-		http://www.boost.org/LICENSE_1_0.txt)
+      Copyright Michael L. Brock 1986 - 2023.
+      Distributed under the Boost Software License, Version 1.0.
+      (See accompanying file LICENSE_1_0.txt or copy at
+      http://www.boost.org/LICENSE_1_0.txt)
 
 */
 // ////////////////////////////////////////////////////////////////////////////
 
 // ////////////////////////////////////////////////////////////////////////////
 // ////////////////////////////////////////////////////////////////////////////
-//	Include necessary header files . . .
+// Include necessary header files . . .
 // ////////////////////////////////////////////////////////////////////////////
 
 #include <Utility/nstrcpy.hpp>
@@ -43,77 +43,77 @@ namespace Utility {
 
    SYNOPSIS    :  char *nstrcpy(to_string, from_string, string_length);
 
-						char       *to_string;
+                  char       *to_string;
 
-						const char *from_string;
+                  const char *from_string;
 
-						size_t      string_length;
+                  size_t      string_length;
 
    DESCRIPTION :  Copies characters from the area to which the ``from_string``
-						parameter points to the area to which the ``to_string``
-						parameter points until one of the follow conditions is
-						met:
+                  parameter points to the area to which the ``to_string``
+                  parameter points until one of the follow conditions is
+                  met:
 
-						(.) an ASCII 0 is encountered, in which case it is copied
-						to the appropriate position in the area to which the
-						``to_string`` parameter points and the function returns; or,
+                  (.) an ASCII 0 is encountered, in which case it is copied
+                  to the appropriate position in the area to which the
+                  ``to_string`` parameter points and the function returns; or,
 
-						(.) ``string_length`` characters have copied from
-						``from_string`` to ``to_string`` in which case a terminating
-						ASCII 0 is appended to the appropriate position in the area
-						to which the ``to_string`` parameter points and the
-						function returns.
+                  (.) ``string_length`` characters have copied from
+                  ``from_string`` to ``to_string`` in which case a terminating
+                  ASCII 0 is appended to the appropriate position in the area
+                  to which the ``to_string`` parameter points and the
+                  function returns.
 
    PARAMETERS  :  Parameters to this function are as follow:
 
-						(.) ``to_string`` points to the area to receive the string.
-						This area must have at least ``string_length`` bytes plus
-						one byte (for the terminating ASCII 0) allocated to it in
-						order to handle the general case (which might include
-						``from_string`` strings longer than ``string_length``
-						bytes).
+                  (.) ``to_string`` points to the area to receive the string.
+                  This area must have at least ``string_length`` bytes plus
+                  one byte (for the terminating ASCII 0) allocated to it in
+                  order to handle the general case (which might include
+                  ``from_string`` strings longer than ``string_length``
+                  bytes).
 
-						(.) ``from_string`` points to the area from which the
-						string is to be copied.
+                  (.) ``from_string`` points to the area from which the
+                  string is to be copied.
 
-						(.) ``string_length`` is the number of bytes to be copied
-						from ``from_string`` to ``to_string``.
+                  (.) ``string_length`` is the number of bytes to be copied
+                  from ``from_string`` to ``to_string``.
 
    RETURNS     :  A pointer to the destination string (that is,
-						``to_string``).
+                  ``to_string``).
 
-	NOTES       :  This behavior is, in the opinion of the author, more
-						intuitive than that of the C standard library function
-						``strncpy``. But see the ''CAVEATS'' section below.
+   NOTES       :  This behavior is, in the opinion of the author, more
+                  intuitive than that of the C standard library function
+                  ``strncpy``. But see the ''CAVEATS'' section below.
 
    CAVEATS     :  It is important to remember that ``string_length`` is the
-						maximum length of the C string NOT including the ASCII 0
-						termination byte.
+                  maximum length of the C string NOT including the ASCII 0
+                  termination byte.
 
-						For example, if you were to copy from a string which is 20
-						characters in length and the ``string_length`` parameter
-						were set to 10, the first 10 characters would be copied
-						to the ``to_string`` and an ASCII 0 placed immediately
-						following those 10 characters.
+                  For example, if you were to copy from a string which is 20
+                  characters in length and the ``string_length`` parameter
+                  were set to 10, the first 10 characters would be copied
+                  to the ``to_string`` and an ASCII 0 placed immediately
+                  following those 10 characters.
 
    SEE ALSO    :  nstrcat
 
    EXAMPLES    :  
 
-	AUTHOR      :  Michael L. Brock
+   AUTHOR      :  Michael L. Brock
 
    COPYRIGHT   :  Copyright 1986 - 2018 Michael L. Brock
 
    OUTPUT INDEX:  nstrcpy
-						Miscellaneous Functions:nstrcpy
-						STRFUNCS:Miscellaneous Functions:nstrcpy
-						String Functions:See STRFUNCS
+                  Miscellaneous Functions:nstrcpy
+                  STRFUNCS:Miscellaneous Functions:nstrcpy
+                  String Functions:See STRFUNCS
 
    PUBLISH XREF:  nstrcpy
 
-   PUBLISH NAME:	nstrcpy
+   PUBLISH NAME:  nstrcpy
 
-	ENTRY CLASS	:	Miscellaneous Functions
+   ENTRY CLASS :  Miscellaneous Functions
 
 EOH */
 // ////////////////////////////////////////////////////////////////////////////

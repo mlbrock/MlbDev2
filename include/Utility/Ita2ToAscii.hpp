@@ -48,7 +48,7 @@ namespace Utility {
 
 // ////////////////////////////////////////////////////////////////////////////
 /*
-	From http://www.kekatos.com/teletype/gil/docs/smith--teletype-codes.txt
+   From http://www.kekatos.com/teletype/gil/docs/smith--teletype-codes.txt
 
           USTTY                         ASCII translation
 ---------------------------           ---------------------
