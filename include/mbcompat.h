@@ -1,37 +1,37 @@
-/*	***********************************************************************	*/
-/*	***********************************************************************	*/
-/*	Compatibity Include File																*/
-/*	***********************************************************************	*/
+/* *********************************************************************** */
+/* *********************************************************************** */
+/* Compatibity Include File                                                */
+/* *********************************************************************** */
 /*
-   File Name  			:	mbcompat.h
+   File Name         :  mbcompat.h
 
-	File Description	:	Basic compatibility include file.
+   File Description  :  Basic compatibility include file.
 
-	Revision History	:	1985-01-01 --- Creation.
-									Michael L. Brock
+   Revision History  :  1985-01-01 --- Creation.
+                           Michael L. Brock
 
-		Copyright Michael L. Brock 1985 - 2023.
-		Distributed under the Boost Software License, Version 1.0.
-		(See accompanying file LICENSE_1_0.txt or copy at
-		http://www.boost.org/LICENSE_1_0.txt)
+      Copyright Michael L. Brock 1985 - 2023.
+      Distributed under the Boost Software License, Version 1.0.
+      (See accompanying file LICENSE_1_0.txt or copy at
+      http://www.boost.org/LICENSE_1_0.txt)
 
 */
-/*	***********************************************************************	*/
+/* *********************************************************************** */
 
 #ifndef HH__mbcompat_h__HH
 
-#define HH__mbcompat_h__HH					1
+#define HH__mbcompat_h__HH             1
 
-/*	***********************************************************************	*/
-/*	***********************************************************************	*/
-/* A compatibility shim for the old Borland C++ compiler...						*/
-/*	***********************************************************************	*/
+/* *********************************************************************** */
+/* *********************************************************************** */
+/* A compatibility shim for the old Borland C++ compiler...                */
+/* *********************************************************************** */
 #ifndef _Windows
 # if _MSC_VER || _WIN16 || _WIN32 || _WIN64 || WINDOWS
 #  define _Windows 1
 # endif /* # if _MSC_VER || _WIN16 || _WIN32 || _WIN64 || WINDOWS */
 #endif /* #  ifndef _Windows */
-/*	***********************************************************************	*/
+/* *********************************************************************** */
 
 /*	***********************************************************************	*/
 /*	***********************************************************************	*/
