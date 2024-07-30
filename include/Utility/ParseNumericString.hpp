@@ -46,6 +46,11 @@
 #include <sstream>
 #include <string>
 
+#ifdef PARSE_NUMERIC_STRING_TEST
+# include <iomanip>
+# include <iostream>
+#endif // #ifdef PARSE_NUMERIC_STRING_TEST
+
 // ////////////////////////////////////////////////////////////////////////////
 
 namespace MLB {
@@ -304,8 +309,8 @@ template <typename DatumType>
 			std::setw(22) << in_value << std::right << ": " << std::flush;
 		MLB::Utility::ParseNumericString(in_value, out_datum, true);
 		std::cerr << std::setw(22) <<
-			static_cast<MLB::Utility::WidestType<DatumType>::type>(out_datum) <<
-			std::endl;
+			static_cast<typename MLB::Utility::WidestType<DatumType>::type>
+			(out_datum) << std::endl;
 	}
 	catch (const std::exception &except) {
 		std::cerr << "FAILED: " << except.what() << std::endl;
@@ -319,8 +324,8 @@ template <typename DatumType>
 {
 	std::ostringstream o_str;
 
-	o_str <<
-		static_cast<MLB::Utility::WidestType<DatumType>::type>(in_value);
+	o_str << static_cast<typename MLB::Utility::WidestType<DatumType>::type>
+		(in_value);
 
 	TEST_ParseTypeString<DatumType>(in_type_name, o_str.str().c_str());
 }
