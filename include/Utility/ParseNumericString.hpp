@@ -274,7 +274,7 @@ template <typename DatumType>
 {
 	std::cerr << std::left << std::setw(18) << in_type_name << std::right <<
 		" -> " << std::setw(5) <<
-		sizeof(MLB::Utility::WidestType<DatumType>::type) << " -> " <<
+		sizeof(typename MLB::Utility::WidestType<DatumType>::type) << " -> " <<
 		MLB::Utility::WidestType<DatumType>::GetTypeName() << std::endl;
 }
 // ////////////////////////////////////////////////////////////////////////////
