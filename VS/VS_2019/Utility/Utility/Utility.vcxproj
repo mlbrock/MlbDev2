@@ -31,6 +31,7 @@
     <ClInclude Include="..\..\..\..\include\Utility\ExceptionRethrow.hpp" />
     <ClInclude Include="..\..\..\..\include\Utility\FloatingPointSupport.hpp" />
     <ClInclude Include="..\..\..\..\include\Utility\GetCmdLineArg.hpp" />
+    <ClInclude Include="..\..\..\..\include\Utility\GetCmdLineArgRegex.hpp" />
     <ClInclude Include="..\..\..\..\include\Utility\GetCmdLineHelp.hpp" />
     <ClInclude Include="..\..\..\..\include\Utility\GetEnvironment.hpp" />
     <ClInclude Include="..\..\..\..\include\Utility\GetSystemErrorCode.hpp" />
@@ -57,9 +58,12 @@
     <ClInclude Include="..\..\..\..\include\Utility\nstrcpy.hpp" />
     <ClInclude Include="..\..\..\..\include\Utility\NumericSupport.hpp" />
     <ClInclude Include="..\..\..\..\include\Utility\PageSize.hpp" />
+    <ClInclude Include="..\..\..\..\include\Utility\ParseCfgFile.hpp" />
+    <ClInclude Include="..\..\..\..\include\Utility\ParseCfgItem.hpp" />
     <ClInclude Include="..\..\..\..\include\Utility\ParseNumericString.hpp" />
     <ClInclude Include="..\..\..\..\include\Utility\ProcessId.hpp" />
     <ClInclude Include="..\..\..\..\include\Utility\ReadFile.hpp" />
+    <ClInclude Include="..\..\..\..\include\Utility\ResolveCmdLineArg.hpp" />
     <ClInclude Include="..\..\..\..\include\Utility\RsrcUsage.hpp" />
     <ClInclude Include="..\..\..\..\include\Utility\Sleep.hpp" />
     <ClInclude Include="..\..\..\..\include\Utility\StrICmp.hpp" />
@@ -101,6 +105,7 @@
     <ClCompile Include="..\..\..\..\Utility\DemangleCppName.cpp" />
     <ClCompile Include="..\..\..\..\Utility\EnvElement.cpp" />
     <ClCompile Include="..\..\..\..\Utility\GetCmdLineArg.cpp" />
+    <ClCompile Include="..\..\..\..\Utility\GetCmdLineArgRegex.cpp" />
     <ClCompile Include="..\..\..\..\Utility\GetCmdLineHelp.cpp" />
     <ClCompile Include="..\..\..\..\Utility\GetEnvironment.cpp" />
     <ClCompile Include="..\..\..\..\Utility\GetSystemErrorCode.cpp" />
@@ -120,8 +125,11 @@
     <ClCompile Include="..\..\..\..\Utility\nstrcat.cpp" />
     <ClCompile Include="..\..\..\..\Utility\nstrcpy.cpp" />
     <ClCompile Include="..\..\..\..\Utility\PageSize.cpp" />
+    <ClCompile Include="..\..\..\..\Utility\ParseCfgFile.cpp" />
+    <ClCompile Include="..\..\..\..\Utility\ParseCfgItem.cpp" />
     <ClCompile Include="..\..\..\..\Utility\ProcessId.cpp" />
     <ClCompile Include="..\..\..\..\Utility\ReadFile.cpp" />
+    <ClCompile Include="..\..\..\..\Utility\ResolveCmdLineArg.cpp" />
     <ClCompile Include="..\..\..\..\Utility\RsrcUsage.cpp" />
     <ClCompile Include="..\..\..\..\Utility\Sleep.cpp" />
     <ClCompile Include="..\..\..\..\Utility\StrICmp.cpp" />
