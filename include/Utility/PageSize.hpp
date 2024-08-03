@@ -29,7 +29,7 @@
 /**
    \file PageSize.hpp
 
-   \brief   The page aize functions header file.
+   \brief   The page size functions header file.
 */
 // ////////////////////////////////////////////////////////////////////////////
 
