@@ -52,7 +52,7 @@ API_UTILITY int         GetCmdLineArgIdx(const char *target_arg, int argc,
 	char **argv, bool case_sensitive = true, int first_index = 1);
 API_UTILITY const char *GetCmdLineArgPtr(const char *target_arg, int argc,
 	char **argv, bool case_sensitive = true, int first_index = 1);
-API_UTILITY const char *HasCmdLineArgPtr(const char *target_arg, int argc,
+API_UTILITY const char *HasCmdLineArg(const char *target_arg, int argc,
 	char **argv, bool case_sensitive = true, int first_index = 1);
 // ////////////////////////////////////////////////////////////////////////////
 

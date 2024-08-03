@@ -28,6 +28,7 @@
 
 #include <Utility/GetCmdLineArg.hpp>
 
+#include <Utility/CheckCmdLineArgs.hpp>
 #include <Utility/StrICmp.hpp>
 
 #include <cstring>
@@ -42,6 +43,8 @@ namespace Utility {
 int GetCmdLineArgIdx(const char *target_arg, int argc, char **argv,
 	bool case_sensitive, int first_index)
 {
+	CheckCmdLineArgList(argc, argv, first_index);
+
 	int (*cmp_func)(const char *, const char *) =
 		(case_sensitive) ? ::strcmp : Utility_stricmp;
 
