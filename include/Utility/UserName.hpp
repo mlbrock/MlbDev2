@@ -5,7 +5,7 @@
 /*
    File Name         :  UserName.hpp
 
-   File Description  :  Include file for the portable page size functions.
+   File Description  :  Include file for the portable user name functions.
 
    Revision History  :  1998-04-08 --- Creation
                            Michael L. Brock
@@ -29,7 +29,7 @@
 /**
    \file UserName.hpp
 
-   \brief   The page aize functions header file.
+   \brief   The user name functions header file.
 */
 // ////////////////////////////////////////////////////////////////////////////
 
