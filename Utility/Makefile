@@ -56,6 +56,8 @@ SRCS		=	\
 			nstrcat.cpp			\
 			nstrcpy.cpp			\
 			PageSize.cpp			\
+			ParseCfgFile.cpp		\
+			ParseCfgItem.cpp		\
 			ProcessId.cpp			\
 			ReadFile.cpp			\
 			ResolveCmdLineArg.cpp		\
