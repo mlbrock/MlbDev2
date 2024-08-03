@@ -36,6 +36,7 @@ SRCS		=	\
 			DemangleCppName.cpp		\
 			EnvElement.cpp			\
 			GetCmdLineArg.cpp		\
+			GetCmdLineArgRegex.cpp		\
 			GetCmdLineHelp.cpp		\
 			GetEnvironment.cpp		\
 			GetSystemErrorCode.cpp		\
@@ -57,6 +58,7 @@ SRCS		=	\
 			PageSize.cpp			\
 			ProcessId.cpp			\
 			ReadFile.cpp			\
+			ResolveCmdLineArg.cpp		\
 			RsrcUsage.cpp			\
 			Sleep.cpp			\
 			StringCharsToOneChar.cpp	\
