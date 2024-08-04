@@ -58,6 +58,12 @@ SRCS		=	\
 			PageSize.cpp			\
 			ParseCfgFile.cpp		\
 			ParseCfgItem.cpp		\
+			PathMetaChar.cpp		\
+			PathNameCanonicalizeSlashes.cpp	\
+			PathNameGetDirectory.cpp	\
+			PathNameGetExtension.cpp	\
+			PathNameGetFileName.cpp		\
+			PathNameSlash.cpp		\
 			ProcessId.cpp			\
 			ReadFile.cpp			\
 			ResolveCmdLineArg.cpp		\
