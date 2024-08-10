@@ -32,6 +32,7 @@ PENDING_SRCS	=	\
 
 SRCS		=	\
 			CheckCmdLineArgs.cpp		\
+			CriticalEventHandler.cpp	\
 			CurrentPath.cpp			\
 			DemangleCppName.cpp		\
 			EnvElement.cpp			\

@@ -22,6 +22,7 @@
     <ClInclude Include="..\..\..\..\include\mbcompat.h" />
     <ClInclude Include="..\..\..\..\include\Utility\AnyToString.hpp" />
     <ClInclude Include="..\..\..\..\include\Utility\CheckCmdLineArgs.hpp" />
+    <ClInclude Include="..\..\..\..\include\Utility\CriticalEventHandler.hpp" />
     <ClInclude Include="..\..\..\..\include\Utility\CurrentPath.hpp" />
     <ClInclude Include="..\..\..\..\include\Utility\DemangleCppName.hpp" />
     <ClInclude Include="..\..\..\..\include\Utility\EmitterCommentCpp.hpp" />
@@ -107,6 +108,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\..\Utility\CheckCmdLineArgs.cpp" />
+    <ClCompile Include="..\..\..\..\Utility\CriticalEventHandler.cpp" />
     <ClCompile Include="..\..\..\..\Utility\CurrentPath.cpp" />
     <ClCompile Include="..\..\..\..\Utility\DemangleCppName.cpp" />
     <ClCompile Include="..\..\..\..\Utility\EnvElement.cpp" />
