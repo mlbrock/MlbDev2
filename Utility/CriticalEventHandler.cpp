@@ -5,8 +5,7 @@
 /*
    File Name         :  CriticalEventHandler.cpp
 
-   File Description  :  Implementation of command line argument check
-                        functions.
+   File Description  :  Implementation of critical event handling.
 
    Revision History  :  1994-07-28 Creation in C genfuncs library as sighandl.c
                            Michael L. Brock

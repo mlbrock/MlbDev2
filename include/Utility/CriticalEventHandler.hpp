@@ -5,7 +5,7 @@
 /*
    File Name         :  CriticalEventHandler.hpp
 
-   File Description  :  Include file for command line argument check functions.
+   File Description  :  Include file for critical event handling.
 
    Revision History  :  1994-07-28 Creation in C genfuncs library as sighandl.c
                            Michael L. Brock
@@ -31,7 +31,7 @@
 /**
    \file CriticalEventHandler.hpp
 
-   \brief   The command line check parameter functions header file.
+   \brief   The critical event handling header file.
 */
 // ////////////////////////////////////////////////////////////////////////////
 
