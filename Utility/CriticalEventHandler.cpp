@@ -49,7 +49,7 @@ alignas(64) std::atomic_bool CriticalEventHandler::event_flag_ = false;
 CriticalEventHandler::CriticalEventHandler()
 	:handlers_list_()
 {
-	std::set<int> signal_set = { SIGINT, SIGTERM, 666 };
+	std::set<int> signal_set = { SIGINT, SIGTERM };
 
 	InstallHandlers(signal_set);
 }
@@ -106,7 +106,7 @@ void CriticalEventHandler::InstallHandlers(std::set<int> &signal_list)
 // ////////////////////////////////////////////////////////////////////////////
 
 // ////////////////////////////////////////////////////////////////////////////
-void CriticalEventHandler::SignalHandler(int signal_number)
+void CriticalEventHandler::SignalHandler(int /* signal_number */)
 {
 	event_flag_ = true;
 }
