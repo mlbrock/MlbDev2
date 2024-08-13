@@ -63,9 +63,9 @@ public:
 
 	~CriticalEventHandler();
 
-	void SetFlag();
+	static void SetFlag();
 
-	bool GetFlag() const;
+	static bool GetFlag();
 
 private:
 #ifndef _MSC_VER
