@@ -48,9 +48,13 @@ bool GetParseCfgLineComponents(const std::string &src_line,
 
 	const char *equal_ptr = ::strchr(line_ptr, '=');
 
+	if (!equal_ptr)
+		throw std::invalid_argument("Configuration line does not contain an "
+			"equals sign ('=') to separate name and value.");
+
 	if (equal_ptr == line_ptr)
-		throw std::invalid_argument("Configuration line does not "
-			"have a name before the '=' separator between name and value.");
+		throw std::invalid_argument("Configuration line does not have a name "
+				"before the '=' separator, which should separate name and value.");
 
 	dst_name  = Trim(std::string(line_ptr, equal_ptr));
 	dst_value = Trim(std::string(equal_ptr + 1));
