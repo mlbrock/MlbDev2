@@ -273,6 +273,9 @@
     <ClInclude Include="..\..\..\..\include\Utility\CriticalEventHandler.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\..\include\Utility\ArgCheck.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\..\Utility\nstrcat.cpp">
