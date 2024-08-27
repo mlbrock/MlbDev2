@@ -6,7 +6,7 @@
    File Name         :  ResolveCmdLineArg.cpp
 
    File Description  :  Implementation of regex-based command line argument
-								retrieval functions.
+                        retrieval functions.
 
    Revision History  :  2023-04-16 --- Creation.
                            Michael L. Brock

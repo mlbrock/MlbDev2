@@ -6,7 +6,7 @@
    File Name         :  GetCmdLineArgRegex.hpp
 
    File Description  :  Include file for regex-based command line parameter
-								retrieval functions.
+                        retrieval functions.
 
    Revision History  :  2023-03-03 --- Creation.
 
@@ -28,7 +28,7 @@
    \file GetCmdLineArgRegex.hpp
 
    \brief   The command line parameter regex-based retrieval functions header
-				file.
+            file.
 */
 // ////////////////////////////////////////////////////////////////////////////
 

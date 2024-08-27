@@ -5,12 +5,12 @@
 /*
    File Name         :  PathNameGetFileName.hpp
 
-	File Description	:	Include file for the path name slash support logic.
+   File Description  :  Include file for the path name slash support logic.
 
-   Revision History	:  1985-10-23 --- Creation in genfuncs/genfuncs.h.
-									Michael L. Brock
-								1998-04-08 --- Modified for use with C++.
-									Michael L. Brock
+   Revision History  :  1985-10-23 --- Creation in genfuncs/genfuncs.h.
+                           Michael L. Brock
+                        1998-04-08 --- Modified for use with C++.
+                           Michael L. Brock
                         2024-08-04 --- Migration to C++ MlbDev2/Utility.
                            Michael L. Brock
 
@@ -24,20 +24,20 @@
 
 #ifndef HH__MLB__Utility__PathNameGetFileName_hpp__HH
 
-#define HH__MLB__Utility__PathNameGetFileName_hpp__HH	1
+#define HH__MLB__Utility__PathNameGetFileName_hpp__HH 1
 
 // ////////////////////////////////////////////////////////////////////////////
 // ////////////////////////////////////////////////////////////////////////////
 /**
-	\file PathNameGetFileName.hpp
+   \file PathNameGetFileName.hpp
 
-	\brief	The path name slash logic header file.
+   \brief   The path name slash logic header file.
 */
 // ////////////////////////////////////////////////////////////////////////////
 
 // ////////////////////////////////////////////////////////////////////////////
 // ////////////////////////////////////////////////////////////////////////////
-//	Required include files...
+// Required include files...
 // ////////////////////////////////////////////////////////////////////////////
 
 #include <Utility/Utility.hpp>

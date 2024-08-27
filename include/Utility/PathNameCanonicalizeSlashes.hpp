@@ -5,12 +5,12 @@
 /*
    File Name         :  PathNameCanonicalizeSlashes.hpp
 
-	File Description	:	Include file for the path name canonicalization logic.
+   File Description  :  Include file for the path name canonicalization logic.
 
-   Revision History	:  1996-01-02 --- Canonicalize logic genfuncs/expfpath.c.
-									Michael L. Brock
-								1998-04-08 --- Modified for use with C++.
-									Michael L. Brock
+   Revision History  :  1996-01-02 --- Canonicalize logic genfuncs/expfpath.c.
+                           Michael L. Brock
+                        1998-04-08 --- Modified for use with C++.
+                           Michael L. Brock
                         2024-08-04 --- Migration to C++ MlbDev2/Utility.
                            Michael L. Brock
 
@@ -24,20 +24,20 @@
 
 #ifndef HH__MLB__Utility__PathNameCanonicalizeSlashes_hpp__HH
 
-#define HH__MLB__Utility__PathNameCanonicalizeSlashes_hpp__HH	1
+#define HH__MLB__Utility__PathNameCanonicalizeSlashes_hpp__HH  1
 
 // ////////////////////////////////////////////////////////////////////////////
 // ////////////////////////////////////////////////////////////////////////////
 /**
-	\file PathNameCanonicalizeSlashes.hpp
+   \file PathNameCanonicalizeSlashes.hpp
 
-	\brief	The path name slash logic header file.
+   \brief   The path name slash logic header file.
 */
 // ////////////////////////////////////////////////////////////////////////////
 
 // ////////////////////////////////////////////////////////////////////////////
 // ////////////////////////////////////////////////////////////////////////////
-//	Required include files...
+// Required include files...
 // ////////////////////////////////////////////////////////////////////////////
 
 #include <Utility/Utility.hpp>

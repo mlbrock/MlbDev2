@@ -5,12 +5,12 @@
 /*
    File Name         :  PathMetaChar.cpp
 
-   File Description	:	Implementation of the path meta-character support.
+   File Description  :  Implementation of the path meta-character support.
 
-   Revision History	:  1985-10-23 --- Creation in genfuncs/genfuncs.h.
-									Michael L. Brock
-								1998-04-08 --- Modified for use with C++.
-									Michael L. Brock
+   Revision History  :  1985-10-23 --- Creation in genfuncs/genfuncs.h.
+                           Michael L. Brock
+                        1998-04-08 --- Modified for use with C++.
+                           Michael L. Brock
                         2024-08-04 --- Migration to C++ MlbDev2/Utility.
                            Michael L. Brock
 
@@ -24,7 +24,7 @@
 
 // ////////////////////////////////////////////////////////////////////////////
 // ////////////////////////////////////////////////////////////////////////////
-//	Required include files...
+// Required include files...
 // ////////////////////////////////////////////////////////////////////////////
 
 #include <Utility/PathMetaChar.hpp>
