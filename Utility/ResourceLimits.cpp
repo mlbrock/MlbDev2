@@ -34,6 +34,8 @@
 
 #include <Utility/ThrowErrno.hpp>
 
+#include <sstream>
+
 #ifdef __MSDOS__
 #elif _Windows
 #else
