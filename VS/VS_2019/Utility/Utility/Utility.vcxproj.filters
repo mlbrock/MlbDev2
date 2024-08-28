@@ -276,6 +276,9 @@
     <ClInclude Include="..\..\..\..\include\Utility\ArgCheck.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\..\include\Utility\ResourceLimits.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\..\Utility\nstrcat.cpp">
@@ -471,6 +474,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\..\Utility\CriticalEventHandler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Utility\ResourceLimits.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

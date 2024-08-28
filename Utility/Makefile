@@ -68,6 +68,7 @@ SRCS		=	\
 			ProcessId.cpp			\
 			ReadFile.cpp			\
 			ResolveCmdLineArg.cpp		\
+			ResourceLimits.cpp		\
 			RsrcUsage.cpp			\
 			Sleep.cpp			\
 			StringCharsToOneChar.cpp	\

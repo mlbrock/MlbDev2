@@ -72,6 +72,7 @@
     <ClInclude Include="..\..\..\..\include\Utility\ProcessId.hpp" />
     <ClInclude Include="..\..\..\..\include\Utility\ReadFile.hpp" />
     <ClInclude Include="..\..\..\..\include\Utility\ResolveCmdLineArg.hpp" />
+    <ClInclude Include="..\..\..\..\include\Utility\ResourceLimits.hpp" />
     <ClInclude Include="..\..\..\..\include\Utility\RsrcUsage.hpp" />
     <ClInclude Include="..\..\..\..\include\Utility\Sleep.hpp" />
     <ClInclude Include="..\..\..\..\include\Utility\StrICmp.hpp" />
@@ -145,6 +146,7 @@
     <ClCompile Include="..\..\..\..\Utility\ProcessId.cpp" />
     <ClCompile Include="..\..\..\..\Utility\ReadFile.cpp" />
     <ClCompile Include="..\..\..\..\Utility\ResolveCmdLineArg.cpp" />
+    <ClCompile Include="..\..\..\..\Utility\ResourceLimits.cpp" />
     <ClCompile Include="..\..\..\..\Utility\RsrcUsage.cpp" />
     <ClCompile Include="..\..\..\..\Utility\Sleep.cpp" />
     <ClCompile Include="..\..\..\..\Utility\StrICmp.cpp" />
