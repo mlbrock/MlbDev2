@@ -44,6 +44,10 @@
 
 #include <Utility/Utility.hpp>
 
+#include <cstdint>
+#include <iostream>
+#include <string>
+
 // ////////////////////////////////////////////////////////////////////////////
 
 namespace MLB {

@@ -34,6 +34,9 @@
 #include <Utility/ArgCheck.hpp>
 #include <Utility/StringSplit.hpp>
 
+#include <cmath>
+#include <sstream>
+
 #ifdef __GNUC__
 # include <string.h>
 # include <stdlib.h>
@@ -50,10 +53,10 @@ VersionNumber::VersionNumber(uint32_t version_major,
 	uint32_t version_minor, uint32_t version_release,
 	uint32_t version_build)
 {
-	version_[VersionNumber::Major]   = version_major;
-	version_[VersionNumber::Minor]   = version_minor;
-	version_[VersionNumber::Release] = version_release;
-	version_[VersionNumber::Build]   = version_build;
+	version_[VersionNumberIndex::Major]   = version_major;
+	version_[VersionNumberIndex::Minor]   = version_minor;
+	version_[VersionNumberIndex::Release] = version_release;
+	version_[VersionNumberIndex::Build]   = version_build;
 }
 // ////////////////////////////////////////////////////////////////////////////
 
@@ -78,37 +81,37 @@ void VersionNumber::swap(VersionNumber &other)
 // ////////////////////////////////////////////////////////////////////////////
 uint32_t VersionNumber::GetMajor() const
 {
-	return(version_[VersionNumber::Major]);
+	return(version_[VersionNumberIndex::Major]);
 }
 // ////////////////////////////////////////////////////////////////////////////
 
 // ////////////////////////////////////////////////////////////////////////////
 uint32_t VersionNumber::GetMinor() const
 {
-	return(version_[VersionNumber::Minor]);
+	return(version_[VersionNumberIndex::Minor]);
 }
 // ////////////////////////////////////////////////////////////////////////////
 
 // ////////////////////////////////////////////////////////////////////////////
 uint32_t VersionNumber::GetRelease() const
 {
-	return(version_[VersionNumber::Release]);
+	return(version_[VersionNumberIndex::Release]);
 }
 // ////////////////////////////////////////////////////////////////////////////
 
 // ////////////////////////////////////////////////////////////////////////////
 uint32_t VersionNumber::GetBuild() const
 {
-	return(version_[VersionNumber::Build]);
+	return(version_[VersionNumberIndex::Build]);
 }
 // ////////////////////////////////////////////////////////////////////////////
 
 // ////////////////////////////////////////////////////////////////////////////
 uint32_t VersionNumber::SetMajor(uint32_t version_major)
 {
-	unsigned old_value = version_[VersionNumber::Major];
+	unsigned old_value = version_[VersionNumberIndex::Major];
 
-	version_[VersionNumber::Major]   = version_major;
+	version_[VersionNumberIndex::Major]   = version_major;
 
 	return(old_value);
 }
@@ -117,9 +120,9 @@ uint32_t VersionNumber::SetMajor(uint32_t version_major)
 // ////////////////////////////////////////////////////////////////////////////
 uint32_t VersionNumber::SetMinor(uint32_t version_minor)
 {
-	unsigned old_value = version_[VersionNumber::Minor];
+	unsigned old_value = version_[VersionNumberIndex::Minor];
 
-	version_[VersionNumber::Minor]   = version_minor;
+	version_[VersionNumberIndex::Minor]   = version_minor;
 
 	return(old_value);
 }
@@ -128,9 +131,9 @@ uint32_t VersionNumber::SetMinor(uint32_t version_minor)
 // ////////////////////////////////////////////////////////////////////////////
 uint32_t VersionNumber::SetRelease(uint32_t version_release)
 {
-	unsigned old_value = version_[VersionNumber::Release];
+	unsigned old_value = version_[VersionNumberIndex::Release];
 
-	version_[VersionNumber::Release] = version_release;
+	version_[VersionNumberIndex::Release] = version_release;
 
 	return(old_value);
 }
@@ -139,9 +142,9 @@ uint32_t VersionNumber::SetRelease(uint32_t version_release)
 // ////////////////////////////////////////////////////////////////////////////
 uint32_t VersionNumber::SetBuild(uint32_t version_build)
 {
-	unsigned old_value = version_[VersionNumber::Build];
+	unsigned old_value = version_[VersionNumberIndex::Build];
 
-	version_[VersionNumber::Build]   = version_build;
+	version_[VersionNumberIndex::Build]   = version_build;
 
 	return(old_value);
 }
@@ -150,10 +153,10 @@ uint32_t VersionNumber::SetBuild(uint32_t version_build)
 // ////////////////////////////////////////////////////////////////////////////
 VersionNumber &VersionNumber::SetToMinimumValue()
 {
-	version_[VersionNumber::Major]   = 0;
-	version_[VersionNumber::Minor]   = 0;
-	version_[VersionNumber::Release] = 0;
-	version_[VersionNumber::Build]   = 0;
+	version_[VersionNumberIndex::Major]   = 0;
+	version_[VersionNumberIndex::Minor]   = 0;
+	version_[VersionNumberIndex::Release] = 0;
+	version_[VersionNumberIndex::Build]   = 0;
 
 	return(*this);
 }
@@ -162,13 +165,13 @@ VersionNumber &VersionNumber::SetToMinimumValue()
 // ////////////////////////////////////////////////////////////////////////////
 VersionNumber &VersionNumber::SetToMaximumValue()
 {
-	version_[VersionNumber::Major]   =
+	version_[VersionNumberIndex::Major]   =
 		std::numeric_limits<uint32_t>::max();
-	version_[VersionNumber::Minor]   =
+	version_[VersionNumberIndex::Minor]   =
 		std::numeric_limits<uint32_t>::max();
-	version_[VersionNumber::Release] =
+	version_[VersionNumberIndex::Release] =
 		std::numeric_limits<uint32_t>::max();
-	version_[VersionNumber::Build]   =
+	version_[VersionNumberIndex::Build]   =
 		std::numeric_limits<uint32_t>::max();
 
 	return(*this);
@@ -266,7 +269,9 @@ std::string &VersionNumber::ToString(std::string &out_string) const
 
 	ToStream(o_str);
 
-	return(o_str.str());
+	out_string = o_str.str();
+
+	return(out_string);
 }
 // ////////////////////////////////////////////////////////////////////////////
 
