@@ -107,6 +107,8 @@
     <ClInclude Include="..\..\..\..\include\Utility\UserName.hpp" />
     <ClInclude Include="..\..\..\..\include\Utility\Utility.hpp" />
     <ClInclude Include="..\..\..\..\include\Utility\ValueToStringRadix.hpp" />
+    <ClInclude Include="..\..\..\..\include\Utility\VersionNumber.hpp" />
+    <ClInclude Include="..\..\..\..\include\Utility\XLateToHuman.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\..\Utility\CheckCmdLineArgs.cpp" />
@@ -175,6 +177,7 @@
     <ClCompile Include="..\..\..\..\Utility\ToStringErrno.cpp" />
     <ClCompile Include="..\..\..\..\Utility\ToStringSystemError.cpp" />
     <ClCompile Include="..\..\..\..\Utility\UserName.cpp" />
+    <ClCompile Include="..\..\..\..\Utility\VersionNumber.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
