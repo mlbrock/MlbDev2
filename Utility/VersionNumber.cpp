@@ -243,10 +243,10 @@ bool VersionNumber::operator != (const VersionNumber &other) const
 std::ostream &VersionNumber::ToStream(std::ostream &o_str) const
 {
 	o_str
-		<< version_[IdxToUInt(VersionNumber::Major)]   << '.'
-		<< version_[IdxToUInt(VersionNumber::Minor)]   << '.'
-		<< version_[IdxToUInt(VersionNumber::Release)] << '.'
-		<< version_[IdxToUInt(VersionNumber::Build)]
+		<< version_[IdxToUInt(VersionNumberIndex::Major)]   << '.'
+		<< version_[IdxToUInt(VersionNumberIndex::Minor)]   << '.'
+		<< version_[IdxToUInt(VersionNumberIndex::Release)] << '.'
+		<< version_[IdxToUInt(VersionNumberIndex::Build)]
 		;
 
 	return(o_str);
@@ -387,7 +387,7 @@ VersionNumber VersionNumber::GetMaximumValue()
 // ////////////////////////////////////////////////////////////////////////////
 const char *VersionNumber::GetElementName(VersionNumberIndex element_index)
 {
-	return(GetElementIndex(static_cast<std::size_t>(element_index)));
+	return(GetElementName(IdxToUInt(element_index)));
 }
 // ////////////////////////////////////////////////////////////////////////////
 
