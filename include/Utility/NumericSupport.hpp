@@ -42,6 +42,11 @@
 
 #include <limits>
 
+#ifdef MLB_UTILITY_NUMERIC_SUPPORT_TEST
+# include <iomanip>
+# include <iostream>
+#endif // #ifdef MLB_UTILITY_NUMERIC_SUPPORT_TEST
+
 // ////////////////////////////////////////////////////////////////////////////
 
 namespace MLB {

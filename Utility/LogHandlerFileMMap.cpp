@@ -21,7 +21,7 @@
 
 */
 // ////////////////////////////////////////////////////////////////////////////
- 
+
 // ////////////////////////////////////////////////////////////////////////////
 // ////////////////////////////////////////////////////////////////////////////
 // Required include files...
@@ -425,8 +425,6 @@ void LogHandlerFileMMap::EmitLineImpl(const LogEmitControl &emit_control)
 		AddToOffset(emit_control.line_buffer_.size());
 		::memcpy(GetCurrentPtr(), eol_string_.c_str(), eol_string_length_);
 		AddToOffset(eol_string_length_);
-// CODE NOTE: Shouldn't flush unless actually desired by user.
-//		out_file_ptr_->flush();
 	}
 }
 // ////////////////////////////////////////////////////////////////////////////
@@ -536,7 +534,7 @@ int main()
 		//	Create a LogHandlerFile...
 		LogHandlerPtr my_log_handler(
 			new LogHandlerFileMMap("TestLogFileMMap.VERSION_OLD_001.log"));
-		TEST_TestControl(my_log_handler, true);
+		TEST_TestControl(my_log_handler, 10000, 200, 1, 2000000);
 	}
 	catch (const std::exception &except) {
 		std::cerr << std::endl << std::endl << "ERROR: " << except.what() <<

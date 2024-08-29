@@ -70,124 +70,6 @@ namespace MLB {
 
 namespace Utility {
 
-// ////////////////////////////////////////////////////////////////////////////
-// CODE NOTE: To be implemented in HasCmdLineArg.{c|h}pp .
-void CheckCmdLineArgList(int argc, char **argv);
-void CheckCmdLineArgList(int argc, char **argv, int first_index);
-void CheckCmdLineSource(int current_index, int argc, char **argv);
-
-int         GetCmdLineArgIdx(const char *target_arg, int argc, char **argv,
-	bool case_sensitive = true, int first_index = 1);
-const char *GetCmdLineArgPtr(const char *target_arg, int argc, char **argv,
-	bool case_sensitive = true, int first_index = 1);
-
-int         GetCmdLineHelpIdx(int argc, char **argv, int first_index = 1);
-const char *GetCmdLineHelpPtr(int argc, char **argv, int first_index = 1);
-const char *HasCmdLineHelp(int argc, char **argv, int first_index = 1);
-// ////////////////////////////////////////////////////////////////////////////
-
-// ////////////////////////////////////////////////////////////////////////////
-// CODE NOTE: To be implemented in HasCmdLineArg.{c|h}pp .
-void CheckCmdLineArgList(int argc, char **argv)
-{
-	if (argc < 0)
-		throw std::invalid_argument("Invalid argument count (" +
-			std::to_string(argc) + ") --- the minimum is 0.");
-	else if (argv == NULL)
-		throw std::invalid_argument("Invalid argument list (NULL).");
-}
-// ////////////////////////////////////////////////////////////////////////////
-
-// ////////////////////////////////////////////////////////////////////////////
-// CODE NOTE: To be implemented in HasCmdLineArg.{c|h}pp .
-void CheckCmdLineArgList(int argc, char **argv, int first_index)
-{
-	CheckCmdLineSource(first_index, argc, argv);
-}
-// ////////////////////////////////////////////////////////////////////////////
-
-// ////////////////////////////////////////////////////////////////////////////
-// CODE NOTE: To be implemented in HasCmdLineArg.{c|h}pp .
-void CheckCmdLineSource(int current_index, int argc, char **argv)
-{
-	CheckCmdLineArgList(argc, argv);
-
-	if (current_index < 0)
-		throw std::invalid_argument("The specified argument list index " +
-			std::to_string(current_index) + " is invalid --- minimum valid "
-			"index is 0.");
-	else if (current_index >= argc)
-		throw std::invalid_argument("The specified argument list index " +
-			std::to_string(current_index) + " is invalid --- the argument count "
-			" is " + std::to_string(argc) + ".");
-}
-// ////////////////////////////////////////////////////////////////////////////
-
-// ////////////////////////////////////////////////////////////////////////////
-// CODE NOTE: To be implemented in HasCmdLineArg.{c|h}pp .
-int GetCmdLineArgIdx(const char *target_arg, int argc, char **argv,
-	bool case_sensitive, int first_index)
-{
-	int (*cmp_func)(const char *, const char *) =
-		(case_sensitive) ? ::strcmp : Utility_stricmp;
-
-	for (int arg_index = first_index; arg_index < argc; ++arg_index) {
-		if (!(*cmp_func)(target_arg, argv[arg_index]))
-			return(arg_index);
-	}
-
-	return(-1);
-}
-// ////////////////////////////////////////////////////////////////////////////
-
-// ////////////////////////////////////////////////////////////////////////////
-// CODE NOTE: To be implemented in HasCmdLineArg.{c|h}pp .
-const char *GetCmdLineArgPtr(const char *target_arg, int argc, char **argv,
-	bool case_sensitive, int first_index)
-{
-	int arg_index =
-		GetCmdLineArgIdx(target_arg, argc, argv, case_sensitive, first_index);
-
-	return((arg_index < 0) ? nullptr : argv[arg_index]);
-}
-// ////////////////////////////////////////////////////////////////////////////
-
-// ////////////////////////////////////////////////////////////////////////////
-// CODE NOTE: To be implemented in HasCmdLineArg.{c|h}pp .
-int GetCmdLineHelpIdx(int argc, char **argv, int first_index)
-{
-	for (int arg_index = first_index; arg_index < argc; ++arg_index) {
-		const char *arg_ptr = argv[arg_index];
-		if ((*arg_ptr == '-') && (arg_ptr[1] == '-'))
-			++arg_ptr;
-		if ((!Utility_stricmp(arg_ptr, "-?")) ||
-			 (!Utility_stricmp(arg_ptr, "-H")) ||
-			 (!Utility_stricmp(arg_ptr, "-HELP")))
-			return(arg_index);
-	}
-
-	return(-1);
-}
-// ////////////////////////////////////////////////////////////////////////////
-
-// ////////////////////////////////////////////////////////////////////////////
-// CODE NOTE: To be implemented in HasCmdLineArg.{c|h}pp .
-const char *GetCmdLineHelpPtr(int argc, char **argv, int first_index)
-{
-	int arg_index = GetCmdLineHelpIdx(argc, argv, first_index);
-
-	return((arg_index < 0) ? nullptr : argv[arg_index]);
-}
-// ////////////////////////////////////////////////////////////////////////////
-
-// ////////////////////////////////////////////////////////////////////////////
-// CODE NOTE: To be implemented in HasCmdLineArg.{c|h}pp .
-const char *HasCmdLineHelp(int argc, char **argv, int first_index)
-{
-	return(GetCmdLineHelpPtr(argc, argv, first_index));
-}
-// ////////////////////////////////////////////////////////////////////////////
-
 namespace {
 
 // ////////////////////////////////////////////////////////////////////////////
@@ -860,7 +742,6 @@ void RsrcUsage::GetRsrcUsageByWindowsHandle(HANDLE selector, RsrcUsage &datum)
 
 						ProcessId selector;
 
-
    DESCRIPTION :	Determines the values of a number of operating system
 						dependent usage metrics.
 
@@ -885,7 +766,6 @@ void RsrcUsage::GetRsrcUsageByWindowsHandle(HANDLE selector, RsrcUsage &datum)
 						''GENFUNCS_MAX_ERROR_TEXT'' characters in length.
 
    RETURNS     :	Void.
-
 
    NOTES       :	Not all of the usage metrics supplied as members in
 						''RsrcUsage'' are available on all operating systems.
@@ -993,8 +873,7 @@ void RsrcUsage::GetRsrcUsage(ProcessId selector)
 	if ((file_handle = open(proc_file_name.c_str(), O_RDONLY)) == -1)
 		ThrowErrno("Unable to open process control file '" +
 			proc_file_name + "' for reading.");
-	
-	
+
 	if (ioctl(file_handle, PIOCUSAGE, &tmp_prusage) == -1) {
 		close(file_handle);
 		ThrowErrno("Attempt to retrieve the process usage information "
@@ -1399,20 +1278,6 @@ const std::vector<std::string> NameListTimesVec
 // ////////////////////////////////////////////////////////////////////////////
 void RsrcUsage::GetNameListTimes(std::vector<std::string> &out_list) const
 {
-/* 
-	CODE NOTE: To be removed. 
-	out_list = MLB::Utility::MakeInlineVector<std::string>
-		("User Level CPU Time")
-		("System Call CPU Time")
-		("Other System Trap CPU Time")
-		("Text Page Fault Sleep Time")
-		("Data Page Fault Sleep Time")
-		("Kernel Page Fault Sleep Time")
-		("User Lock Wait Sleep Time")
-		("Other Sleep Time")
-		("Wait-CPU Latency Time")
-		("Stopped Time");
-*/
 	out_list = NameListTimesVec;
 }
 // ////////////////////////////////////////////////////////////////////////////
@@ -1450,30 +1315,6 @@ const std::vector<std::string> NameListValuesVec
 // ////////////////////////////////////////////////////////////////////////////
 void RsrcUsage::GetNameListValues(std::vector<std::string> &out_list) const
 {
-/* 
-	CODE NOTE: To be removed. 
-	out_list = MLB::Utility::MakeInlineVector<std::string>
-		("Minor Page Faults")
-		("Major Page Faults")
-		("Process Swaps")
-		("Input Blocks")
-		("Output Blocks")
-		("Messages Sent")
-		("Messages Received")
-		("Messages Other")
-		("Signals Received")
-		("Voluntary Context Switches")
-		("Involuntary Context Switches")
-		("System Calls")
-		("Characters Read and Written")
-		("Characters Read")
-		("Characters Written")
-		("Characters Other")
-		("Working Set Size")
-		("Working Set Size Peak")
-		("Pagefile Usage")
-		("Pagefile Usage Peak");
-*/
 	out_list = NameListValuesVec;
 }
 // ////////////////////////////////////////////////////////////////////////////
@@ -1540,7 +1381,7 @@ std::ostream & operator << (std::ostream &o_str, const RsrcUsage &datum)
 
 #ifdef TEST_MAIN
 
-//#include <Utility/ParseCmdLineArg.hpp>
+#include <Utility/GetCmdLineHelp.hpp>
 #include <Utility/ParseNumericString.hpp>
 
 #include <iterator>

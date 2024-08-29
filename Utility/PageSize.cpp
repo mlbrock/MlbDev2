@@ -1,28 +1,28 @@
 // ////////////////////////////////////////////////////////////////////////////
 // ////////////////////////////////////////////////////////////////////////////
-//	MLB Utility Library Module File
+// MLB Utility Library Module File
 // ////////////////////////////////////////////////////////////////////////////
 /*
-	File Name			:	PageSize.cpp
+   File Name         :  PageSize.cpp
 
-	File Description	:	Implementation of the portable page size functions.
+   File Description  :  Implementation of the portable page size functions.
 
-	Revision History	:	1998-04-08 --- Creation.
-									Michael L. Brock
+   Revision History  :  1998-04-08 --- Creation.
+                           Michael L. Brock
                         2023-01-05 --- Migration to C++ MlbDev2/Utility.
                            Michael L. Brock
 
-		Copyright Michael L. Brock 1998 - 2023.
-		Distributed under the Boost Software License, Version 1.0.
-		(See accompanying file LICENSE_1_0.txt or copy at
-		http://www.boost.org/LICENSE_1_0.txt)
+      Copyright Michael L. Brock 1998 - 2023.
+      Distributed under the Boost Software License, Version 1.0.
+      (See accompanying file LICENSE_1_0.txt or copy at
+      http://www.boost.org/LICENSE_1_0.txt)
 
 */
 // ////////////////////////////////////////////////////////////////////////////
 
 // ////////////////////////////////////////////////////////////////////////////
 // ////////////////////////////////////////////////////////////////////////////
-//	Required include files...
+// Required include files...
 // ////////////////////////////////////////////////////////////////////////////
 
 #include <Utility/PageSize.hpp>

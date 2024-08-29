@@ -6,7 +6,7 @@
    File Name         :  ToStringErrno.hpp
 
    File Description  :  Include for converting errno-related exceptions to
-							   string.
+                        string.
 
    Revision History  :  1998-04-08 --- Implementation in MlbDev/Utility in
                                        file Utility/Utility_Exception.hpp.

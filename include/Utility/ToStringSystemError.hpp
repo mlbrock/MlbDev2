@@ -6,7 +6,7 @@
    File Name         :  ToStringSystemError.hpp
 
    File Description  :  Include for converting system-related exceptions to
-							   string.
+                        string.
 
    Revision History  :  1998-04-08 --- Implementation in MlbDev/Utility in
                                        file Utility/Utility_Exception.hpp.

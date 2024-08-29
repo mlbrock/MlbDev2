@@ -131,7 +131,7 @@ void TEST_IsolationThreadProc()
 
 	char this_char  = static_cast<char>(this_value) + 'A';
 
-	LogInfo << "[" << CurrentThreadId() << "]";
+	LogInfo << "[" << std::setw(10) << CurrentThreadId() << "]";
 	SleepMilliSecs(static_cast<unsigned long>(rand() % 100));
 	LogInfo << "[" << this_char << "]";
 	SleepMilliSecs(static_cast<unsigned long>(rand() % 100));
@@ -155,12 +155,19 @@ void TEST_IsolationThreadProc()
 	LogInfo << std::setw(this_value);
 	SleepMilliSecs(static_cast<unsigned long>(rand() % 100));
 	LogInfo << "";
+	LogInfo << std::setfill(' ');
 	SleepMilliSecs(static_cast<unsigned long>(rand() % 100));
 	LogInfo << "--->DONE";
 	SleepMilliSecs(static_cast<unsigned long>(rand() % 100));
 	LogInfo << std::endl;
 
 	SleepMilliSecs(static_cast<unsigned long>(rand() % 1000));
+
+	if (this_char == 'A') {
+		LogInfo << "[" << std::setw(10) << CurrentThreadId() << "][" <<
+			this_char << "] *** Character 'A' slept for an additional " <<
+			5000 << " milliseconds ***\n";
+	}
 }
 // ////////////////////////////////////////////////////////////////////////////
 
@@ -204,10 +211,11 @@ void TEST_NoEOL()
 // ////////////////////////////////////////////////////////////////////////////
 
 // ////////////////////////////////////////////////////////////////////////////
-void TEST_StressLines()
+void TEST_StressLines(std::size_t stress_count = 10000,
+	std::size_t stress_length = 200)
 {
-	int         line_count  = 10000;
-	std::size_t line_length = 200;
+	int         line_count  = (stress_count)  ? stress_count  : 10000;
+	std::size_t line_length = (stress_length) ? stress_length :   200;
 	std::string test_string(line_length, 'X');
 
 	MLB::Utility::TimeSpec hr_timer;
@@ -227,10 +235,11 @@ void TEST_StressLines()
 // ////////////////////////////////////////////////////////////////////////////
 
 // ////////////////////////////////////////////////////////////////////////////
-void TEST_StressSize()
+void TEST_StressSize(std::size_t stress_count = 10,
+	std::size_t stress_length = 2000000)
 {
-	int         line_count  = 1;
-	std::size_t line_length = 2000000;
+	int         line_count  = (stress_count)  ? stress_count  :      10;
+	std::size_t line_length = (stress_length) ? stress_length : 2000000;
 	std::string test_string(line_length, 'Y');
 
 	MLB::Utility::TimeSpec hr_timer;
@@ -250,7 +259,9 @@ void TEST_StressSize()
 // ////////////////////////////////////////////////////////////////////////////
 
 // ////////////////////////////////////////////////////////////////////////////
-void TEST_TestControl(LogHandlerPtr my_log_handler, bool stress_basic)
+void TEST_TestControl(LogHandlerPtr my_log_handler,
+	std::size_t stress_count_1, std::size_t stress_length_1,
+	std::size_t stress_count_2, std::size_t stress_length_2)
 {
 	try {
 		TEST_MultiLineOperation();
@@ -313,13 +324,15 @@ LogInfo    << std::string("std::string(hello, world)") << std::endl;
 			min_level    =
 				static_cast<LogLevel>(static_cast<unsigned int>(min_level) + 1);
 		}
-		if (stress_basic) {
+		if (stress_count_1 || stress_count_2) {
 			MyLogManager.SetLogLevelConsole(LogLevel::LogLevel_Info,
 				LogLevel::LogLevel_Info);
 			MyLogManager.SetLogLevelFile(LogLevel::LogLevel_Info,
 				LogLevel::LogLevel_Info);
-			TEST_StressLines();
-			TEST_StressSize();
+			if (stress_count_1)
+				TEST_StressLines(stress_count_1, stress_length_1);
+			if (stress_count_2)
+				TEST_StressSize(stress_count_2, stress_length_2);
 			MyLogManager.SetLogLevelConsole(old_level_console.first,
 				old_level_console.second);
 			MyLogManager.SetLogLevelFile(old_levels_file.first,

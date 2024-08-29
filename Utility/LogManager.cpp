@@ -21,7 +21,7 @@
 
 */
 // ////////////////////////////////////////////////////////////////////////////
- 
+
 // ////////////////////////////////////////////////////////////////////////////
 // ////////////////////////////////////////////////////////////////////////////
 // Required include files...
@@ -39,6 +39,79 @@
 namespace MLB {
 
 namespace Utility {
+
+// ////////////////////////////////////////////////////////////////////////////
+LogManager::LogManager(LogFlag log_flags,
+	LogLevel min_log_level_screen, LogLevel max_log_level_screen,
+	LogLevel min_log_level_persistent, LogLevel max_log_level_persistent)
+	:log_handler_ptr_()
+	,log_flags_(log_flags)
+	,log_level_screen_(GetLogLevelMask(min_log_level_screen,
+		max_log_level_screen))
+	,log_level_persistent_(GetLogLevelMask(min_log_level_persistent,
+		max_log_level_persistent))
+	,the_lock_()
+{
+}
+// ////////////////////////////////////////////////////////////////////////////
+
+// ////////////////////////////////////////////////////////////////////////////
+LogManager::LogManager(LogHandlerPtr log_handler_ptr,
+	LogFlag log_flags, LogLevel min_log_level_screen,
+	LogLevel max_log_level_screen, LogLevel min_log_level_persistent,
+	LogLevel max_log_level_persistent)
+	:log_handler_ptr_()
+	,log_flags_(log_flags)
+	,log_level_screen_(GetLogLevelMask(min_log_level_screen,
+		max_log_level_screen))
+	,log_level_persistent_(GetLogLevelMask(min_log_level_persistent,
+		max_log_level_persistent))
+	,the_lock_()
+{
+	HandlerInstall(log_handler_ptr);
+}
+// ////////////////////////////////////////////////////////////////////////////
+
+// ////////////////////////////////////////////////////////////////////////////
+LogManager::~LogManager()
+{
+	HandlerRemove();
+}
+// ////////////////////////////////////////////////////////////////////////////
+
+// ////////////////////////////////////////////////////////////////////////////
+LogHandlerPtr LogManager::HandlerInstall(LogHandlerPtr log_handler_ptr)
+{
+	LogLockScoped my_lock(the_lock_);
+	LogHandlerPtr old_log_handler_ptr = log_handler_ptr_;
+
+	if (log_handler_ptr_ != NULL)
+		log_handler_ptr_->RemoveHandler();
+
+	log_handler_ptr_ = log_handler_ptr;
+
+	if (log_handler_ptr_ != NULL)
+		log_handler_ptr_->InstallHandler();
+
+	return(old_log_handler_ptr);
+}
+// ////////////////////////////////////////////////////////////////////////////
+
+// ////////////////////////////////////////////////////////////////////////////
+LogHandlerPtr LogManager::HandlerRemove()
+{
+	return(HandlerInstall(LogHandlerPtr()));
+}
+// ////////////////////////////////////////////////////////////////////////////
+
+// ////////////////////////////////////////////////////////////////////////////
+LogHandlerPtr LogManager::GetHandlerPtr()
+{
+	LogLockScoped my_lock(the_lock_);
+
+	return(log_handler_ptr_);
+}
+// ////////////////////////////////////////////////////////////////////////////
 
 // ////////////////////////////////////////////////////////////////////////////
 LogLevelPair LogManager::GetLogLevelConsole() const
@@ -81,67 +154,129 @@ LogLevelPair LogManager::SetLogLevelFile(LogLevel min_log_level,
 // ////////////////////////////////////////////////////////////////////////////
 
 // ////////////////////////////////////////////////////////////////////////////
-LogHandlerConsole::LogHandlerConsole()
-	:LogHandler()
-	,the_lock_()
-	,iostreams_init_()
+void LogManager::SetLogLevelConsoleAll()
 {
+	SetLogLevelConsole(LogLevel_Minimum, LogLevel_Maximum);
 }
 // ////////////////////////////////////////////////////////////////////////////
 
 // ////////////////////////////////////////////////////////////////////////////
-LogHandlerConsole::~LogHandlerConsole()
+void LogManager::SetLogLevelFileAll()
 {
+	SetLogLevelFile(LogLevel_Minimum, LogLevel_Maximum);
 }
 // ////////////////////////////////////////////////////////////////////////////
 
 // ////////////////////////////////////////////////////////////////////////////
-void LogHandlerConsole::InstallHandler()
+void LogManager::EmitLine(const TimeSpec &line_start_time, LogLevel log_level,
+	const std::string &line_buffer)
 {
+	LogLevelFlag log_level_flag = static_cast<LogLevelFlag>
+		((1 << log_level) & LogFlag_Mask);
 	LogLockScoped my_lock(the_lock_);
-}
-// ////////////////////////////////////////////////////////////////////////////
 
-// ////////////////////////////////////////////////////////////////////////////
-void LogHandlerConsole::RemoveHandler()
-{
-	LogLockScoped my_lock(the_lock_);
-}
-// ////////////////////////////////////////////////////////////////////////////
+	if ((log_handler_ptr_ != NULL) && ((log_level_flag & log_level_screen_) ||
+		(log_level_flag & log_level_persistent_))) {
+		LogEmitControl emit_ctl(log_flags_, log_level_screen_,
+			log_level_persistent_, line_start_time, log_level, log_level_flag,
+			line_buffer);
+/*
+		Can't early-release std::lock_guard.
 
-// ////////////////////////////////////////////////////////////////////////////
-void LogHandlerConsole::EmitLine(const LogEmitControl &emit_control)
-{
-	if (emit_control.ShouldLogScreen()) {
-		LogLockScoped my_lock(the_lock_);
-		emit_control.UpdateTime();
-		std::cout.write(emit_control.GetLeaderPtr(),
-			static_cast<std::streamsize>(emit_control.GetLeaderLength()));
-		std::cout.write(emit_control.line_buffer_.c_str(),
-			static_cast<std::streamsize>(emit_control.line_buffer_.size()));
-		std::cout << std::endl;
+		But should have taken a copy of log_handler_ptr_ before the early
+		release and used that anyway.
+
+		To be re-factored into something like:
+		LogHandlerPtr tmp_log_handler_ptr = log_handler_ptr_;
+		my_lock.unlock();
+		log_handler_ptr_->EmitLine(emit_ctl);
+*/
+		log_handler_ptr_->EmitLine(emit_ctl);
 	}
 }
 // ////////////////////////////////////////////////////////////////////////////
 
 // ////////////////////////////////////////////////////////////////////////////
-void LogHandlerConsole::EmitLiteral(unsigned int literal_length,
-	const char *literal_string)
+void LogManager::EmitLine(const std::string &line_buffer,
+	LogLevel log_level)
 {
+	EmitLine(TimeSpec(), log_level, line_buffer);
+}
+// ////////////////////////////////////////////////////////////////////////////
+
+// ////////////////////////////////////////////////////////////////////////////
+void LogManager::EmitLiteral(const std::string &literal_string)
+{
+	EmitLiteral(static_cast<unsigned int>(literal_string.size()),
+		literal_string.c_str());
+}
+// ////////////////////////////////////////////////////////////////////////////
+
+// ////////////////////////////////////////////////////////////////////////////
+void LogManager::EmitLiteral(unsigned int literal_length,
+	const char *literal_ptr)
+{
+	literal_ptr = (literal_ptr == NULL) ? "" : literal_ptr;
+
 	LogLockScoped my_lock(the_lock_);
 
-	std::cout.write(literal_string, static_cast<std::streamsize>(literal_length));
-	std::cout << std::endl;
+	if (log_handler_ptr_ != NULL)
+		log_handler_ptr_->EmitLiteral(literal_length, literal_ptr);
 }
 // ////////////////////////////////////////////////////////////////////////////
 
 // ////////////////////////////////////////////////////////////////////////////
-void LogHandlerConsole::EmitLiteral(const LogEmitControl &emit_control,
-	unsigned int literal_length, const char *literal_string)
+void LogManager::EmitLiteral(LogLevel log_level,
+	const std::string &literal_string)
 {
-	if (emit_control.ShouldLogScreen())
-		EmitLiteral(literal_length, literal_string);
+	EmitLiteral(log_level, static_cast<unsigned int>(literal_string.size()),
+		literal_string.c_str());
 }
+// ////////////////////////////////////////////////////////////////////////////
+
+// ////////////////////////////////////////////////////////////////////////////
+void LogManager::EmitLiteral(LogLevel log_level, unsigned int literal_length,
+	const char *literal_ptr)
+{
+	literal_ptr = (literal_ptr == NULL) ? "" : literal_ptr;
+
+	LogLevelFlag log_level_flag = static_cast<LogLevelFlag>
+		((1 << log_level) & LogFlag_Mask);
+	LogLockScoped my_lock(the_lock_);
+
+	if ((log_handler_ptr_ != NULL) && ((log_level_flag & log_level_screen_) ||
+		(log_level_flag & log_level_persistent_))) {
+		LogEmitControl emit_ctl(log_flags_, log_level_screen_,
+			log_level_persistent_, log_level, log_level_flag);
+		log_handler_ptr_->EmitLiteral(emit_ctl, literal_length, literal_ptr);
+	}
+}
+// ////////////////////////////////////////////////////////////////////////////
+
+// ////////////////////////////////////////////////////////////////////////////
+LogLevelFlag LogManager::GetLogLevelMask(LogLevel min_level, LogLevel max_level)
+{
+	min_level = std::max(min_level, LogLevel_Minimum);
+	max_level = std::min(max_level, LogLevel_Maximum);
+
+	if (min_level > max_level)
+		std::swap(min_level, max_level);
+
+	unsigned int level_flags = 0;
+	while (min_level <= max_level) {
+		level_flags |= 1 << static_cast<unsigned int>(min_level);
+		min_level    =
+			static_cast<LogLevel>(static_cast<unsigned int>(min_level) + 1);
+	}
+
+	return(static_cast<LogLevelFlag>(level_flags));
+}
+// ////////////////////////////////////////////////////////////////////////////
+
+// ////////////////////////////////////////////////////////////////////////////
+// ****************************************************************************
+// ****************************************************************************
+// ****************************************************************************
 // ////////////////////////////////////////////////////////////////////////////
 
 // ////////////////////////////////////////////////////////////////////////////
@@ -152,6 +287,7 @@ LogStream::~LogStream()
 		thread_stream_map_.clear();
 	}
 	catch (const std::exception &) {
+		;	// TLILB
 	}
 }
 // ////////////////////////////////////////////////////////////////////////////
@@ -212,7 +348,7 @@ int main()
 		//	Create a LogHandlerFile...
 		LogHandlerPtr my_log_handler(
 			new LogHandlerFile("TestLogFile.VERSION_OLD_001.log"));
-		TEST_TestControl(my_log_handler, false);
+		TEST_TestControl(my_log_handler, 0, 0, 0, 0);
 	}
 	catch (const std::exception &except) {
 		std::cerr << std::endl << std::endl << "ERROR: " << except.what() <<

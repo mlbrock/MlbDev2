@@ -1,7 +1,7 @@
 # #############################################################################
 # #############################################################################
 # Multiple Architecture Source Code Production System (MASCaPS) Version 3
-# 	Utility Library Make File
+#       Utility Library Make File
 # #############################################################################
 #
 # File Name       : Utility/Makefile
@@ -31,9 +31,14 @@ PENDING_SRCS	=	\
 			LogHandlerFileMMap.cpp
 
 SRCS		=	\
+			CheckCmdLineArgs.cpp		\
+			CriticalEventHandler.cpp	\
 			CurrentPath.cpp			\
 			DemangleCppName.cpp		\
 			EnvElement.cpp			\
+			GetCmdLineArg.cpp		\
+			GetCmdLineArgRegex.cpp		\
+			GetCmdLineHelp.cpp		\
 			GetEnvironment.cpp		\
 			GetSystemErrorCode.cpp		\
 			HostName.cpp			\
@@ -41,6 +46,7 @@ SRCS		=	\
 			Ita2ToAscii.cpp			\
 			LogEmitControl.cpp		\
 			LogHandler.cpp			\
+			LogHandlerConsole.cpp		\
 			LogHandlerFile.cpp		\
 			LogHandlerFileBase.cpp		\
 			LogLevel.cpp			\
@@ -51,8 +57,18 @@ SRCS		=	\
 			nstrcat.cpp			\
 			nstrcpy.cpp			\
 			PageSize.cpp			\
+			ParseCfgFile.cpp		\
+			ParseCfgItem.cpp		\
+			PathMetaChar.cpp		\
+			PathNameCanonicalizeSlashes.cpp	\
+			PathNameGetDirectory.cpp	\
+			PathNameGetExtension.cpp	\
+			PathNameGetFileName.cpp		\
+			PathNameSlash.cpp		\
 			ProcessId.cpp			\
 			ReadFile.cpp			\
+			ResolveCmdLineArg.cpp		\
+			ResourceLimits.cpp		\
 			RsrcUsage.cpp			\
 			Sleep.cpp			\
 			StringCharsToOneChar.cpp	\
@@ -80,7 +96,8 @@ SRCS		=	\
 			ToStreamSystemError.cpp		\
 			ToStringErrno.cpp		\
 			ToStringSystemError.cpp		\
-			UserName.cpp
+			UserName.cpp			\
+			VersionNumber.cpp
 
 #LINK_STATIC	=	${LINK_STATIC_BIN}
 

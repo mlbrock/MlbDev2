@@ -1,0 +1,90 @@
+// ////////////////////////////////////////////////////////////////////////////
+// ////////////////////////////////////////////////////////////////////////////
+// MLB Utility Library Module File
+// ////////////////////////////////////////////////////////////////////////////
+/*
+   File Name         :  PathNameGetExtension.cpp
+
+   File Description  :  Implementation of the path name slash support.
+
+   Revision History  :  1985-10-23 --- Creation in genfuncs/genfuncs.h.
+                           Michael L. Brock
+                        1998-04-08 --- Modified for use with C++.
+                           Michael L. Brock
+                        2023-01-12 --- Migration to C++ MlbDev2/Utility.
+                           Michael L. Brock
+
+      Copyright Michael L. Brock 1985 - 2024.
+      Distributed under the Boost Software License, Version 1.0.
+      (See accompanying file LICENSE_1_0.txt or copy at
+      http://www.boost.org/LICENSE_1_0.txt)
+
+*/
+// ////////////////////////////////////////////////////////////////////////////
+
+// ////////////////////////////////////////////////////////////////////////////
+// ////////////////////////////////////////////////////////////////////////////
+// Required include files...
+// ////////////////////////////////////////////////////////////////////////////
+
+#include <Utility/PathNameGetExtension.hpp>
+
+#include <Utility/PathMetaChar.hpp>
+
+#include <cstring>
+
+// ////////////////////////////////////////////////////////////////////////////
+
+namespace MLB {
+
+namespace Utility {
+
+//	////////////////////////////////////////////////////////////////////////////
+const char *GetExtensionPtr(const char *path_name, std::size_t path_length)
+{
+	if (*path_name && path_length) {
+		const char *curr_ptr = path_name + (path_length - 1);
+		if (*curr_ptr == '.')
+			return(NULL);
+		while (--curr_ptr > path_name) {
+			if (*curr_ptr == '.')
+				break;
+			else if (IsPathMetaChar(*curr_ptr))
+				return(NULL);
+		}
+		if ((*curr_ptr == '.') && (curr_ptr > path_name) &&
+			(!IsPathMetaChar(*(curr_ptr - 1))))
+			return(++curr_ptr);
+	}
+
+	return(NULL);
+}
+//	////////////////////////////////////////////////////////////////////////////
+
+//	////////////////////////////////////////////////////////////////////////////
+const char *GetExtensionPtr(const char *path_name)
+{
+	return(GetExtensionPtr(path_name, ::strlen(path_name)));
+}
+//	////////////////////////////////////////////////////////////////////////////
+
+//	////////////////////////////////////////////////////////////////////////////
+const char *GetExtensionPtr(const std::string &path_name)
+{
+	return(GetExtensionPtr(path_name.c_str(), path_name.size()));
+}
+//	////////////////////////////////////////////////////////////////////////////
+
+//	////////////////////////////////////////////////////////////////////////////
+std::string GetExtension(const std::string &path_name)
+{
+	const char *ext_ptr = GetExtensionPtr(path_name);
+
+	return((ext_ptr) ? ext_ptr : "");
+}
+//	////////////////////////////////////////////////////////////////////////////
+
+} // namespace Utility
+
+} // namespace MLB
+

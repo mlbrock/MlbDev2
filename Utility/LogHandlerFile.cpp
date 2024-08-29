@@ -21,7 +21,7 @@
 
 */
 // ////////////////////////////////////////////////////////////////////////////
- 
+
 // ////////////////////////////////////////////////////////////////////////////
 // ////////////////////////////////////////////////////////////////////////////
 // Required include files...
@@ -173,8 +173,6 @@ void LogHandlerFile::EmitLine(const LogEmitControl &emit_control)
 			out_file_ptr_->write(emit_control.line_buffer_.c_str(),
 				static_cast<std::streamsize>(emit_control.line_buffer_.size()));
 			*out_file_ptr_ << std::endl;
-// CODE NOTE: Shouldn't flush unless actually desired by user.
-//			out_file_ptr_->flush();
 		}
 		if ((!(my_flags_ & NoConsoleOutput)) && emit_control.ShouldLogScreen()) {
 			std::cout.write(emit_control.GetLeaderPtr(),
@@ -543,8 +541,6 @@ void LogHandlerXFile::EmitLineImpl(const LogEmitControl &emit_control)
 		out_file_ptr_->write(emit_control.line_buffer_.c_str(),
 			static_cast<std::streamsize>(emit_control.line_buffer_.size()));
 		*out_file_ptr_ << std::endl;
-// CODE NOTE: Shouldn't flush unless actually desired by user.
-//		out_file_ptr_->flush();
 	}
 }
 // ////////////////////////////////////////////////////////////////////////////
@@ -588,7 +584,7 @@ int main()
 		//	Create a LogHandlerFile...
 		LogHandlerPtr my_log_handler(
 			new LogHandlerXFile("TestLogXFile.VERSION_OLD_001.log"));
-		TEST_TestControl(my_log_handler, true);
+		TEST_TestControl(my_log_handler, 10000, 200, 1, 2000000);
 	}
 	catch (const std::exception &except) {
 		std::cerr << std::endl << std::endl << "ERROR: " << except.what() <<

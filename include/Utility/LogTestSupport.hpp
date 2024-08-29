@@ -55,7 +55,8 @@ API_UTILITY void TEST_StressLines();
 API_UTILITY void TEST_StressSize();
 
 API_UTILITY void TEST_TestControl(LogHandlerPtr my_log_handler,
-	bool stress_lines = false);
+	std::size_t stress_count_1 = 0, std::size_t stress_length_1 = 200,
+	std::size_t stress_count_2 = 0, std::size_t stress_length_2 = 2000000);
 // ////////////////////////////////////////////////////////////////////////////
 
 } // namespace Utility

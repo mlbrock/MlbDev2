@@ -21,6 +21,9 @@
   <ItemGroup>
     <ClInclude Include="..\..\..\..\include\mbcompat.h" />
     <ClInclude Include="..\..\..\..\include\Utility\AnyToString.hpp" />
+    <ClInclude Include="..\..\..\..\include\Utility\ArgCheck.hpp" />
+    <ClInclude Include="..\..\..\..\include\Utility\CheckCmdLineArgs.hpp" />
+    <ClInclude Include="..\..\..\..\include\Utility\CriticalEventHandler.hpp" />
     <ClInclude Include="..\..\..\..\include\Utility\CurrentPath.hpp" />
     <ClInclude Include="..\..\..\..\include\Utility\DemangleCppName.hpp" />
     <ClInclude Include="..\..\..\..\include\Utility\EmitterCommentCpp.hpp" />
@@ -29,6 +32,9 @@
     <ClInclude Include="..\..\..\..\include\Utility\EnvElement.hpp" />
     <ClInclude Include="..\..\..\..\include\Utility\ExceptionRethrow.hpp" />
     <ClInclude Include="..\..\..\..\include\Utility\FloatingPointSupport.hpp" />
+    <ClInclude Include="..\..\..\..\include\Utility\GetCmdLineArg.hpp" />
+    <ClInclude Include="..\..\..\..\include\Utility\GetCmdLineArgRegex.hpp" />
+    <ClInclude Include="..\..\..\..\include\Utility\GetCmdLineHelp.hpp" />
     <ClInclude Include="..\..\..\..\include\Utility\GetEnvironment.hpp" />
     <ClInclude Include="..\..\..\..\include\Utility\GetSystemErrorCode.hpp" />
     <ClInclude Include="..\..\..\..\include\Utility\GranularRound.hpp" />
@@ -39,6 +45,7 @@
     <ClInclude Include="..\..\..\..\include\Utility\Ita2ToAscii.hpp" />
     <ClInclude Include="..\..\..\..\include\Utility\LogEmitControl.hpp" />
     <ClInclude Include="..\..\..\..\include\Utility\LogHandler.hpp" />
+    <ClInclude Include="..\..\..\..\include\Utility\LogHandlerConsole.hpp" />
     <ClInclude Include="..\..\..\..\include\Utility\LogHandlerFile.hpp" />
     <ClInclude Include="..\..\..\..\include\Utility\LogHandlerFileBase.hpp" />
     <ClInclude Include="..\..\..\..\include\Utility\LogHandlerFileMMap.hpp" />
@@ -53,9 +60,19 @@
     <ClInclude Include="..\..\..\..\include\Utility\nstrcpy.hpp" />
     <ClInclude Include="..\..\..\..\include\Utility\NumericSupport.hpp" />
     <ClInclude Include="..\..\..\..\include\Utility\PageSize.hpp" />
+    <ClInclude Include="..\..\..\..\include\Utility\ParseCfgFile.hpp" />
+    <ClInclude Include="..\..\..\..\include\Utility\ParseCfgItem.hpp" />
     <ClInclude Include="..\..\..\..\include\Utility\ParseNumericString.hpp" />
+    <ClInclude Include="..\..\..\..\include\Utility\PathMetaChar.hpp" />
+    <ClInclude Include="..\..\..\..\include\Utility\PathNameCanonicalizeSlashes.hpp" />
+    <ClInclude Include="..\..\..\..\include\Utility\PathNameGetDirectory.hpp" />
+    <ClInclude Include="..\..\..\..\include\Utility\PathNameGetExtension.hpp" />
+    <ClInclude Include="..\..\..\..\include\Utility\PathNameGetFileName.hpp" />
+    <ClInclude Include="..\..\..\..\include\Utility\PathNameSlash.hpp" />
     <ClInclude Include="..\..\..\..\include\Utility\ProcessId.hpp" />
     <ClInclude Include="..\..\..\..\include\Utility\ReadFile.hpp" />
+    <ClInclude Include="..\..\..\..\include\Utility\ResolveCmdLineArg.hpp" />
+    <ClInclude Include="..\..\..\..\include\Utility\ResourceLimits.hpp" />
     <ClInclude Include="..\..\..\..\include\Utility\RsrcUsage.hpp" />
     <ClInclude Include="..\..\..\..\include\Utility\Sleep.hpp" />
     <ClInclude Include="..\..\..\..\include\Utility\StrICmp.hpp" />
@@ -92,9 +109,14 @@
     <ClInclude Include="..\..\..\..\include\Utility\ValueToStringRadix.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\..\Utility\CheckCmdLineArgs.cpp" />
+    <ClCompile Include="..\..\..\..\Utility\CriticalEventHandler.cpp" />
     <ClCompile Include="..\..\..\..\Utility\CurrentPath.cpp" />
     <ClCompile Include="..\..\..\..\Utility\DemangleCppName.cpp" />
     <ClCompile Include="..\..\..\..\Utility\EnvElement.cpp" />
+    <ClCompile Include="..\..\..\..\Utility\GetCmdLineArg.cpp" />
+    <ClCompile Include="..\..\..\..\Utility\GetCmdLineArgRegex.cpp" />
+    <ClCompile Include="..\..\..\..\Utility\GetCmdLineHelp.cpp" />
     <ClCompile Include="..\..\..\..\Utility\GetEnvironment.cpp" />
     <ClCompile Include="..\..\..\..\Utility\GetSystemErrorCode.cpp" />
     <ClCompile Include="..\..\..\..\Utility\HostName.cpp" />
@@ -102,6 +124,7 @@
     <ClCompile Include="..\..\..\..\Utility\Ita2ToAscii.cpp" />
     <ClCompile Include="..\..\..\..\Utility\LogEmitControl.cpp" />
     <ClCompile Include="..\..\..\..\Utility\LogHandler.cpp" />
+    <ClCompile Include="..\..\..\..\Utility\LogHandlerConsole.cpp" />
     <ClCompile Include="..\..\..\..\Utility\LogHandlerFile.cpp" />
     <ClCompile Include="..\..\..\..\Utility\LogHandlerFileBase.cpp" />
     <ClCompile Include="..\..\..\..\Utility\LogLevel.cpp" />
@@ -112,8 +135,18 @@
     <ClCompile Include="..\..\..\..\Utility\nstrcat.cpp" />
     <ClCompile Include="..\..\..\..\Utility\nstrcpy.cpp" />
     <ClCompile Include="..\..\..\..\Utility\PageSize.cpp" />
+    <ClCompile Include="..\..\..\..\Utility\ParseCfgFile.cpp" />
+    <ClCompile Include="..\..\..\..\Utility\ParseCfgItem.cpp" />
+    <ClCompile Include="..\..\..\..\Utility\PathMetaChar.cpp" />
+    <ClCompile Include="..\..\..\..\Utility\PathNameCanonicalizeSlashes.cpp" />
+    <ClCompile Include="..\..\..\..\Utility\PathNameGetDirectory.cpp" />
+    <ClCompile Include="..\..\..\..\Utility\PathNameGetExtension.cpp" />
+    <ClCompile Include="..\..\..\..\Utility\PathNameGetFileName.cpp" />
+    <ClCompile Include="..\..\..\..\Utility\PathNameSlash.cpp" />
     <ClCompile Include="..\..\..\..\Utility\ProcessId.cpp" />
     <ClCompile Include="..\..\..\..\Utility\ReadFile.cpp" />
+    <ClCompile Include="..\..\..\..\Utility\ResolveCmdLineArg.cpp" />
+    <ClCompile Include="..\..\..\..\Utility\ResourceLimits.cpp" />
     <ClCompile Include="..\..\..\..\Utility\RsrcUsage.cpp" />
     <ClCompile Include="..\..\..\..\Utility\Sleep.cpp" />
     <ClCompile Include="..\..\..\..\Utility\StrICmp.cpp" />

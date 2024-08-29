@@ -1,12 +1,12 @@
 // ////////////////////////////////////////////////////////////////////////////
 // ////////////////////////////////////////////////////////////////////////////
-//	MLB Utility Library Include File
+// MLB Utility Library Include File
 // ////////////////////////////////////////////////////////////////////////////
 /*
-	File Name  			:	LogHandlerFileMMap.cpp
+   File Name         :  LogHandlerFileMMap.cpp
 
-	File Description	:	Include file for the memory-mapped log handler file
-								class LogHandlerFileMMap.
+   File Description  :  Include file for the memory-mapped log handler file
+                        class LogHandlerFileMMap.
 
    Revision History  :  1993-10-02 --- Creation of predecessor 'mlog' facility.
                            Michael L. Brock
@@ -15,35 +15,35 @@
                         2023-01-05 --- Migration to C++ MlbDev2/Utility.
                            Michael L. Brock
 
-		Copyright Michael L. Brock 2005 - 2023.
-		Distributed under the Boost Software License, Version 1.0.
-		(See accompanying file LICENSE_1_0.txt or copy at
-		http://www.boost.org/LICENSE_1_0.txt)
+      Copyright Michael L. Brock 2005 - 2023.
+      Distributed under the Boost Software License, Version 1.0.
+      (See accompanying file LICENSE_1_0.txt or copy at
+      http://www.boost.org/LICENSE_1_0.txt)
 
 */
 // ////////////////////////////////////////////////////////////////////////////
- 
+
 #ifndef HH__MLB__Utility__Utility__LogHandlerFileMMap_hpp__HH
 
-#define HH__MLB__Utility__Utility__LogHandlerFileMMap_hpp__HH	1
+#define HH__MLB__Utility__Utility__LogHandlerFileMMap_hpp__HH  1
 
 // ////////////////////////////////////////////////////////////////////////////
 // ////////////////////////////////////////////////////////////////////////////
-//	Required include files...
+// Required include files...
 // ////////////////////////////////////////////////////////////////////////////
 
 #include <Utility/LogHandlerFileBase.hpp>
 
 #ifdef _Windows
-# pragma warning(push)
-# pragma warning(disable:4061 4365)
+#pragma warning(push)
+#pragma warning(disable:4061 4365)
 #endif // #ifdef _Windows
 
 #include <boost/interprocess/file_mapping.hpp>
 #include <boost/interprocess/mapped_region.hpp>
 
 #ifdef _Windows
-# pragma warning(pop)
+#pragma warning(pop)
 #endif // #ifdef _Windows
 
 // ////////////////////////////////////////////////////////////////////////////
@@ -62,9 +62,9 @@ class API_UTILITY LogHandlerFileMMap : public LogHandlerFileBase {
 public:
 	LogHandlerFileMMap();
 	explicit LogHandlerFileMMap(const char *file_name,
-		LogHandlerFileBaseFlag flags = Default);
+										 LogHandlerFileBaseFlag flags = Default);
 	explicit LogHandlerFileMMap(const std::string &file_name,
-		LogHandlerFileBaseFlag flags = Default);
+										 LogHandlerFileBaseFlag flags = Default);
 /* 
 	CODE NOTE: Decide whether to remove the elaborate instances of the OpenFile() overload.
 	LogHandlerFileMMap(const char *base_name, const char *dir_name,
@@ -88,34 +88,34 @@ protected:
 	virtual void FlushImpl();
 	virtual void EmitLineImpl(const LogEmitControl &emit_control);
 	virtual void EmitLiteralImpl(unsigned int literal_length,
-		const char *literal_string);
+										  const char *literal_string);
 
 	std::string        eol_string_;
 	std::size_t        eol_string_length_;
 	std::size_t        page_alloc_size_;
 	std::size_t        chunk_alloc_size_;
 #if defined(_Windows) && !defined(__MINGW32__)
-# pragma warning(push)
-# pragma warning(disable:4251)
+#pragma warning(push)
+#pragma warning(disable:4251)
 #endif // #if defined(_Windows) && !defined(__MINGW32__)
 	MyFileMappingSPtr  mapping_sptr_;
 	MyMappedRegionSPtr region_sptr_;
 #if defined(_Windows) && !defined(__MINGW32__)
-# pragma warning(pop)
+#pragma warning(pop)
 #endif // #if defined(_Windows) && !defined(__MINGW32__)
 	unsigned int       mapping_size_;
 	MyMappingValue     mapping_offset_;
 	MyMappingValue     write_offset_;
 
 private:
-	void *GetCurrentPtr();
+	void* GetCurrentPtr();
 
 	void AddToOffset(std::size_t added_offset);
 
 	void EnsureNeededSpace(std::size_t needed_length);
 
-	LogHandlerFileMMap(const LogHandlerFileMMap &) = delete;
-	LogHandlerFileMMap & operator = (const LogHandlerFileMMap &) = delete;
+	LogHandlerFileMMap(const LogHandlerFileMMap&) = delete;
+	LogHandlerFileMMap& operator=(const LogHandlerFileMMap&) = delete;
 };
 // ////////////////////////////////////////////////////////////////////////////
 
