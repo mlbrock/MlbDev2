@@ -105,6 +105,8 @@ struct API_UTILITY VersionNumber {
 
 	static int Compare(const VersionNumber &lhs, const VersionNumber &rhs);
 
+	static uint32_t IdxToUInt(VersionNumberIndex element_index);
+
 	static VersionNumber FromString(const std::string &in_datum,
 		bool require_all_segments = true);
 	static VersionNumber FromString(const char *in_datum,
