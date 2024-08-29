@@ -27,8 +27,7 @@ TARGET_LIBS	=	libUtility.a
 
 TARGET_BINS	=
 
-PENDING_SRCS	=	\
-			LogHandlerFileMMap.cpp
+PENDING_SRCS	=
 
 SRCS		=	\
 			CheckCmdLineArgs.cpp		\
@@ -44,14 +43,6 @@ SRCS		=	\
 			HostName.cpp			\
 			IoCharInfo.cpp			\
 			Ita2ToAscii.cpp			\
-			LogEmitControl.cpp		\
-			LogHandler.cpp			\
-			LogHandlerConsole.cpp		\
-			LogHandlerFile.cpp		\
-			LogHandlerFileBase.cpp		\
-			LogLevel.cpp			\
-			LogManager.cpp			\
-			LogTestSupport.cpp		\
 			MapUtf8ToAscii.cpp		\
 			MemICmp.cpp			\
 			nstrcat.cpp			\
