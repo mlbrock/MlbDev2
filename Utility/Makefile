@@ -96,7 +96,8 @@ SRCS		=	\
 			ToStreamSystemError.cpp		\
 			ToStringErrno.cpp		\
 			ToStringSystemError.cpp		\
-			UserName.cpp
+			UserName.cpp			\
+			VersionNumber.cpp
 
 #LINK_STATIC	=	${LINK_STATIC_BIN}
 
