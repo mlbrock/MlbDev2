@@ -39,7 +39,7 @@
 // Required include files...
 // ////////////////////////////////////////////////////////////////////////////
 
-#include <Utility/LogHandlerConsole.hpp>
+#include <Logger/LogHandlerConsole.hpp>
 #include <Utility/ThreadId.hpp>        // CODE NOTE: Needed by LogStream.hpp ONLY.
 
 #include <fstream>

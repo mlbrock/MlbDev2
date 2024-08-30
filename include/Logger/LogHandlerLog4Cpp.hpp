@@ -29,7 +29,7 @@
 // Required include files...
 // ////////////////////////////////////////////////////////////////////////////
 
-#include <Utility/LogManager.hpp>
+#include <Logger/LogManager.hpp>
 
 #define LOG4CPP_FIX_ERROR_COLLISION 1
 

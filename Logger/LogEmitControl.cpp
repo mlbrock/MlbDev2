@@ -25,7 +25,7 @@
 // Required include files...
 // ////////////////////////////////////////////////////////////////////////////
 
-#include <Utility/LogEmitControl.hpp>
+#include <Logger/LogEmitControl.hpp>
 
 #include <Utility/ThreadId.hpp>
 

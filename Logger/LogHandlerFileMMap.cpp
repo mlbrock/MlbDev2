@@ -27,7 +27,7 @@
 // Required include files...
 // ////////////////////////////////////////////////////////////////////////////
 
-#include <Utility/LogHandlerFileMMap.hpp>
+#include <Logger/LogHandlerFileMMap.hpp>
 
 #include <Utility/ExceptionRethrow.hpp>
 #include <Utility/GranularRound.hpp>
@@ -519,9 +519,9 @@ void LogHandlerFileMMap::EnsureNeededSpace(std::size_t needed_length)
 
 #ifdef TEST_MAIN
 
-#include <Utility/LogHandlerFile.hpp>
-#include <Utility/LogManager.hpp>
-#include <Utility/LogTestSupport.hpp>
+#include <Logger/LogHandlerFile.hpp>
+#include <Logger/LogManager.hpp>
+#include <Logger/LogTestSupport.hpp>
 
 // ////////////////////////////////////////////////////////////////////////////
 int main()

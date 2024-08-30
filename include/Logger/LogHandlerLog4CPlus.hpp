@@ -29,8 +29,8 @@
 // Required include files...
 // ////////////////////////////////////////////////////////////////////////////
 
-#include <Utility/Utility_Exception.hpp>
-#include <Utility/LogManager.hpp>
+//#include <Utility/Utility_Exception.hpp>
+#include <Logger/LogManager.hpp>
 
 namespace log4cplus {
    class PropertyConfigurator;

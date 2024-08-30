@@ -27,7 +27,7 @@
 // Required include files...
 // ////////////////////////////////////////////////////////////////////////////
 
-#include <Utility/LogManager.hpp>
+#include <Logger/LogManager.hpp>
 
 #include <Utility/ExceptionRethrow.hpp>
 
@@ -333,9 +333,9 @@ LogStream::ThreadStreamPtr LogStream::GetThreadStream()
 
 #ifdef TEST_MAIN
 
-#include <Utility/LogHandlerFile.hpp>
-#include <Utility/LogManager.hpp>
-#include <Utility/LogTestSupport.hpp>
+#include <Logger/LogHandlerFile.hpp>
+#include <Logger/LogManager.hpp>
+#include <Logger/LogTestSupport.hpp>
 
 // ////////////////////////////////////////////////////////////////////////////
 int main()

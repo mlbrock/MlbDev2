@@ -27,7 +27,7 @@
 // Required include files...
 // ////////////////////////////////////////////////////////////////////////////
 
-#include <Utility/LogHandlerConsole.hpp>
+#include <Logger/LogHandlerConsole.hpp>
 
 #include <iostream>
 

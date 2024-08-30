@@ -29,7 +29,7 @@
 // Required include files...
 // ////////////////////////////////////////////////////////////////////////////
 
-#include <Utility/Utility.hpp>
+#include <Logger/Logger.hpp>
 
 #include <string>
 #include <utility>

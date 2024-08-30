@@ -25,10 +25,11 @@
 // Required include files...
 // ////////////////////////////////////////////////////////////////////////////
 
-#include <Utility/LogTestSupport.hpp>
+#include <Logger/LogTestSupport.hpp>
 
-#include <Utility/LogManager.hpp>
-#include <Utility/LogHandlerFile.hpp>
+#include <Logger/LogManager.hpp>
+#include <Logger/LogHandlerFile.hpp>
+
 #include <Utility/AnyToString.hpp>
 #include <Utility/Sleep.hpp>
 #include <Utility/StringPadLeft.hpp>

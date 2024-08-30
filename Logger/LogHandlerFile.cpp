@@ -27,7 +27,7 @@
 // Required include files...
 // ////////////////////////////////////////////////////////////////////////////
 
-#include <Utility/LogHandlerFile.hpp>
+#include <Logger/LogHandlerFile.hpp>
 
 #include <Utility/AnyToString.hpp>
 #include <Utility/ExceptionRethrow.hpp>
@@ -569,9 +569,9 @@ void LogHandlerXFile::EmitLiteralImpl(unsigned int literal_length,
 
 #ifdef TEST_MAIN
 
-#include <Utility/LogHandlerFile.hpp>
-#include <Utility/LogManager.hpp>
-#include <Utility/LogTestSupport.hpp>
+#include <Logger/LogHandlerFile.hpp>
+#include <Logger/LogManager.hpp>
+#include <Logger/LogTestSupport.hpp>
 
 // ////////////////////////////////////////////////////////////////////////////
 int main()

@@ -25,7 +25,7 @@
 // Required include files...
 // ////////////////////////////////////////////////////////////////////////////
 
-#include <Utility/LogLevel.hpp>
+#include <Logger/LogLevel.hpp>
 
 #include <Utility/AnyToString.hpp>
 #include <Utility/ToStringRadix.hpp>

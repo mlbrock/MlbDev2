@@ -29,7 +29,7 @@
 // Required include files...
 // ////////////////////////////////////////////////////////////////////////////
 
-#include <Utility/LogEmitControl.hpp>
+#include <Logger/LogEmitControl.hpp>
 
 #include <memory>
 #include <mutex>

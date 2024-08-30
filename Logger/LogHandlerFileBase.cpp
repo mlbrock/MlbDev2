@@ -25,7 +25,7 @@
 // Required include files...
 // ////////////////////////////////////////////////////////////////////////////
 
-#include <Utility/LogHandlerFileBase.hpp>
+#include <Logger/LogHandlerFileBase.hpp>
 
 #include <Utility/ExceptionRethrow.hpp>
 
