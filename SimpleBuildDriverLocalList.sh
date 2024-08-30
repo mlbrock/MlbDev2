@@ -25,6 +25,8 @@
 # #############################################################################
 # ##### This is the complete list, which I'm not building at present.
 MY_DIR_LIST="\
+MFStore \
+Logger \
 Utility \
 "
 # #############################################################################
@@ -32,6 +34,7 @@ Utility \
 # #############################################################################
 # ##### This is the redacted list.
 MY_DIR_LIST="\
+MFStore \
 Logger \
 Utility \
 "
