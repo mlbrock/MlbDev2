@@ -40,6 +40,7 @@
 // ////////////////////////////////////////////////////////////////////////////
 
 #include <Logger/LogHandlerConsole.hpp>
+
 #include <Utility/ThreadId.hpp>        // CODE NOTE: Needed by LogStream.hpp ONLY.
 
 #include <fstream>
