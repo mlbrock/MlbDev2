@@ -259,31 +259,10 @@ private:
 // ////////////////////////////////////////////////////////////////////////////
 
 // ////////////////////////////////////////////////////////////////////////////
-class LogStream;
-// ////////////////////////////////////////////////////////////////////////////
-
-// ////////////////////////////////////////////////////////////////////////////
-class LogStreamBufferLifetime
-{
-	friend class LogStream;
-
-	LogStreamBufferLifetime(LogManager &manager_ref, LogLevel log_level)
-		:buffer_sptr_(std::make_shared<ThreadStreamBuffer>(manager_ref,
-			log_level))
-	{
-	}
-
-	ThreadStreamBufferPtr buffer_sptr_;
-};
-// ////////////////////////////////////////////////////////////////////////////
-
-// ////////////////////////////////////////////////////////////////////////////
-class API_UTILITY LogStream :
-	public LogStreamBufferLifetime, public std::ostream {
+class API_UTILITY LogStream : public std::ostream {
 public:
 	LogStream(LogManager &manager_ref, LogLevel log_level)
-		:LogStreamBufferLifetime(manager_ref, log_level)
-		,std::ostream(new ThreadStreamBuffer(manager_ref, log_level))
+		:std::ostream(nullptr)
 		,manager_ref_(manager_ref)
 		,log_level_(log_level)
 		,thread_stream_map_() {
