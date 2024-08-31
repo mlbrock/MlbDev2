@@ -74,6 +74,27 @@ const unsigned int  MultiLineTestCount  =
 } // Anonymous namespace
 
 // ////////////////////////////////////////////////////////////////////////////
+std::string TEST_GetLogFileName(const std::string &base_name)
+{
+/*
+YYYY-MM-DD hh:mm:ss.nnnnnnnnn 
+012345678901234567890123456789 
+          1         2 
+*/
+	std::string dt(TimeSpec::Now().ToString());
+	std::string log_file_name("TEST_LOG." +
+		std::string((base_name.empty()) ? "TestLogFile" : base_name) + "." +
+		std::string(LogManager_IMPL_CURRENT) + "." +
+		std::string(LogManager_VER_CURRENT) + "." +
+		dt.substr( 0, 4) + dt.substr( 5, 2) + dt.substr( 8, 2) + "_" +
+		dt.substr(11, 2) + dt.substr(14, 2) + dt.substr(17, 2) + "_" +
+		dt.substr(20) + ".log");
+
+	return(log_file_name);
+}
+// ////////////////////////////////////////////////////////////////////////////
+
+// ////////////////////////////////////////////////////////////////////////////
 void TEST_MultiLineOperation()
 {
 	unsigned int count_1;

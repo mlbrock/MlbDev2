@@ -346,8 +346,12 @@ int main()
 
 	try {
 		//	Create a LogHandlerFile...
+/*
 		LogHandlerPtr my_log_handler(
 			new LogHandlerFile("TestLogFile.VERSION_OLD_001.log"));
+*/
+		LogHandlerPtr my_log_handler(
+			new LogHandlerFile(TEST_GetLogFileName("LogManager")));
 		TEST_TestControl(my_log_handler, 0, 0, 0, 0);
 	}
 	catch (const std::exception &except) {
