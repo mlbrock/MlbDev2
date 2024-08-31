@@ -175,12 +175,9 @@ void TEST_IsolationThreadProc()
 // ////////////////////////////////////////////////////////////////////////////
 class TEST_IsolationThread : public boost::thread {
 public:
-	TEST_IsolationThread(int character) :
-		 boost::thread(TEST_IsolationThreadProc)
-		,character_(character) {
+	TEST_IsolationThread() :
+		 boost::thread(TEST_IsolationThreadProc) {
 	}
-
-	int character_;
 
 private:
 	TEST_IsolationThread(const TEST_IsolationThread &) = delete;
@@ -196,7 +193,7 @@ void TEST_Isolation()
 
 	for (count_1 = 0; count_1 < 26; ++count_1) {
 //		thr_group.create_thread(&TEST_IsolationThreadProc);
-		TEST_IsolationThread *this_thread = new TEST_IsolationThread(count_1);
+		TEST_IsolationThread *this_thread = new TEST_IsolationThread();
 		thr_group.add_thread(this_thread);
 	}
 
