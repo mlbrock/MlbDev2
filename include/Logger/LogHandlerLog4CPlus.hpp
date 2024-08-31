@@ -29,7 +29,6 @@
 // Required include files...
 // ////////////////////////////////////////////////////////////////////////////
 
-//#include <Utility/Utility_Exception.hpp>
 #include <Logger/LogManager.hpp>
 
 namespace log4cplus {
@@ -164,7 +163,7 @@ protected:
 		try {
 			log4cplus::helpers::Properties props(properties_file_name_.c_str());
 			if (!props.size())
-				MLB::Utility::ThrowException("No property name/value pairs "
+				throw std::invalid_argument("No property name/value pairs "
 					"loaded from property file --- does file exist?");
 			property_configuration_.
 				reset(new log4cplus::PropertyConfigurator(props));
