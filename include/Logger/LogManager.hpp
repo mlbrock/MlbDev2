@@ -54,25 +54,6 @@ namespace MLB {
 
 namespace Utility {
 
-// ////////////////////////////////////////////////////////////////////////////
-#define LogManager_IMPL_001_MUTEX_MAPPER  "IMPL_001_MUTEX_MAPPER"
-#define LogManager_IMPL_002_THREAD_LOCAL  "IMPL_002_THREAD_LOCAL"
-
-/*
-   IMPL NOTE: Select one of the two macro definitions based upon whether the
-              current implementation build uses the mutex-locked map or the
-              thread-local storage.
-*/
-#define LogManager_IMPL_CURRENT  LogManager_IMPL_001_MUTEX_MAPPER
-
-/*
-   IMPL NOTE: This is the version of the implementation build (mutex-locked
-              map or thread-local storage).
-*/
-#define LogManager_VER_CURRENT   "VER_001"
-
-// ////////////////////////////////////////////////////////////////////////////
-
 // /////////////////////////////////////////////////////////////////////////////
 class API_UTILITY LogManager {
 public:

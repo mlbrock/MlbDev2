@@ -30,7 +30,7 @@
 
 // ////////////////////////////////////////////////////////////////////////////
 /**
-   \file    LogManager.hpp
+   \file    Logger.hpp
 
    \brief   The header file for the Logger library.
 */
@@ -42,6 +42,56 @@
 // ////////////////////////////////////////////////////////////////////////////
 
 #include <Utility/Utility.hpp>
+
+#include <boost/config.hpp>
+
+// ////////////////////////////////////////////////////////////////////////////
+
+// ////////////////////////////////////////////////////////////////////////////
+// ////////////////////////////////////////////////////////////////////////////
+/*
+   We _can't_ use thread-local storage for our log ostreams if Boost says the
+   compiler doesn't support them or if the C++ standard supported by the
+   compiler is earlier than C++ 11.
+
+   Alternatively, we _won't_ use thread-local storage for our log ostream if
+   we've defined the manifest constant 'MLB_LOGGER_DO_NOT_USE_THREAD_LOCAL'.
+*/
+// ////////////////////////////////////////////////////////////////////////////
+#ifndef MLB_LOGGER_DO_NOT_USE_THREAD_LOCAL
+# if defined(BOOST_NO_CXX11_THREAD_LOCAL) || (BOOST_CXX_VERSION < 201103)
+#  define MLB_LOGGER_DO_NOT_USE_THREAD_LOCAL    1
+# endif // # if defined(BOOST_NO_CXX11_THREAD_LOCAL) || (BOOST_CXX_VERSION < 201103)
+#endif // #ifndef MLB_LOGGER_DO_NOT_USE_THREAD_LOCAL
+// ////////////////////////////////////////////////////////////////////////////
+
+// ////////////////////////////////////////////////////////////////////////////
+#define Logger_IMPL_001_MUTEX_MAPPER  "IMPL_001_MUTEX_MAPPER"
+#define Logger_IMPL_002_THREAD_LOCAL  "IMPL_002_THREAD_LOCAL"
+
+/*
+   IMPL NOTE: Select one of the two macro definitions based upon whether the
+              current implementation build uses the mutex-locked map or the
+              thread-local storage.
+*/
+#ifdef MLB_LOGGER_DO_NOT_USE_THREAD_LOCAL
+# define Logger_IMPL_CURRENT  Logger_IMPL_001_MUTEX_MAPPER
+#else
+# define Logger_IMPL_CURRENT  Logger_IMPL_002_THREAD_LOCAL
+#endif // #ifdef MLB_LOGGER_DO_NOT_USE_THREAD_LOCAL
+
+/*
+   IMPL NOTE: This is the version of the implementation build (mutex-locked
+              map or thread-local storage).
+*/
+#define Logger_VER_CURRENT   "VER_001"
+
+// ////////////////////////////////////////////////////////////////////////////
+
+// ////////////////////////////////////////////////////////////////////////////
+// ////////////////////////////////////////////////////////////////////////////
+// Set up library symbol visibility ...
+// ////////////////////////////////////////////////////////////////////////////
 
 #ifdef MLB__LIB__Logger___NOT
 # ifdef LOGGER_DLL_EXPORTS
