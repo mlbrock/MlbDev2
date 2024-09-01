@@ -230,15 +230,54 @@ typedef LogSPtr<ThreadStreamBuffer> ThreadStreamBufferPtr;
 // ////////////////////////////////////////////////////////////////////////////
 
 // ////////////////////////////////////////////////////////////////////////////
-class API_UTILITY ThreadStream : public std::ostream {
+class ThreadStream;
+// ////////////////////////////////////////////////////////////////////////////
+
+// ////////////////////////////////////////////////////////////////////////////
+class ThreadStreamBufferPtrHolder
+{
+	friend class ThreadStream;
+
+	ThreadStreamBufferPtrHolder(LogManager &manager_ref, LogLevel log_level)
+		:buffer_ptr_(
+			std::make_shared<ThreadStreamBuffer>(manager_ref, log_level))
+	{
+	}
+
+	ThreadStreamBufferPtrHolder(ThreadStreamBufferPtr buffer_ptr)
+		:buffer_ptr_(buffer_ptr)
+	{
+	}
+
+	ThreadStreamBufferPtr buffer_ptr_;
+};
+// ////////////////////////////////////////////////////////////////////////////
+
+// ////////////////////////////////////////////////////////////////////////////
+class API_UTILITY ThreadStream :
+	private ThreadStreamBufferPtrHolder,
+	public std::ostream
+{
 public:
 	ThreadStream(LogManager &manager_ref, LogLevel log_level,
-		ThreadStreamBufferPtr buffer_ptr) :
-		 std::ostream(buffer_ptr.get())
+		ThreadStreamBufferPtr buffer_ptr)
+		:ThreadStreamBufferPtrHolder(buffer_ptr)
+		,std::ostream(buffer_ptr_.get())
 		,manager_ref_(manager_ref)
 		,log_level_(log_level)
-		,buffer_ptr_(buffer_ptr) {
+//		,buffer_ptr_(buffer_ptr)
+	{
 	}
+
+	ThreadStream(LogManager &manager_ref, LogLevel log_level)
+		:ThreadStreamBufferPtrHolder(manager_ref, log_level)
+		,std::ostream(buffer_ptr_.get())
+		,manager_ref_(manager_ref)
+		,log_level_(log_level)
+//		,buffer_ptr_(buffer_ptr)
+	{
+	}
+
 	~ThreadStream() {
 		buffer_ptr_->Synchronize();
 	}
@@ -251,7 +290,7 @@ public:
 	//	the log level, but they were useful during debugging...
 	LogManager            &manager_ref_;
 	LogLevel               log_level_;
-	ThreadStreamBufferPtr  buffer_ptr_;
+//	ThreadStreamBufferPtr  buffer_ptr_;
 
 private:
 	ThreadStream(const ThreadStream &) = delete;
