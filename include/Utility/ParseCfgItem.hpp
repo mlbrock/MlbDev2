@@ -71,7 +71,9 @@ template <typename ConfigHolder> using ParseCfgItemMapI =
 template <typename DatumType>
 	void ParseCfgItemDatum(const std::string &src, DatumType &dst)
 {
-	 ParseNumericString(src, dst, true);
+	// IMPL NOTE: Unlike atoi() and atof(), does nothing with empty strings.
+	if (!src.empty())
+		ParseNumericString(src, dst, true);
 }
 // ////////////////////////////////////////////////////////////////////////////
 
