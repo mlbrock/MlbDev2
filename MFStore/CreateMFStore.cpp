@@ -63,7 +63,7 @@ MFStoreControl CreateMFStoreForOS(const std::string &file_name,
 
 	EnsureFileBackingStore(file_name, file_handle, 0, file_size);
 
-	return(MFStoreControl(file_name, file_size, mmap_size, storage_gran));
+	return(MFStoreControl(file_name, true, file_size, mmap_size, storage_gran));
 }
 // ////////////////////////////////////////////////////////////////////////////
 
@@ -76,7 +76,7 @@ MFStoreControl CreateMFStoreForOS(const std::string & /* file_name */,
 {
 	throw std::logic_error("Operation not supported on this operating system.");
 
-//	return(MFStoreControl(file_name, file_size, mmap_size, storage_gran));
+//	return(MFStoreControl(file_name, true, file_size, mmap_size, storage_gran));
 }
 // ////////////////////////////////////////////////////////////////////////////
 

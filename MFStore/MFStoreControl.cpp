@@ -48,7 +48,7 @@ MFStoreControl::MFStoreControl()
 // ////////////////////////////////////////////////////////////////////////////
 
 // ////////////////////////////////////////////////////////////////////////////
-MFStoreControl::MFStoreControl(const std::string &file_name,
+MFStoreControl::MFStoreControl(const std::string &file_name, bool is_writer,
 	MFStoreLen file_size, MFStoreLen mmap_size, MFStoreLen alloc_gran)
 try
 	:mapping_sptr_()
@@ -57,6 +57,7 @@ try
 	,file_size_(0)
 	,mmap_size_(0)
 	,alloc_gran_(0)
+	,section_list_()
 {
 	using namespace boost::interprocess;
 
@@ -65,9 +66,11 @@ try
 	CheckInitialFileAndMmapSizes(file_size, mmap_size, alloc_gran);
 
 	FileMappingSPtr  mapping_sptr(
-		std::make_shared<FileMapping>(file_name.c_str(), read_write));
+		std::make_shared<FileMapping>(file_name.c_str(),
+			(is_writer) ? read_write : read_only));
 	MappedRegionSPtr region_sptr(
-		std::make_shared<MappedRegion>(*mapping_sptr, read_write, 0, mmap_size));
+		std::make_shared<MappedRegion>(*mapping_sptr,
+			(is_writer) ? read_write : read_only, 0, mmap_size));
 
 	mapping_sptr_.swap(mapping_sptr);
 	region_sptr_.swap(region_sptr);
@@ -118,6 +121,24 @@ bool MFStoreControl::CheckIsActive() const
 	if (!IsActive())
 		throw std::runtime_error("The MFStoreControl instance contains at "
 			"least one empty shared pointer.");
+
+	return(true);
+}
+// ////////////////////////////////////////////////////////////////////////////
+
+// ////////////////////////////////////////////////////////////////////////////
+bool MFStoreControl::IsWriter() const
+{
+	return(IsActive() && (mapping_sptr_->get_mode() == read_write));
+}
+// ////////////////////////////////////////////////////////////////////////////
+
+// ////////////////////////////////////////////////////////////////////////////
+bool MFStoreControl::CheckIsWriter() const
+{
+	if (!IsWriter())
+		throw std::runtime_error("The MFStoreControl instance is not open "
+			"for writing.");
 
 	return(true);
 }
@@ -180,6 +201,13 @@ FileMappingSPtr MFStoreControl::GetMappingSPtr() const
 MappedRegionSPtr MFStoreControl::GetRegionSPtr() const
 {
 	return(region_sptr_);
+}
+// ////////////////////////////////////////////////////////////////////////////
+
+// ////////////////////////////////////////////////////////////////////////////
+const MFStoreSectionList &MFStoreControl::GetSectionList() const
+{
+	return(section_list_);
 }
 // ////////////////////////////////////////////////////////////////////////////
 
