@@ -78,31 +78,50 @@ class MFStoreControl
 {
 public:
 	MFStoreControl();
-	MFStoreControl(const std::string &file_name, MFStoreLen file_size,
-		MFStoreLen mmap_size, MFStoreLen alloc_gran);
+	MFStoreControl(const std::string &file_name, bool is_writer,
+		MFStoreLen file_size, MFStoreLen mmap_size, MFStoreLen alloc_gran);
 /*
    CODE NOTE: Pending review
 	MFStoreControl(FileMappingSPtr mapping_sptr, MappedRegionSPtr region_sptr);
 */
 
-	bool               IsActive() const;
-	bool               CheckIsActive() const;
-	const std::string &GetFileName() const;
-	MFStoreFileHandle  GetFileHandle() const;
-	MFStoreLen         GetFileSize() const;
-	MFStoreLen         GetMmapSize() const;
-	MFStoreLen         GetAllocGran() const;
-	const void        *GetMmapAddress() const;
-	FileMappingSPtr    GetMappingSPtr() const;
-	MappedRegionSPtr   GetRegionSPtr() const;
+	template <typename DatumType>
+		DatumType *GetPtr(MFStoreOff datum_offset)
+	{
+		return(reinterpret_cast<DatumType *>(
+			static_cast<char *>(GetMmapAddress()) + datum_offset));
+	}
+
+	template <typename DatumType>
+		const DatumType *GetPtr(MFStoreOff datum_offset) const
+	{
+		return(reinterpret_cast<const DatumType *>(
+			static_cast<const char *>(GetMmapAddress()) + datum_offset));
+	}
+
+	bool                      IsActive() const;
+	bool                      CheckIsActive() const;
+	bool                      IsWriter() const;
+	bool                      CheckIsWriter() const;
+	const std::string        &GetFileName() const;
+	MFStoreFileHandle         GetFileHandle() const;
+	MFStoreLen                GetFileSize() const;
+	MFStoreLen                GetMmapSize() const;
+	MFStoreLen                GetAllocGran() const;
+	void                     *GetMmapAddress();
+	const void               *GetMmapAddress() const;
+	FileMappingSPtr           GetMappingSPtr() const;
+	MappedRegionSPtr          GetRegionSPtr() const;
+	const MFStoreSectionList &GetSectionList() const;
 
 private:
-	FileMappingSPtr  mapping_sptr_;
-	MappedRegionSPtr region_sptr_;
-	std::string      file_name_;
-	MFStoreLen       file_size_;
-	MFStoreLen       mmap_size_;
-	MFStoreLen       alloc_gran_;
+	FileMappingSPtr    mapping_sptr_;
+	MappedRegionSPtr   region_sptr_;
+	std::string        file_name_;
+	MFStoreLen         file_size_;
+	MFStoreLen         mmap_size_;
+	MFStoreLen         alloc_gran_;
+	MFStoreSectionList section_list_;
 };
 // ////////////////////////////////////////////////////////////////////////////
 
