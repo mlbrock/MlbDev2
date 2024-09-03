@@ -129,7 +129,8 @@ bool MFStoreControl::CheckIsActive() const
 // ////////////////////////////////////////////////////////////////////////////
 bool MFStoreControl::IsWriter() const
 {
-	return(IsActive() && (mapping_sptr_->get_mode() == read_write));
+	return(IsActive() &&
+		(mapping_sptr_->get_mode() == boost::interprocess::read_write));
 }
 // ////////////////////////////////////////////////////////////////////////////
 
@@ -182,7 +183,7 @@ MFStoreLen MFStoreControl::GetAllocGran() const
 // ////////////////////////////////////////////////////////////////////////////
 
 // ////////////////////////////////////////////////////////////////////////////
-const void *MFStoreControl::GetMmapAddress() const
+void *MFStoreControl::GetMmapAddress() const
 {
 	CheckIsActive();
 

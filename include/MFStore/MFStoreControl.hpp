@@ -36,7 +36,7 @@
 // Required include files...
 // ////////////////////////////////////////////////////////////////////////////
 
-#include <MFStore/MFStore.hpp>
+#include <MFStore/MFStoreSection.hpp>
 
 #ifdef _Windows
 # pragma warning(push)
@@ -108,8 +108,7 @@ public:
 	MFStoreLen                GetFileSize() const;
 	MFStoreLen                GetMmapSize() const;
 	MFStoreLen                GetAllocGran() const;
-	void                     *GetMmapAddress();
-	const void               *GetMmapAddress() const;
+	void                     *GetMmapAddress() const;
 	FileMappingSPtr           GetMappingSPtr() const;
 	MappedRegionSPtr          GetRegionSPtr() const;
 	const MFStoreSectionList &GetSectionList() const;
