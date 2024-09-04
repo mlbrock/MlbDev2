@@ -302,7 +302,7 @@ private:
 class API_UTILITY LogStream : public std::ostream {
 public:
 	LogStream(LogManager &manager_ref, LogLevel log_level)
-		:std::ostream(nullptr)
+		:std::ostream(new ThreadStreamBuffer(manager_ref, log_level))
 		,manager_ref_(manager_ref)
 		,log_level_(log_level)
 		,thread_stream_map_() {
