@@ -132,6 +132,8 @@ LBM_LIBS	=	\
 			liblbm.a
 
 MLB_LIB_NAMES	=	\
+			MFStore		\
+			Logger		\
 			Utility
 
 MLB_LIB_FULL	=	\
