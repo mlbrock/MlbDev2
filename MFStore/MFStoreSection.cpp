@@ -230,7 +230,7 @@ void MFStoreSection::CheckSectionList(const MFStoreSectionList &dst,
 
 	section_gran = FixUpStorageGran(section_gran);
 
-	for (std::size_t section_idx; section_idx < dst.size(); ++section_idx) {
+	for (std::size_t section_idx = 0; section_idx < dst.size(); ++section_idx) {
 		try {
 			const MFStoreSection &section = dst[section_idx];
 			section.CheckElementInfo();
