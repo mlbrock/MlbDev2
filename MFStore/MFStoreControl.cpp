@@ -50,7 +50,7 @@ MFStoreControl::MFStoreControl()
 // ////////////////////////////////////////////////////////////////////////////
 MFStoreControl::MFStoreControl(const std::string &file_name, bool is_writer,
 	MFStoreLen file_size, MFStoreLen mmap_size, MFStoreLen alloc_gran,
-	const MFStoreSectionList &section_list);
+	const MFStoreSectionList &section_list)
 try
 	:mapping_sptr_()
 	,region_sptr_()
