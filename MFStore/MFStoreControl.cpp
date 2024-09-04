@@ -49,7 +49,8 @@ MFStoreControl::MFStoreControl()
 
 // ////////////////////////////////////////////////////////////////////////////
 MFStoreControl::MFStoreControl(const std::string &file_name, bool is_writer,
-	MFStoreLen file_size, MFStoreLen mmap_size, MFStoreLen alloc_gran)
+	MFStoreLen file_size, MFStoreLen mmap_size, MFStoreLen alloc_gran,
+	const MFStoreSectionList &section_list);
 try
 	:mapping_sptr_()
 	,region_sptr_()
@@ -57,7 +58,7 @@ try
 	,file_size_(0)
 	,mmap_size_(0)
 	,alloc_gran_(0)
-	,section_list_()
+	,section_list_(section_list)
 {
 	using namespace boost::interprocess;
 
@@ -86,26 +87,6 @@ catch (const std::exception &except) {
 		"bytes and a mmap size of " + std::to_string(mmap_size) + " bytes: " +
 		std::string(except.what()));
 }
-// ////////////////////////////////////////////////////////////////////////////
-
-// ////////////////////////////////////////////////////////////////////////////
-/*
-   CODE NOTE: Pending review
-MFStoreControl::MFStoreControl(FileMappingSPtr mapping_sptr,
-	MappedRegionSPtr region_sptr)
-	:mapping_sptr_(mapping_sptr)
-	,region_sptr_(region_sptr)
-	,file_name_()
-	,file_size_(0)
-	,mmap_size_(0)
-	,alloc_gran_(0)
-{
-	MLB::Utility::ThrowIfNull(mapping_sptr.get(),
-		"The interprocess mapping shared pointer");
-	MLB::Utility::ThrowIfNull(region_sptr.get(),
-		"The interprocess region shared pointer");
-}
-*/
 // ////////////////////////////////////////////////////////////////////////////
 
 // ////////////////////////////////////////////////////////////////////////////
@@ -209,6 +190,13 @@ MappedRegionSPtr MFStoreControl::GetRegionSPtr() const
 const MFStoreSectionList &MFStoreControl::GetSectionList() const
 {
 	return(section_list_);
+}
+// ////////////////////////////////////////////////////////////////////////////
+
+// ////////////////////////////////////////////////////////////////////////////
+void MFStoreControl::SetSectionList(const MFStoreSectionList &src)
+{
+	section_list_ = src;
 }
 // ////////////////////////////////////////////////////////////////////////////
 

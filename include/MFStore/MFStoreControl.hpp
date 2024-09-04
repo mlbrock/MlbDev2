@@ -79,11 +79,8 @@ class MFStoreControl
 public:
 	MFStoreControl();
 	MFStoreControl(const std::string &file_name, bool is_writer,
-		MFStoreLen file_size, MFStoreLen mmap_size, MFStoreLen alloc_gran);
-/*
-   CODE NOTE: Pending review
-	MFStoreControl(FileMappingSPtr mapping_sptr, MappedRegionSPtr region_sptr);
-*/
+		MFStoreLen file_size, MFStoreLen mmap_size, MFStoreLen alloc_gran,
+		const MFStoreSectionList &section_list = MFStoreSectionList());
 
 	template <typename DatumType>
 		DatumType *GetPtr(MFStoreOff datum_offset)
@@ -112,6 +109,7 @@ public:
 	FileMappingSPtr           GetMappingSPtr() const;
 	MappedRegionSPtr          GetRegionSPtr() const;
 	const MFStoreSectionList &GetSectionList() const;
+	void                      SetSectionList(const MFStoreSectionList &src);
 
 private:
 	FileMappingSPtr    mapping_sptr_;
