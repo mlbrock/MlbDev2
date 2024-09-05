@@ -65,6 +65,11 @@ LIB_LBM_DIR	=	/home/brockm/Downloads/29West/UMS_5.0/Linux-glibc-2.5-x86_64/lib
 LIB_XERCES_DIR	=	${LIB_BASE}
 LIB_PCAP_DIR	=	${LIB_BASE}
 
+INC_NATS_DIR	=	/home/mlbrock/DevEnv/GitRepos/nats-io/nats.c/src
+LIB_NATS_DIR	=	/home/mlbrock/DevEnv/GitRepos/nats-io/nats.c/___MLB_Build_Dir/lib
+LIB_NATS_NAMES_A	=	nats_static
+LIB_NATS_NAMES_SO	=	nats
+
 # Not supported in g++ 4.1.
 #			-Woverlength-strings \
 
@@ -81,6 +86,7 @@ CPPFLAGS	+=	\
 			-I ${INC_BASIC_DIR} \
 			-I ../include \
 			${CPPFLAGS_ADDED} \
+			-I${INC_NATS_DIR}	\
 			-I ${INC_OTHER_DIR} \
 			-I ${INC_LBM_DIR} \
 			-I ${INC_TIBRV_DIR} \
@@ -141,6 +147,7 @@ MLB_LIB_FULL	=	\
 
 LDLIBS		=	\
 			-Bstatic	\
+			${addprefix -l,${LIB_NATS_NAMES_A}}	\
 			${addprefix -l,${MLB_LIB_NAMES}}	\
 			-Bdynamic	\
 			${TIBRV_LIBS}	\
@@ -159,6 +166,7 @@ LDFLAGS		+=	\
 			-lrt			\
 			-L /usr/lib64		\
 			-L ${MASCaPS_TARGET_LIB}\
+			${addprefix -L,${LIB_NATS_DIR}}	\
 			-L ${LIB_PCAP_DIR}	\
 			-L ${LIB_BOOST_DIR}	\
 			-L ${LIB_XERCES_DIR}
