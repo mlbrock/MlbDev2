@@ -28,6 +28,7 @@ TARGET_BINS	=
 SRCS		=	\
 			NatsConnection.cpp	\
 			NatsContext.cpp		\
+			NatsExceptionStatus.cpp	\
 			NatsMsg.cpp		\
 			NatsOptions.cpp		\
 			NatsSubscription.cpp
