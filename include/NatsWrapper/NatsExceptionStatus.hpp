@@ -56,7 +56,9 @@ class MB_LIB_EXCEPTION_CLASS(API_NATSWRAPPER) NatsExceptionStatus :
 public:
 	NatsExceptionStatus();
 	NatsExceptionStatus(const std::string &error_text);
-	NatsExceptionStatus(natsStatus nats_code, const char *func_name);
+	NatsExceptionStatus(natsStatus nats_code, const char *func_name = nullptr,
+		const char *params = nullptr);
+	NatsExceptionStatus(const std::string &src_text, natsStatus nats_code);
 
 	virtual ~NatsExceptionStatus();
 
@@ -70,7 +72,9 @@ private:
 	natsStatus nats_code_;
 
 	static std::string GetStatusString(natsStatus nats_code,
-		const char *func_name);
+		const char *func_name, const char *params);
+	static std::string GetStatusString(const std::string &src_text,
+   	natsStatus nats_code);
 };
 // ////////////////////////////////////////////////////////////////////////////
 
