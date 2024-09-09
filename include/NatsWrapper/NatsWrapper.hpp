@@ -101,7 +101,9 @@ public:
 
 	virtual ~NatsExceptionStatus();
 
+/*
 	virtual const char *what() noexcept;
+*/
 
 	natsStatus GetNatsStatus() const;
 
@@ -197,10 +199,11 @@ std::string NatsExceptionStatus::GetStatusString(natsStatus nats_code,
 // ////////////////////////////////////////////////////////////////////////////
 
 // ////////////////////////////////////////////////////////////////////////////
-#define NatsWrapper_THROW_IF_NOT_OK_OR_TIMEOUT(method_name, method_args)						\
+#define NatsWrapper_THROW_IF_NOT_OK_OR_TIMEOUT(method_name, method_args)		\
 	{																									\
 		natsStatus INTERNAL_nats_error_code = method_name method_args ;			\
-		if (INTERNAL_nats_error_code != NATS_OK) {										\
+		if ((INTERNAL_nats_error_code != NATS_OK) &&										\
+			 (INTERNAL_nats_error_code != NATS_TIMEOUT)) {								\
 			throw NatsExceptionStatus(INTERNAL_nats_error_code, #method_name);	\
 		}																								\
 	}

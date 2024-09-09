@@ -70,7 +70,7 @@ public:
 	const natsSubscription *GetPtr() const;
 
 	/// Returns a hollow NatMsg upon timeout.
-	NatsMsg NextMessage(int64_t time_out);
+	NatsMsg NextMsg(int64_t time_out);
 
 	void Unsubscribe();
 /*

@@ -51,7 +51,7 @@ class NatsMsg
 {
 	NatsMsg(natsMsg *nats_msg);
 
-	friend NatsMsg NatsSubscription::NextMessage(int64_t time_out);
+	friend NatsMsg NatsSubscription::NextMsg(int64_t time_out);
 
 public:
 	NatsMsg(NatsSubscription &nats_subs, int64_t time_out);

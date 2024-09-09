@@ -63,13 +63,13 @@ public:
 	~NatsSubscription();
 
 	/// Returns a hollow NatMsg upon timeout.
-	NatsMsg NextMessage(int64_t time_out);
+	NatsMsg NextMsg(int64_t time_out);
 
 	void Unsubscribe();
 /*
 	void Destroy();
 */
-\
+
 /*
 	void FlushTimeout(int64_t time_out);
 	void Publish(const char *subject_name, std::size_t subject_name_length,
@@ -168,7 +168,7 @@ const natsSubscription *NatsSubscription::GetPtr() const
 // ////////////////////////////////////////////////////////////////////////////
 
 // ////////////////////////////////////////////////////////////////////////////
-NatsMsg NatsSubscription::NextMessage(int64_t time_out)
+NatsMsg NatsSubscription::NextMsg(int64_t time_out)
 {
 	natsMsg *nats_msg = NULL;
 
