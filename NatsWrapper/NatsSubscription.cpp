@@ -265,11 +265,40 @@ void NatsSubscription::Publish(const char *subject_name, const void *data_ptr,
 // ////////////////////////////////////////////////////////////////////////////
 */
 
+// ////////////////////////////////////////////////////////////////////////////
+void NatsSubscription::NatsMsgHandler(natsConnection * /* nats_conn_ptr */,
+	natsSubscription * /* nats_subs_ptr */, natsMsg * /* nats_msg_ptr */)
+{
+}
+// ////////////////////////////////////////////////////////////////////////////
+
+// ////////////////////////////////////////////////////////////////////////////
+void NatsSubscription::NatsMsgHandler(natsConnection *nats_conn_ptr,
+	natsSubscription *nats_subs_ptr, natsMsg *nats_msg_ptr, void *closure_ptr)
+{
+	if (!closure_ptr)
+		MLB::Utility::ThrowIfNull("NatsSubscription::NatsMsgHandler() called "
+			"with a NULL closure pointer.");
+
+/*
+	NatsSubscription *my_nats_sub;
+
+	if ((my_nats_sub = dynamic_cast<NatsSubscription *>(closure_ptr)) == NULL)
+		MLB::Utility::ThrowIfNull("NatsSubscription::NatsMsgHandler() called "
+			"with a closure pointer which dynamic_cast<> reports can ot be "
+			"converted to a NatsSubscription pointer.");
+*/
+
+	NatsSubscription *my_nats_sub = ((NatsSubscription *) closure_ptr);
+
+	my_nats_sub->NatsMsgHandler(nats_conn_ptr, nats_subs_ptr, nats_msg_ptr);
+}
+// ////////////////////////////////////////////////////////////////////////////
+
 } // namespace NatsWrapper
 
 } // namespace MLB
 
-#if 0
 // ////////////////////////////////////////////////////////////////////////////
 // ****************************************************************************
 // ****************************************************************************
@@ -305,32 +334,31 @@ const std::size_t TEST_SectionCount  =
 // ////////////////////////////////////////////////////////////////////////////
 
 // ////////////////////////////////////////////////////////////////////////////
-void TEST_NatsWrapper()
+void TEST_NatsSubscription(int argc, char **argv)
 {
 	using namespace MLB::NatsWrapper;
 
-	NatsWrapperList section_list;
+	NatsContext                   nats_context;
+	NatsOptions                   nats_options;
+	NatsConnection                nats_connection(nats_options);
+	std::vector<NatsSubscription> subscription_list;
 
-	for (std::size_t section_idx = 0; section_idx < TEST_SectionCount;
-		++section_idx)
-		NatsWrapper::AppendSection(TEST_SectionList[section_idx], section_list);
-
-	NatsWrapper::FixupSectionList(section_list);
-
-	NatsWrapper::ToStreamTabular(section_list);
-	std::cout << '\n';
+	for (int arg_idx = 1; arg_idx < argc; ++arg_idx) {
+		NatsSubscription nats_subs(nats_comm, argv[arg_idx]);
+		subscription_list.push_back(nats_subs);
+	}
 }
 // ////////////////////////////////////////////////////////////////////////////
 
 } // Anonymous namespace
 
 // ////////////////////////////////////////////////////////////////////////////
-int main()
+int main(int argc, char **argv)
 {
 	int return_code = EXIT_SUCCESS;
 
 	try {
-		TEST_NatsWrapper();
+		TEST_NatsSubscription(argc, argv);
 	}
 	catch (const std::exception &except) {
 		return_code = EXIT_FAILURE;
@@ -342,5 +370,4 @@ int main()
 // ////////////////////////////////////////////////////////////////////////////
 
 #endif // #ifdef TEST_MAIN
-#endif // #if 0
 

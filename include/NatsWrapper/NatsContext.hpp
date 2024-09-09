@@ -54,7 +54,7 @@ class NatsContext
 public:
 	NatsContext(int spin_wait = 0);
 
-	~NatsContext();
+	virtual ~NatsContext();
 };
 // ////////////////////////////////////////////////////////////////////////////
 

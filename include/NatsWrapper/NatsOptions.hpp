@@ -53,7 +53,7 @@ class NatsOptions
 public:
 	NatsOptions();
 
-	~NatsOptions();
+	virtual ~NatsOptions();
 
 	void Destroy();
 

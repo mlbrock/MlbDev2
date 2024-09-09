@@ -57,13 +57,14 @@ class NatsMsg;
 class NatsSubscription
 {
 public:
+	// Performs a natsConnection_SubscribeSync()
 	NatsSubscription(NatsConnection &nats_conn,
 		const char *subject_name, std::size_t subject_name_length);
 	NatsSubscription(NatsConnection &nats_conn, const std::string_view &subject_name);
 	NatsSubscription(NatsConnection &nats_conn, const std::string &subject_name);
 	NatsSubscription(NatsConnection &nats_conn, const char *subject_name);
 
-	~NatsSubscription();
+	virtual ~NatsSubscription();
 
 	      natsSubscription *GetPtr();
 	const natsSubscription *GetPtr() const;
@@ -75,19 +76,14 @@ public:
 /*
 	void Destroy();
 */
-\
-/*
-	void FlushTimeout(int64_t time_out);
-	void Publish(const char *subject_name, std::size_t subject_name_length,
-		const void *data_ptr, std::size_t data_length);
-	void Publish(const std::string_view &subject_name, const void *data_ptr,
-		data_length);
-	void Publish(const std::string &subject_name, const void *data_ptr,
-		data_length);
-	void Publish(const char *subject_name, const void *data_ptr,
-		data_length);
-*/
 
+protected:
+	virtual void NatsMsgHandler(natsConnection *nats_conn_ptr,
+		natsSubscription *nats_subs_ptr, natsMsg *nats_msg_ptr);
+
+	static void NatsMsgHandler(natsConnection *nats_conn_ptr,
+		natsSubscription *nats_subs_ptr,
+		natsMsg *nats_msg_ptr, void *closure_ptr);
 private:
 	std::shared_ptr<natsSubscription> nats_subscription_sptr_;
 };

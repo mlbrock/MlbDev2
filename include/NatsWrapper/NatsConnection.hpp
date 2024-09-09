@@ -58,7 +58,7 @@ public:
 	NatsConnection(const std::string &urls);
 	NatsConnection(const char *urls);
 
-	~NatsConnection();
+	virtual ~NatsConnection();
 
 	      natsConnection *GetPtr();
 	const natsConnection *GetPtr() const;

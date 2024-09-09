@@ -56,7 +56,7 @@ class NatsMsg
 public:
 	NatsMsg(NatsSubscription &nats_subs, int64_t time_out);
 
-	~NatsMsg();
+	virtual ~NatsMsg();
 
 	const char *GetSubject() const;
 	const char *GetReply() const;
