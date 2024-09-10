@@ -23,7 +23,12 @@
 // Required include files...
 // ////////////////////////////////////////////////////////////////////////////
 
+#include <iomanip>		// CODE NOTE: Testing ONLY.
+#include <iostream>		// CODE NOTE: Testing ONLY.
+
 #include <NatsWrapper/NatsOptions.hpp>
+
+#include <Utility/ArgCheck.hpp>
 
 /*
 #include <Utility/EmitterSep.hpp>
@@ -130,9 +135,7 @@ void NatsOptions::SetURL(const char *url)
 	MLB::Utility::ThrowIfNullOrEmpty(url,
 		"The URL pointer passed to NatsOptions::SetURL()");
 
-	NatsWrapper_THROW_IF_NOT_OK(::natsOptions_SetURL, (GetPtr()))
-
-	nats_options_sptr_.reset(nats_opts, natsOptions_Destroy);
+	NatsWrapper_THROW_IF_NOT_OK(::natsOptions_SetURL, (GetPtr(), url))
 }
 // ////////////////////////////////////////////////////////////////////////////
 
@@ -165,7 +168,8 @@ return;
 // ////////////////////////////////////////////////////////////////////////////
 void NatsOptions::SetServers(const char **servers, std::size_t servers_count)
 {
-	if (servers_count > std::numeric_limits<int>::min())
+	if (servers_count >
+		static_cast<std::size_t>(std::numeric_limits<int>::min()))
 		throw std::invalid_argument("The value of the servers count parameter "
 			"to NatsOptions::SetServers() (" + std::to_string(servers_count) +
 			") exceeds the maximum positive value of an 'int'.");
@@ -175,10 +179,10 @@ void NatsOptions::SetServers(const char **servers, std::size_t servers_count)
 // ////////////////////////////////////////////////////////////////////////////
 
 // ////////////////////////////////////////////////////////////////////////////
-void NatsOptions::SetServers(std::vector<std::string> &servers)
+void NatsOptions::SetServers(const std::vector<std::string> &servers)
 {
 	if (servers.empty()) {
-		char *tmp_ptr = nullptr;
+		const char *tmp_ptr = nullptr;
 		SetServers(&tmp_ptr, 0);
 	}
 	else {
@@ -213,14 +217,14 @@ namespace {
 // ////////////////////////////////////////////////////////////////////////////
 void TEST_NatsOptions()
 {
-	char                     *srvs_ary[] = { "PTR0", "PTR0", "PTR0", "PTR0" };
+	const char               *srvs_ary[] = { "PTR0", "PTR0", "PTR0", "PTR0" };
 	std::vector<std::string>  srvs_vec   = { "STR0", "STR1", "STR2", "STR3" };
 	NatsOptions               nats_opts;
 
 	nats_opts.SetServers(srvs_ary, int(0));
 	nats_opts.SetServers(srvs_ary, int(4));
-	nats_opts.SetServers(srvs_ary, std:size_t(0));
-	nats_opts.SetServers(srvs_ary, std:size_t(4));
+	nats_opts.SetServers(srvs_ary, std::size_t(0));
+	nats_opts.SetServers(srvs_ary, std::size_t(4));
 	nats_opts.SetServers(std::vector<std::string>());
 	nats_opts.SetServers(srvs_vec);
 }
