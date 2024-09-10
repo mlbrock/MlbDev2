@@ -96,6 +96,7 @@
     <ClInclude Include="..\..\..\..\include\Utility\UserName.hpp" />
     <ClInclude Include="..\..\..\..\include\Utility\Utility.hpp" />
     <ClInclude Include="..\..\..\..\include\Utility\ValueToStringRadix.hpp" />
+    <ClInclude Include="..\..\..\..\include\Utility\ValueTraits.hpp" />
     <ClInclude Include="..\..\..\..\include\Utility\VersionNumber.hpp" />
     <ClInclude Include="..\..\..\..\include\Utility\XLateToHuman.hpp" />
   </ItemGroup>

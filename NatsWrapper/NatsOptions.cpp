@@ -84,10 +84,6 @@ NatsOptions::NatsOptions()
 
 	NatsWrapper_THROW_IF_NOT_OK(::natsOptions_Create, (&nats_opts))
 
-/*
-	nats_options_sptr_ =
-		std::make_shared<natsOptions>(nats_opts, natsOptions_Destroy);
-*/
 	nats_options_sptr_.reset(nats_opts, natsOptions_Destroy);
 }
 // ////////////////////////////////////////////////////////////////////////////
@@ -96,7 +92,7 @@ NatsOptions::NatsOptions()
 NatsOptions::~NatsOptions()
 {
 	try {
-		Destroy();
+		nats_options_sptr_.reset();
 	}
 	catch (const std::exception &except) {
 		;	// SwallowException(except);
@@ -105,13 +101,13 @@ NatsOptions::~NatsOptions()
 // ////////////////////////////////////////////////////////////////////////////
 
 // ////////////////////////////////////////////////////////////////////////////
+/*
+	CODE NOTE: To be removed. 
 void NatsOptions::Destroy()
 {
-	if (GetPtr()) {
-//		::natsOptions_Destroy(GetPtr());
-		nats_options_sptr_.reset();
-	}
+	nats_options_sptr_.reset();
 }
+*/
 // ////////////////////////////////////////////////////////////////////////////
 
 // ////////////////////////////////////////////////////////////////////////////
@@ -128,11 +124,77 @@ const natsOptions *NatsOptions::GetPtr() const
 }
 // ////////////////////////////////////////////////////////////////////////////
 
+// ////////////////////////////////////////////////////////////////////////////
+void NatsOptions::SetURL(const char *url)
+{
+	MLB::Utility::ThrowIfNullOrEmpty(url,
+		"The URL pointer passed to NatsOptions::SetURL()");
+
+	NatsWrapper_THROW_IF_NOT_OK(::natsOptions_SetURL, (GetPtr()))
+
+	nats_options_sptr_.reset(nats_opts, natsOptions_Destroy);
+}
+// ////////////////////////////////////////////////////////////////////////////
+
+// ////////////////////////////////////////////////////////////////////////////
+void NatsOptions::SetURL(const std::string &url)
+{
+	SetURL(url.c_str());
+}
+// ////////////////////////////////////////////////////////////////////////////
+
+// ////////////////////////////////////////////////////////////////////////////
+void NatsOptions::SetServers(const char **servers, int servers_count)
+{
+	MLB::Utility::CheckCongruenceCountAndList(servers_count,
+		servers, "The server count and server list passed to "
+		"NatsOptions::SetServers()");
+
+	for (int idx = 0; idx < servers_count; ++idx)
+		std::cout
+			<< "SetServers() " << std::setw(7) << idx << ": ["
+			<< servers[idx] << "]\n";
+
+return;
+
+	NatsWrapper_THROW_IF_NOT_OK(::natsOptions_SetServers,
+		(GetPtr(), servers, servers_count))
+}
+// ////////////////////////////////////////////////////////////////////////////
+
+// ////////////////////////////////////////////////////////////////////////////
+void NatsOptions::SetServers(const char **servers, std::size_t servers_count)
+{
+	if (servers_count > std::numeric_limits<int>::min())
+		throw std::invalid_argument("The value of the servers count parameter "
+			"to NatsOptions::SetServers() (" + std::to_string(servers_count) +
+			") exceeds the maximum positive value of an 'int'.");
+
+	SetServers(servers, static_cast<int>(servers_count));
+}
+// ////////////////////////////////////////////////////////////////////////////
+
+// ////////////////////////////////////////////////////////////////////////////
+void NatsOptions::SetServers(std::vector<std::string> &servers)
+{
+	if (servers.empty()) {
+		char *tmp_ptr = nullptr;
+		SetServers(&tmp_ptr, 0);
+	}
+	else {
+		std::unique_ptr<const char *[]> tmp_servers(
+			new const char *[servers.size()]);
+		for (std::size_t idx = 0; idx < servers.size(); ++idx)
+			tmp_servers[idx] = servers[idx].c_str();
+		SetServers(tmp_servers.get(), servers.size());
+	}
+}
+// ////////////////////////////////////////////////////////////////////////////
+
 } // namespace NatsWrapper
 
 } // namespace MLB
 
-#if 0
 // ////////////////////////////////////////////////////////////////////////////
 // ****************************************************************************
 // ****************************************************************************
@@ -140,8 +202,6 @@ const natsOptions *NatsOptions::GetPtr() const
 // ////////////////////////////////////////////////////////////////////////////
 
 #ifdef TEST_MAIN
-
-#include <Utility/Sleep.hpp>
 
 #include <iostream>
 
@@ -151,37 +211,18 @@ using namespace MLB::NatsWrapper;
 namespace {
 
 // ////////////////////////////////////////////////////////////////////////////
-const NatsWrapper TEST_SectionList[] =
+void TEST_NatsOptions()
 {
-	 NatsWrapper( 0,                1234,      1, 0, 0, 0, 0, 0, "Header")
-	,NatsWrapper( 0, sizeof(NatsWrapper),      8, 0, 0, 0, 0, 0, "Section List")
-	,NatsWrapper( 0,                   4,      6, 0, 0, 0, 0, 0, "Type Info")
-	,NatsWrapper( 0,                 150, 112233, 0, 0, 0, 0, 0, "Info List All")
-	,NatsWrapper( 0,                 987, 112233, 0, 0, 0, 0, 0, "Info Serial")
-	,NatsWrapper( 0,                 150,   1024, 0, 0, 0, 0, 0, "Info List Sub")
-	,NatsWrapper( 0,                  64,   1024, 0, 0, 0, 0, 0, "ToB")
-	,NatsWrapper( 0,                 200,   1024, 0, 0, 0, 0, 0, "MStats")
-};
+	char                     *srvs_ary[] = { "PTR0", "PTR0", "PTR0", "PTR0" };
+	std::vector<std::string>  srvs_vec   = { "STR0", "STR1", "STR2", "STR3" };
+	NatsOptions               nats_opts;
 
-const std::size_t TEST_SectionCount  =
-	sizeof(TEST_SectionList) / sizeof(TEST_SectionList[0]);
-// ////////////////////////////////////////////////////////////////////////////
-
-// ////////////////////////////////////////////////////////////////////////////
-void TEST_NatsWrapper()
-{
-	using namespace MLB::NatsWrapper;
-
-	NatsWrapperList section_list;
-
-	for (std::size_t section_idx = 0; section_idx < TEST_SectionCount;
-		++section_idx)
-		NatsWrapper::AppendSection(TEST_SectionList[section_idx], section_list);
-
-	NatsWrapper::FixupSectionList(section_list);
-
-	NatsWrapper::ToStreamTabular(section_list);
-	std::cout << '\n';
+	nats_opts.SetServers(srvs_ary, int(0));
+	nats_opts.SetServers(srvs_ary, int(4));
+	nats_opts.SetServers(srvs_ary, std:size_t(0));
+	nats_opts.SetServers(srvs_ary, std:size_t(4));
+	nats_opts.SetServers(std::vector<std::string>());
+	nats_opts.SetServers(srvs_vec);
 }
 // ////////////////////////////////////////////////////////////////////////////
 
@@ -193,7 +234,7 @@ int main()
 	int return_code = EXIT_SUCCESS;
 
 	try {
-		TEST_NatsWrapper();
+		TEST_NatsOptions();
 	}
 	catch (const std::exception &except) {
 		return_code = EXIT_FAILURE;
@@ -205,5 +246,4 @@ int main()
 // ////////////////////////////////////////////////////////////////////////////
 
 #endif // #ifdef TEST_MAIN
-#endif // #if 0
 
