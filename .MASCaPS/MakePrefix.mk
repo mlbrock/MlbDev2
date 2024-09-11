@@ -65,6 +65,21 @@ LIB_LBM_DIR	=	/home/brockm/Downloads/29West/UMS_5.0/Linux-glibc-2.5-x86_64/lib
 LIB_XERCES_DIR	=	${LIB_BASE}
 LIB_PCAP_DIR	=	${LIB_BASE}
 
+INC_SSL_DIR	=	/usr/include/openssl
+LIB_SSL_DIR	=	/usr/lib64
+LIB_SSL_NAMES_A	=
+LIB_SSL_NAMES_SO=	ssl
+
+INC_CRYPTO_DIR	=	???
+LIB_CRYPTO_DIR	=	/usr/lib64
+LIB_CRYPTO_NAMES_A	=
+LIB_CRYPTO_NAMES_SO	=	crypto
+
+INC_PROTOBUF_C_DIR	=	/usr/include/google/protobuf-c
+LIB_PROTOBUF_C_DIR	=	/usr/lib64
+LIB_PROTOBUF_C_NAMES_A	=
+LIB_PROTOBUF_C_NAMES_SO	=	protobuf-c
+
 INC_NATS_DIR	=	/home/mlbrock/DevEnv/GitRepos/nats-io/nats.c/src
 LIB_NATS_DIR	=	/home/mlbrock/DevEnv/GitRepos/nats-io/nats.c/___MLB_Build_Dir/lib
 LIB_NATS_NAMES_A	=	nats_static
@@ -86,7 +101,10 @@ CPPFLAGS	+=	\
 			-I ${INC_BASIC_DIR} \
 			-I ../include \
 			${CPPFLAGS_ADDED} \
+			-I${INC_CRYPTO_DIR}	\
+			-I${INC_SSL_DIR}	\
 			-I${INC_NATS_DIR}	\
+			-I${INC_PROTOBUF_C_DIR}	\
 			-I ${INC_OTHER_DIR} \
 			-I ${INC_LBM_DIR} \
 			-I ${INC_TIBRV_DIR} \
@@ -151,6 +169,9 @@ LDLIBS		=	\
 			${addprefix -l,${LIB_NATS_NAMES_A}}	\
 			${addprefix -l,${MLB_LIB_NAMES}}	\
 			-Bdynamic	\
+			${addprefix -l,${LIB_CRYPTO_NAMES_SO}}	\
+			${addprefix -l,${LIB_SSL_NAMES_SO}}	\
+			${addprefix -l,${LIB_PROTOBUF_C_NAMES_SO}}	\
 			${TIBRV_LIBS}	\
 			${OTHER_LIBS}	\
 			${BOOST_LIBS}	\
@@ -168,6 +189,9 @@ LDFLAGS		+=	\
 			-L /usr/lib64		\
 			-L ${MASCaPS_TARGET_LIB}\
 			${addprefix -L,${LIB_NATS_DIR}}	\
+			${addprefix -L,${LIB_CRYPTO_DIR}}	\
+			${addprefix -L,${LIB_SSL_DIR}}	\
+			${addprefix -L,${LIB_PROTOBUF_C_DIR}}	\
 			-L ${LIB_PCAP_DIR}	\
 			-L ${LIB_BOOST_DIR}	\
 			-L ${LIB_XERCES_DIR}
