@@ -49,59 +49,6 @@ namespace MLB {
 
 namespace NatsWrapper {
 
-#if 0
-// ////////////////////////////////////////////////////////////////////////////
-class NatsSubscription
-{
-public:
-	NatsSubscription(NatsConnection &nats_conn,
-		const char *subject_name, std::size_t subject_name_length);
-	NatsSubscription(NatsConnection &nats_conn, const std::string_view &subject_name);
-	NatsSubscription(NatsConnection &nats_conn, const std::string &subject_name);
-	NatsSubscription(NatsConnection &nats_conn, const char *subject_name);
-
-	~NatsSubscription();
-
-	/// Returns a hollow NatMsg upon timeout.
-	NatsMsg NextMsg(int64_t time_out);
-
-	void Unsubscribe();
-/*
-	void Destroy();
-*/
-
-/*
-	void FlushTimeout(int64_t time_out);
-	void Publish(const char *subject_name, std::size_t subject_name_length,
-		const void *data_ptr, std::size_t data_length);
-	void Publish(const std::string_view &subject_name, const void *data_ptr,
-		data_length);
-	void Publish(const std::string &subject_name, const void *data_ptr,
-		data_length);
-	void Publish(const char *subject_name, const void *data_ptr,
-		data_length);
-*/
-
-private:
-	std::shared_ptr<NatsSubscription> nats_subscription_sptr_;
-};
-// ////////////////////////////////////////////////////////////////////////////
-#endif // #if 0
-
-} // namespace NatsWrapper
-
-} // namespace MLB
-
-// ////////////////////////////////////////////////////////////////////////////
-// ****************************************************************************
-// ****************************************************************************
-// ****************************************************************************
-// ////////////////////////////////////////////////////////////////////////////
-
-namespace MLB {
-
-namespace NatsWrapper {
-
 // ////////////////////////////////////////////////////////////////////////////
 NatsSubscription::NatsSubscription(NatsConnection &nats_conn,
 	const char *subject_name, std::size_t subject_name_length)
@@ -307,31 +254,16 @@ void NatsSubscription::NatsMsgHandler(natsConnection *nats_conn_ptr,
 
 #ifdef TEST_MAIN
 
+#include <NatsWrapper/NatsContext.hpp>
+
 #include <Utility/Sleep.hpp>
 
 #include <iostream>
 
-using namespace MLB::Utility;
-using namespace MLB::NatsWrapper;
+//using namespace MLB::Utility;
+//using namespace MLB::NatsWrapper;
 
 namespace {
-
-// ////////////////////////////////////////////////////////////////////////////
-const NatsWrapper TEST_SectionList[] =
-{
-	 NatsWrapper( 0,                1234,      1, 0, 0, 0, 0, 0, "Header")
-	,NatsWrapper( 0, sizeof(NatsWrapper),      8, 0, 0, 0, 0, 0, "Section List")
-	,NatsWrapper( 0,                   4,      6, 0, 0, 0, 0, 0, "Type Info")
-	,NatsWrapper( 0,                 150, 112233, 0, 0, 0, 0, 0, "Info List All")
-	,NatsWrapper( 0,                 987, 112233, 0, 0, 0, 0, 0, "Info Serial")
-	,NatsWrapper( 0,                 150,   1024, 0, 0, 0, 0, 0, "Info List Sub")
-	,NatsWrapper( 0,                  64,   1024, 0, 0, 0, 0, 0, "ToB")
-	,NatsWrapper( 0,                 200,   1024, 0, 0, 0, 0, 0, "MStats")
-};
-
-const std::size_t TEST_SectionCount  =
-	sizeof(TEST_SectionList) / sizeof(TEST_SectionList[0]);
-// ////////////////////////////////////////////////////////////////////////////
 
 // ////////////////////////////////////////////////////////////////////////////
 void TEST_NatsSubscription(int argc, char **argv)
@@ -344,7 +276,7 @@ void TEST_NatsSubscription(int argc, char **argv)
 	std::vector<NatsSubscription> subscription_list;
 
 	for (int arg_idx = 1; arg_idx < argc; ++arg_idx) {
-		NatsSubscription nats_subs(nats_comm, argv[arg_idx]);
+		NatsSubscription nats_subs(nats_connection, argv[arg_idx]);
 		subscription_list.push_back(nats_subs);
 	}
 }
