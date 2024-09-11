@@ -56,11 +56,6 @@ public:
 
 	virtual ~NatsOptions();
 
-/* 
-	CODE NOTE: To be removed. 
-	void Destroy();
-*/
-
 	      natsOptions *GetPtr();
 	const natsOptions *GetPtr() const;
 

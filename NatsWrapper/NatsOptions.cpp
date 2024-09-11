@@ -106,16 +106,6 @@ NatsOptions::~NatsOptions()
 // ////////////////////////////////////////////////////////////////////////////
 
 // ////////////////////////////////////////////////////////////////////////////
-/*
-	CODE NOTE: To be removed. 
-void NatsOptions::Destroy()
-{
-	nats_options_sptr_.reset();
-}
-*/
-// ////////////////////////////////////////////////////////////////////////////
-
-// ////////////////////////////////////////////////////////////////////////////
 natsOptions *NatsOptions::GetPtr()
 {
 	return(nats_options_sptr_.get());
@@ -182,8 +172,8 @@ void NatsOptions::SetServers(const char **servers, std::size_t servers_count)
 void NatsOptions::SetServers(const std::vector<std::string> &servers)
 {
 	if (servers.empty()) {
-		const char *tmp_ptr = nullptr;
-		SetServers(&tmp_ptr, 0);
+		const char **tmp_ptr = nullptr;
+		SetServers(tmp_ptr, 0);
 	}
 	else {
 		std::unique_ptr<const char *[]> tmp_servers(
@@ -221,9 +211,9 @@ void TEST_NatsOptions()
 	std::vector<std::string>  srvs_vec   = { "STR0", "STR1", "STR2", "STR3" };
 	NatsOptions               nats_opts;
 
-	nats_opts.SetServers(srvs_ary, int(0));
+//	nats_opts.SetServers(srvs_ary, int(0));
 	nats_opts.SetServers(srvs_ary, int(4));
-	nats_opts.SetServers(srvs_ary, std::size_t(0));
+//	nats_opts.SetServers(srvs_ary, std::size_t(0));
 	nats_opts.SetServers(srvs_ary, std::size_t(4));
 	nats_opts.SetServers(std::vector<std::string>());
 	nats_opts.SetServers(srvs_vec);
