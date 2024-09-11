@@ -75,6 +75,11 @@ LIB_CRYPTO_DIR	=	/usr/lib64
 LIB_CRYPTO_NAMES_A	=
 LIB_CRYPTO_NAMES_SO	=	crypto
 
+INC_PROTOBUF_DIR	=	/usr/include
+LIB_PROTOBUF_DIR	=	/usr/lib64
+LIB_PROTOBUF_NAMES_A	=
+LIB_PROTOBUF_NAMES_SO	=	protobuf
+
 INC_PROTOBUF_C_DIR	=	/usr/include/google/protobuf-c
 LIB_PROTOBUF_C_DIR	=	/usr/lib64
 LIB_PROTOBUF_C_NAMES_A	=
@@ -104,6 +109,7 @@ CPPFLAGS	+=	\
 			-I${INC_CRYPTO_DIR}	\
 			-I${INC_SSL_DIR}	\
 			-I${INC_NATS_DIR}	\
+			-I${INC_PROTOBUF_DIR}	\
 			-I${INC_PROTOBUF_C_DIR}	\
 			-I ${INC_OTHER_DIR} \
 			-I ${INC_LBM_DIR} \
@@ -171,6 +177,7 @@ LDLIBS		=	\
 			-Bdynamic	\
 			${addprefix -l,${LIB_CRYPTO_NAMES_SO}}	\
 			${addprefix -l,${LIB_SSL_NAMES_SO}}	\
+			${addprefix -l,${LIB_PROTOBUF_NAMES_SO}}	\
 			${addprefix -l,${LIB_PROTOBUF_C_NAMES_SO}}	\
 			${TIBRV_LIBS}	\
 			${OTHER_LIBS}	\
@@ -191,6 +198,7 @@ LDFLAGS		+=	\
 			${addprefix -L,${LIB_NATS_DIR}}	\
 			${addprefix -L,${LIB_CRYPTO_DIR}}	\
 			${addprefix -L,${LIB_SSL_DIR}}	\
+			${addprefix -L,${LIB_PROTOBUF_DIR}}	\
 			${addprefix -L,${LIB_PROTOBUF_C_DIR}}	\
 			-L ${LIB_PCAP_DIR}	\
 			-L ${LIB_BOOST_DIR}	\
