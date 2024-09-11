@@ -197,6 +197,8 @@ void NatsOptions::SetServers(const std::vector<std::string> &servers)
 
 #ifdef TEST_MAIN
 
+#include <Utility/EmitterSep.hpp>
+
 #include <iostream>
 
 using namespace MLB::Utility;
@@ -205,18 +207,52 @@ using namespace MLB::NatsWrapper;
 namespace {
 
 // ////////////////////////////////////////////////////////////////////////////
+#define TEST_NatsOptions__SetServers(func_name, func_args, expected_flag)	\
+	{																								\
+		bool        actual_flag = false;													\
+		std::string results;																	\
+		std::cout << EmitterSep('=');														\
+		std::string tmp_func = #func_name #func_args ;								\
+		std::cout << tmp_func << '\n';													\
+		std::cout << EmitterSep('-', tmp_func.size() + 1);							\
+		try {																						\
+			func_name func_args ;															\
+			actual_flag = true;																\
+		}																							\
+		catch (const std::exception &except) {											\
+			results = except.what();														\
+		}																							\
+		std::cout << ((actual_flag == expected_flag) ? "  " : "UN") <<			\
+			"EXPECTED " << ((actual_flag) ? "SUCCESS" : "FAILURE: ") <<			\
+			results << '\n';																	\
+		std::cout << EmitterSep('=') << '\n';											\
+	}
+// ////////////////////////////////////////////////////////////////////////////
+
+// ////////////////////////////////////////////////////////////////////////////
 void TEST_NatsOptions()
 {
 	const char               *srvs_ary[] = { "PTR0", "PTR0", "PTR0", "PTR0" };
 	std::vector<std::string>  srvs_vec   = { "STR0", "STR1", "STR2", "STR3" };
 	NatsOptions               nats_opts;
 
+/*
 //	nats_opts.SetServers(srvs_ary, int(0));
 	nats_opts.SetServers(srvs_ary, int(4));
 //	nats_opts.SetServers(srvs_ary, std::size_t(0));
 	nats_opts.SetServers(srvs_ary, std::size_t(4));
 	nats_opts.SetServers(std::vector<std::string>());
 	nats_opts.SetServers(srvs_vec);
+*/
+
+//TEST_NatsOptions__SetServers
+
+	TEST_NatsOptions__SetServers(nats_opts.SetServers, (srvs_ary, int(0)),           false)
+	TEST_NatsOptions__SetServers(nats_opts.SetServers, (srvs_ary, int(4)),            true)
+	TEST_NatsOptions__SetServers(nats_opts.SetServers, (srvs_ary, std::size_t(0)),   false)
+	TEST_NatsOptions__SetServers(nats_opts.SetServers, (srvs_ary, std::size_t(4)),    true)
+	TEST_NatsOptions__SetServers(nats_opts.SetServers, (std::vector<std::string>()),  true)
+	TEST_NatsOptions__SetServers(nats_opts.SetServers, (srvs_vec),                    true)
 }
 // ////////////////////////////////////////////////////////////////////////////
 
