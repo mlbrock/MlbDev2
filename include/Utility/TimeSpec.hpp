@@ -80,7 +80,7 @@ struct API_UTILITY TimeSpec : public timespec {
 
 #if defined(BOOST_CXX_VERSION) && (BOOST_CXX_VERSION >= 201703L)
 	constexpr auto operator <=> (const TimeSpec &other) const = default;
-	constexpr bool operator ==  (const TimeSpec &other) const = default;
+//	constexpr bool operator ==  (const TimeSpec &other) const = default;
 #endif // #if defined(BOOST_CXX_VERSION) && (BOOST_CXX_VERSION >= 201703L)
 
 	bool operator <  (const TimeSpec &other) const;

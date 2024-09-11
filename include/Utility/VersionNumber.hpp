@@ -95,7 +95,7 @@ struct API_UTILITY VersionNumber {
 
 #if defined(BOOST_CXX_VERSION) && (BOOST_CXX_VERSION >= 201703L)
 	constexpr auto operator <=> (const VersionNumber &other) const = default;
-	constexpr bool operator ==  (const VersionNumber &other) const = default;
+//	constexpr bool operator ==  (const VersionNumber &other) const = default;
 #endif // #if defined(BOOST_CXX_VERSION) && (BOOST_CXX_VERSION >= 201703L)
 
 	bool operator <  (const VersionNumber &other) const;

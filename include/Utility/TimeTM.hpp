@@ -64,7 +64,7 @@ struct API_UTILITY TimeTM : public tm {
 
 #if defined(BOOST_CXX_VERSION) && (BOOST_CXX_VERSION >= 201703L)
 	constexpr auto operator <=> (const TimeTM &other) const = default;
-	constexpr bool operator ==  (const TimeTM &other) const = default;
+//	constexpr bool operator ==  (const TimeTM &other) const = default;
 #endif // #if defined(BOOST_CXX_VERSION) && (BOOST_CXX_VERSION >= 201703L)
 
 	bool operator <  (const TimeTM &other) const;

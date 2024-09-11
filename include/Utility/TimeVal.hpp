@@ -82,7 +82,7 @@ struct API_UTILITY TimeVal : public timeval {
 
 #if defined(BOOST_CXX_VERSION) && (BOOST_CXX_VERSION >= 201703L)
 	constexpr auto operator <=> (const TimeVal &other) const = default;
-	constexpr bool operator ==  (const TimeVal &other) const = default;
+//	constexpr bool operator ==  (const TimeVal &other) const = default;
 #endif // #if defined(BOOST_CXX_VERSION) && (BOOST_CXX_VERSION >= 201703L)
 
 	bool operator <  (const TimeVal &other) const;
