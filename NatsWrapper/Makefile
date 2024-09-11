@@ -37,7 +37,8 @@ SRCS		=	\
 
 # Only the libraries below are needed for TEST_MAIN unit tests in this library.
 #MLB_LIB_NAMES	=	Utility
-MLB_LIB_NAMES	=
+MLB_LIB_NAMES	=	NatsWrapper	\
+			Utility
 
 include ../.MASCaPS/MakeSuffixFirst.mk
 # ###################################################################
