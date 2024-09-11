@@ -48,6 +48,8 @@
 #include <iostream>
 #include <string>
 
+#include <boost/config.hpp>
+
 // ////////////////////////////////////////////////////////////////////////////
 
 namespace MLB {
@@ -90,6 +92,11 @@ struct API_UTILITY VersionNumber {
 	VersionNumber &SetToMaximumValue();
 
 	int Compare(const VersionNumber &other) const;
+
+#if defined(BOOST_CXX_VERSION) && (BOOST_CXX_VERSION >= 201703L)
+	constexpr auto operator <=> (const VersionNumber &other) const = default;
+	constexpr bool operator ==  (const VersionNumber &other) const = default;
+#endif // #if defined(BOOST_CXX_VERSION) && (BOOST_CXX_VERSION >= 201703L)
 
 	bool operator <  (const VersionNumber &other) const;
 	bool operator >  (const VersionNumber &other) const;

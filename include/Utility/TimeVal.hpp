@@ -46,6 +46,8 @@
 #include <cstring>
 #include <ostream>
 
+#include <boost/config.hpp>
+
 #ifndef _MSC_VER
 # include <sys/time.h>
 #elif (_MSC_VER < 1900)
@@ -77,6 +79,11 @@ struct API_UTILITY TimeVal : public timeval {
 	explicit TimeVal(const std::string &in_date);
 
 	~TimeVal();
+
+#if defined(BOOST_CXX_VERSION) && (BOOST_CXX_VERSION >= 201703L)
+	constexpr auto operator <=> (const TimeVal &other) const = default;
+	constexpr bool operator ==  (const TimeVal &other) const = default;
+#endif // #if defined(BOOST_CXX_VERSION) && (BOOST_CXX_VERSION >= 201703L)
 
 	bool operator <  (const TimeVal &other) const;
 	bool operator >  (const TimeVal &other) const;
@@ -164,6 +171,7 @@ struct API_UTILITY TimeVal : public timeval {
 
 	static TimeVal Now();
 
+	static int     Compare(const TimeVal &lhs, const TimeVal &rhs);
 	//	Used to support a C-style interface...
 	static int     Compare(const TimeVal *lhs, const TimeVal *rhs);
 

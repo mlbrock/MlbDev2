@@ -44,6 +44,8 @@
 #include <string>
 #include <vector>
 
+#include <boost/config.hpp>
+
 // ////////////////////////////////////////////////////////////////////////////
 
 namespace MLB {
@@ -56,6 +58,11 @@ struct API_UTILITY EnvElement {
 	explicit EnvElement(const std::string &env_string);
 	         EnvElement(const std::string &env_name,
 		const std::string &env_value);
+
+#if defined(BOOST_CXX_VERSION) && (BOOST_CXX_VERSION >= 201703L)
+	constexpr auto operator <=> (const EnvElement &other) const = default;
+	constexpr bool operator ==  (const EnvElement &other) const = default;
+#endif // #if defined(BOOST_CXX_VERSION) && (BOOST_CXX_VERSION >= 201703L)
 
 	bool operator < (const EnvElement &other) const;
 

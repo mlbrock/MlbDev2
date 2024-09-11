@@ -42,6 +42,8 @@
 
 #include <string>
 
+#include <boost/config.hpp>
+
 // ////////////////////////////////////////////////////////////////////////////
 
 namespace MLB {
@@ -59,6 +61,11 @@ struct API_UTILITY TimeTM : public tm {
 	TimeTM();
 	explicit TimeTM(const tm &in_time);
 	~TimeTM();
+
+#if defined(BOOST_CXX_VERSION) && (BOOST_CXX_VERSION >= 201703L)
+	constexpr auto operator <=> (const TimeTM &other) const = default;
+	constexpr bool operator ==  (const TimeTM &other) const = default;
+#endif // #if defined(BOOST_CXX_VERSION) && (BOOST_CXX_VERSION >= 201703L)
 
 	bool operator <  (const TimeTM &other) const;
 	bool operator >  (const TimeTM &other) const;
@@ -96,6 +103,7 @@ struct API_UTILITY TimeTM : public tm {
 	static TimeTM TimeUTC(const time_t in_time = time(NULL));
 	static TimeTM TimeLocal(const time_t in_time = time(NULL));
 
+	static int    Compare(const TimeTM &lhs, const TimeTM &rhs);
 	//	Used to support a C-style interface...
 	static int    Compare(const TimeTM *lhs, const TimeTM *rhs);
 };

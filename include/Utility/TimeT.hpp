@@ -43,6 +43,8 @@
 #include <ostream>
 #include <string>
 
+#include <boost/config.hpp>
+
 // ////////////////////////////////////////////////////////////////////////////
 
 namespace MLB {
@@ -63,6 +65,11 @@ struct API_UTILITY TimeT {
 	explicit TimeT(const std::string &in_date);
 
 	~TimeT();
+
+#if defined(BOOST_CXX_VERSION) && (BOOST_CXX_VERSION >= 201703L)
+	constexpr auto operator <=> (const TimeT &other) const = default;
+	constexpr bool operator ==  (const TimeT &other) const = default;
+#endif // #if defined(BOOST_CXX_VERSION) && (BOOST_CXX_VERSION >= 201703L)
 
 	bool operator <  (const TimeT &other) const;
 	bool operator >  (const TimeT &other) const;
@@ -121,6 +128,7 @@ struct API_UTILITY TimeT {
 
 	static TimeT Now();
 
+	static int   Compare(const TimeT &lhs, const TimeT &rhs);
 	//	Used to support a C-style interface...
 	static int   Compare(const TimeT *lhs, const TimeT *rhs);
 

@@ -44,6 +44,8 @@
 
 #include <string>
 
+#include <boost/config.hpp>
+
 #if defined(_MSC_VER)
 # if (_MSC_VER < 1900)
 struct timespec {
@@ -75,6 +77,11 @@ struct API_UTILITY TimeSpec : public timespec {
 	explicit TimeSpec(const timeval &in_time);
 	explicit TimeSpec(const std::string &in_date);
 	~TimeSpec();
+
+#if defined(BOOST_CXX_VERSION) && (BOOST_CXX_VERSION >= 201703L)
+	constexpr auto operator <=> (const TimeSpec &other) const = default;
+	constexpr bool operator ==  (const TimeSpec &other) const = default;
+#endif // #if defined(BOOST_CXX_VERSION) && (BOOST_CXX_VERSION >= 201703L)
 
 	bool operator <  (const TimeSpec &other) const;
 	bool operator >  (const TimeSpec &other) const;
@@ -163,6 +170,7 @@ struct API_UTILITY TimeSpec : public timespec {
 
 	static TimeSpec Now();
 
+	static int      Compare(const TimeSpec &lhs, const TimeSpec &rhs);
 	//	Used to support a C-style interface...
 	static int      Compare(const TimeSpec *lhs, const TimeSpec *rhs);
 

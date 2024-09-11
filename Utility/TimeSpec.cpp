@@ -578,13 +578,20 @@ TimeSpec TimeSpec::Now()
 // ////////////////////////////////////////////////////////////////////////////
 
 // ////////////////////////////////////////////////////////////////////////////
-int TimeSpec::Compare(const TimeSpec *lhs, const TimeSpec *rhs)
+int TimeSpec::Compare(const TimeSpec &lhs, const TimeSpec &rhs)
 {
 	return(
-		((int) (lhs->tv_sec  > rhs->tv_sec)  ?  1 :
-				((lhs->tv_sec  < rhs->tv_sec)  ? -1 :
-				((lhs->tv_nsec > rhs->tv_nsec) ?  1 :
-				((lhs->tv_nsec < rhs->tv_nsec) ? -1 : 0)))));
+		((int) (lhs.tv_sec  > rhs.tv_sec)  ?  1 :
+				((lhs.tv_sec  < rhs.tv_sec)  ? -1 :
+				((lhs.tv_nsec > rhs.tv_nsec) ?  1 :
+				((lhs.tv_nsec < rhs.tv_nsec) ? -1 : 0)))));
+}
+// ////////////////////////////////////////////////////////////////////////////
+
+// ////////////////////////////////////////////////////////////////////////////
+int TimeSpec::Compare(const TimeSpec *lhs, const TimeSpec *rhs)
+{
+	return(Compare(*lhs, *rhs));
 }
 // ////////////////////////////////////////////////////////////////////////////
 

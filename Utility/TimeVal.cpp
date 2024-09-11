@@ -484,13 +484,27 @@ TimeVal TimeVal::Now()
 // ////////////////////////////////////////////////////////////////////////////
 
 // ////////////////////////////////////////////////////////////////////////////
+int TimeVal::Compare(const TimeVal &lhs, const TimeVal &rhs)
+{
+	return(
+		((int) (lhs.tv_sec  > rhs.tv_sec)  ?  1 :
+				((lhs.tv_sec  < rhs.tv_sec)  ? -1 :
+				((lhs.tv_usec > rhs.tv_usec) ?  1 :
+				((lhs.tv_usec < rhs.tv_usec) ? -1 : 0)))));
+}
+// ////////////////////////////////////////////////////////////////////////////
+
+// ////////////////////////////////////////////////////////////////////////////
 int TimeVal::Compare(const TimeVal *lhs, const TimeVal *rhs)
 {
+/*
 	return(
 		((int) (lhs->tv_sec  > rhs->tv_sec)  ?  1 :
 				((lhs->tv_sec  < rhs->tv_sec)  ? -1 :
 				((lhs->tv_usec > rhs->tv_usec) ?  1 :
 				((lhs->tv_usec < rhs->tv_usec) ? -1 : 0)))));
+*/
+	return(Compare(*lhs, *rhs));
 }
 // ////////////////////////////////////////////////////////////////////////////
 

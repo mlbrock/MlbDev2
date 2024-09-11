@@ -305,8 +305,28 @@ TimeTM TimeTM::Now()
 // ////////////////////////////////////////////////////////////////////////////
 
 // ////////////////////////////////////////////////////////////////////////////
+int TimeTM::Compare(const TimeTM &lhs, const TimeTM &rhs)
+{
+	return(
+		((int) (lhs.tm_year > rhs.tm_year) ?  1 :
+				((lhs.tm_year < rhs.tm_year) ? -1 :
+				((lhs.tm_mon  > rhs.tm_mon)  ?  1 :
+				((lhs.tm_mon  < rhs.tm_mon)  ? -1 :
+				((lhs.tm_mday > rhs.tm_mday) ?  1 :
+				((lhs.tm_mday < rhs.tm_mday) ? -1 :
+				((lhs.tm_hour > rhs.tm_hour) ?  1 :
+				((lhs.tm_hour < rhs.tm_hour) ? -1 :
+				((lhs.tm_min  > rhs.tm_min)  ?  1 :
+				((lhs.tm_min  < rhs.tm_min)  ? -1 :
+				((lhs.tm_sec  > rhs.tm_sec)  ?  1 :
+				((lhs.tm_sec  < rhs.tm_sec)  ? -1 : 0)))))))))))));
+}
+// ////////////////////////////////////////////////////////////////////////////
+
+// ////////////////////////////////////////////////////////////////////////////
 int TimeTM::Compare(const TimeTM *lhs, const TimeTM *rhs)
 {
+/*
 	return(
 		((int) (lhs->tm_year > rhs->tm_year) ?  1 :
 				((lhs->tm_year < rhs->tm_year) ? -1 :
@@ -320,6 +340,8 @@ int TimeTM::Compare(const TimeTM *lhs, const TimeTM *rhs)
 				((lhs->tm_min  < rhs->tm_min)  ? -1 :
 				((lhs->tm_sec  > rhs->tm_sec)  ?  1 :
 				((lhs->tm_sec  < rhs->tm_sec)  ? -1 : 0)))))))))))));
+*/
+	return(Compare(*lhs, *rhs));
 }
 // ////////////////////////////////////////////////////////////////////////////
 
