@@ -138,6 +138,7 @@ LBM_LIBS	=	\
 			liblbm.a
 
 MLB_LIB_NAMES	=	\
+			NatsWrapper	\
 			MFStore		\
 			Logger		\
 			Utility
