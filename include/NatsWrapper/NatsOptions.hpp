@@ -40,6 +40,7 @@
 
 #include <memory>
 #include <string>
+#include <vector>
 
 // ////////////////////////////////////////////////////////////////////////////
 
@@ -68,7 +69,7 @@ public:
 
 	void SetServers(const char **servers, int servers_count);
 	void SetServers(const char **servers, std::size_t servers_count);
-	void SetServers(std::vector<std::string> &servers);
+	void SetServers(const std::vector<std::string> &servers);
 
 private:
 	std::shared_ptr<natsOptions> nats_options_sptr_;
