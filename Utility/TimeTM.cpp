@@ -87,47 +87,51 @@ TimeTM::~TimeTM()
 }
 // ////////////////////////////////////////////////////////////////////////////
 
+#if 0
+#if (!defined(BOOST_CXX_VERSION)) || (BOOST_CXX_VERSION < 201703L)
 // ////////////////////////////////////////////////////////////////////////////
-bool TimeTM::operator <  (const TimeTM &other) const
+constexpr bool TimeTM::operator <  (const TimeTM &other) const
 {
-	return(Compare(this, &other) <  0);
+	return(Compare(*this, other) <  0);
 }
 // ////////////////////////////////////////////////////////////////////////////
 
 // ////////////////////////////////////////////////////////////////////////////
-bool TimeTM::operator >  (const TimeTM &other) const
+constexpr bool TimeTM::operator >  (const TimeTM &other) const
 {
-	return(Compare(this, &other) >  0);
+	return(Compare(*this, other) >  0);
 }
 // ////////////////////////////////////////////////////////////////////////////
 
 // ////////////////////////////////////////////////////////////////////////////
-bool TimeTM::operator <= (const TimeTM &other) const
+constexpr bool TimeTM::operator <= (const TimeTM &other) const
 {
-	return(Compare(this, &other) <= 0);
+	return(Compare(*this, other) <= 0);
 }
 // ////////////////////////////////////////////////////////////////////////////
 
 // ////////////////////////////////////////////////////////////////////////////
-bool TimeTM::operator >= (const TimeTM &other) const
+constexpr bool TimeTM::operator >= (const TimeTM &other) const
 {
-	return(Compare(this, &other) >= 0);
+	return(Compare(*this, other) >= 0);
 }
 // ////////////////////////////////////////////////////////////////////////////
 
 // ////////////////////////////////////////////////////////////////////////////
-bool TimeTM::operator == (const TimeTM &other) const
+constexpr bool TimeTM::operator == (const TimeTM &other) const
 {
-	return(Compare(this, &other) == 0);
+	return(Compare(*this, other) == 0);
 }
 // ////////////////////////////////////////////////////////////////////////////
 
 // ////////////////////////////////////////////////////////////////////////////
-bool TimeTM::operator != (const TimeTM &other) const
+constexpr bool TimeTM::operator != (const TimeTM &other) const
 {
-	return(Compare(this, &other) != 0);
+	return(Compare(*this, other) != 0);
 }
 // ////////////////////////////////////////////////////////////////////////////
+#endif // #if (!defined(BOOST_CXX_VERSION)) || (BOOST_CXX_VERSION < 201703L)
+#endif // #if 0
 
 // ////////////////////////////////////////////////////////////////////////////
 char *TimeTM::AscTime(char *buffer) const
@@ -304,8 +308,9 @@ TimeTM TimeTM::Now()
 }
 // ////////////////////////////////////////////////////////////////////////////
 
+#if 0
 // ////////////////////////////////////////////////////////////////////////////
-int TimeTM::Compare(const TimeTM &lhs, const TimeTM &rhs)
+constexpr int TimeTM::Compare(const TimeTM &lhs, const TimeTM &rhs)
 {
 	return(
 		((int) (lhs.tm_year > rhs.tm_year) ?  1 :
@@ -324,26 +329,12 @@ int TimeTM::Compare(const TimeTM &lhs, const TimeTM &rhs)
 // ////////////////////////////////////////////////////////////////////////////
 
 // ////////////////////////////////////////////////////////////////////////////
-int TimeTM::Compare(const TimeTM *lhs, const TimeTM *rhs)
+constexpr int TimeTM::Compare(const TimeTM *lhs, const TimeTM *rhs)
 {
-/*
-	return(
-		((int) (lhs->tm_year > rhs->tm_year) ?  1 :
-				((lhs->tm_year < rhs->tm_year) ? -1 :
-				((lhs->tm_mon  > rhs->tm_mon)  ?  1 :
-				((lhs->tm_mon  < rhs->tm_mon)  ? -1 :
-				((lhs->tm_mday > rhs->tm_mday) ?  1 :
-				((lhs->tm_mday < rhs->tm_mday) ? -1 :
-				((lhs->tm_hour > rhs->tm_hour) ?  1 :
-				((lhs->tm_hour < rhs->tm_hour) ? -1 :
-				((lhs->tm_min  > rhs->tm_min)  ?  1 :
-				((lhs->tm_min  < rhs->tm_min)  ? -1 :
-				((lhs->tm_sec  > rhs->tm_sec)  ?  1 :
-				((lhs->tm_sec  < rhs->tm_sec)  ? -1 : 0)))))))))))));
-*/
 	return(Compare(*lhs, *rhs));
 }
 // ////////////////////////////////////////////////////////////////////////////
+#endif // #if 0
 
 // ////////////////////////////////////////////////////////////////////////////
 std::ostream & operator << (std::ostream &o_str, const TimeTM &datum)

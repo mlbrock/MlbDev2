@@ -82,17 +82,38 @@ struct API_UTILITY TimeVal : public timeval {
 
 #if defined(BOOST_CXX_VERSION) && (BOOST_CXX_VERSION >= 201703L)
 	constexpr auto operator <=> (const TimeVal &other) const = default;
-//	constexpr bool operator ==  (const TimeVal &other) const = default;
+	constexpr bool operator ==  (const TimeVal &other) const = default;
+#else
+	constexpr bool operator <  (const TimeVal &other) const
+	{
+		return(Compare(*this, other) <  0);
+	}
+	constexpr bool operator >  (const TimeVal &other) const
+	{
+		return(Compare(*this, other) >  0);
+	}
+	constexpr bool operator <= (const TimeVal &other) const
+	{
+		return(Compare(*this, other) <= 0);
+	}
+	constexpr bool operator >= (const TimeVal &other) const
+	{
+		return(Compare(*this, other) >= 0);
+	}
+	constexpr bool operator == (const TimeVal &other) const
+	{
+		return(Compare(*this, other) == 0);
+	}
+	constexpr bool operator != (const TimeVal &other) const
+	{
+		return(Compare(*this, other) != 0);
+	}
 #endif // #if defined(BOOST_CXX_VERSION) && (BOOST_CXX_VERSION >= 201703L)
 
-	bool operator <  (const TimeVal &other) const;
-	bool operator >  (const TimeVal &other) const;
-	bool operator <= (const TimeVal &other) const;
-	bool operator >= (const TimeVal &other) const;
-	bool operator == (const TimeVal &other) const;
-	bool operator != (const TimeVal &other) const;
-
-	int  Compare(const TimeVal &other) const;
+	constexpr int Compare(const TimeVal &other) const
+	{
+		return(Compare(*this, other));
+	}
 
 	TimeVal &SetToNow();
 	TimeVal &SetToMinimumValue();
@@ -171,9 +192,19 @@ struct API_UTILITY TimeVal : public timeval {
 
 	static TimeVal Now();
 
-	static int     Compare(const TimeVal &lhs, const TimeVal &rhs);
+	static constexpr int Compare(const TimeVal &lhs, const TimeVal &rhs)
+	{
+		return(
+			((int) (lhs.tv_sec  > rhs.tv_sec)  ?  1 :
+					((lhs.tv_sec  < rhs.tv_sec)  ? -1 :
+					((lhs.tv_usec > rhs.tv_usec) ?  1 :
+					((lhs.tv_usec < rhs.tv_usec) ? -1 : 0)))));
+	}
 	//	Used to support a C-style interface...
-	static int     Compare(const TimeVal *lhs, const TimeVal *rhs);
+	static constexpr int Compare(const TimeVal *lhs, const TimeVal *rhs)
+	{
+		return(Compare(*lhs, *rhs));
+	}
 
 	static TimeVal GetMinimumValue();
 	static TimeVal GetMaximumValue();

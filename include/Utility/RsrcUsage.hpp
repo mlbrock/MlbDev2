@@ -198,6 +198,8 @@ struct API_UTILITY RsrcUsage {
 
 	bool operator < (const RsrcUsage &other) const;
 
+	int Compare(const RsrcUsage &other) const;
+
 	void GetRsrcUsage(ProcessId selector);
 	void GetRsrcUsage();
 

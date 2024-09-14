@@ -64,15 +64,38 @@ struct API_UTILITY TimeTM : public tm {
 
 #if defined(BOOST_CXX_VERSION) && (BOOST_CXX_VERSION >= 201703L)
 	constexpr auto operator <=> (const TimeTM &other) const = default;
-//	constexpr bool operator ==  (const TimeTM &other) const = default;
+	constexpr bool operator ==  (const TimeTM &other) const = default;
+#else
+	constexpr bool operator <  (const TimeTM &other) const
+	{
+		return(Compare(*this, other) <  0);
+	}
+	constexpr bool operator >  (const TimeTM &other) const
+	{
+		return(Compare(*this, other) >  0);
+	}
+	constexpr bool operator <= (const TimeTM &other) const
+	{
+		return(Compare(*this, other) <= 0);
+	}
+	constexpr bool operator >= (const TimeTM &other) const
+	{
+		return(Compare(*this, other) >= 0);
+	}
+	constexpr bool operator == (const TimeTM &other) const
+	{
+		return(Compare(*this, other) == 0);
+	}
+	constexpr bool operator != (const TimeTM &other) const
+	{
+		return(Compare(*this, other) != 0);
+	}
 #endif // #if defined(BOOST_CXX_VERSION) && (BOOST_CXX_VERSION >= 201703L)
 
-	bool operator <  (const TimeTM &other) const;
-	bool operator >  (const TimeTM &other) const;
-	bool operator <= (const TimeTM &other) const;
-	bool operator >= (const TimeTM &other) const;
-	bool operator == (const TimeTM &other) const;
-	bool operator != (const TimeTM &other) const;
+	constexpr int Compare(const TimeTM &other) const
+	{
+		return(Compare(*this, other));
+	}
 
 	char        *AscTime(char *buffer) const;
 	std::string  AscTime() const;
@@ -103,9 +126,27 @@ struct API_UTILITY TimeTM : public tm {
 	static TimeTM TimeUTC(const time_t in_time = time(NULL));
 	static TimeTM TimeLocal(const time_t in_time = time(NULL));
 
-	static int    Compare(const TimeTM &lhs, const TimeTM &rhs);
+	static constexpr int Compare(const TimeTM &lhs, const TimeTM &rhs)
+	{
+		return(
+			((int) (lhs.tm_year > rhs.tm_year) ?  1 :
+					((lhs.tm_year < rhs.tm_year) ? -1 :
+					((lhs.tm_mon  > rhs.tm_mon)  ?  1 :
+					((lhs.tm_mon  < rhs.tm_mon)  ? -1 :
+					((lhs.tm_mday > rhs.tm_mday) ?  1 :
+					((lhs.tm_mday < rhs.tm_mday) ? -1 :
+					((lhs.tm_hour > rhs.tm_hour) ?  1 :
+					((lhs.tm_hour < rhs.tm_hour) ? -1 :
+					((lhs.tm_min  > rhs.tm_min)  ?  1 :
+					((lhs.tm_min  < rhs.tm_min)  ? -1 :
+					((lhs.tm_sec  > rhs.tm_sec)  ?  1 :
+					((lhs.tm_sec  < rhs.tm_sec)  ? -1 : 0)))))))))))));
+	}
 	//	Used to support a C-style interface...
-	static int    Compare(const TimeTM *lhs, const TimeTM *rhs);
+	static constexpr int Compare(const TimeTM *lhs, const TimeTM *rhs)
+	{
+		return(Compare(*lhs, *rhs));
+	}
 };
 // ////////////////////////////////////////////////////////////////////////////
 

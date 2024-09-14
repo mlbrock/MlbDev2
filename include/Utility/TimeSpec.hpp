@@ -80,17 +80,38 @@ struct API_UTILITY TimeSpec : public timespec {
 
 #if defined(BOOST_CXX_VERSION) && (BOOST_CXX_VERSION >= 201703L)
 	constexpr auto operator <=> (const TimeSpec &other) const = default;
-//	constexpr bool operator ==  (const TimeSpec &other) const = default;
+	constexpr bool operator ==  (const TimeSpec &other) const = default;
+#else
+	constexpr bool operator <  (const TimeSpec &other) const
+	{
+		return(Compare(*this, other) <  0);
+	}
+	constexpr bool operator >  (const TimeSpec &other) const
+	{
+		return(Compare(*this, other) >  0);
+	}
+	constexpr bool operator <= (const TimeSpec &other) const
+	{
+		return(Compare(*this, other) <= 0);
+	}
+	constexpr bool operator >= (const TimeSpec &other) const
+	{
+		return(Compare(*this, other) >= 0);
+	}
+	constexpr bool operator == (const TimeSpec &other) const
+	{
+		return(Compare(*this, other) == 0);
+	}
+	constexpr bool operator != (const TimeSpec &other) const
+	{
+		return(Compare(*this, other) != 0);
+	}
 #endif // #if defined(BOOST_CXX_VERSION) && (BOOST_CXX_VERSION >= 201703L)
 
-	bool operator <  (const TimeSpec &other) const;
-	bool operator >  (const TimeSpec &other) const;
-	bool operator <= (const TimeSpec &other) const;
-	bool operator >= (const TimeSpec &other) const;
-	bool operator == (const TimeSpec &other) const;
-	bool operator != (const TimeSpec &other) const;
-
-	int  Compare(const TimeSpec &other) const;
+	constexpr int Compare(const TimeSpec &other) const
+	{
+		return(Compare(*this, other));
+	}
 
 	TimeSpec &SetToNow();
 	TimeSpec &SetToMinimumValue();
@@ -170,9 +191,25 @@ struct API_UTILITY TimeSpec : public timespec {
 
 	static TimeSpec Now();
 
-	static int      Compare(const TimeSpec &lhs, const TimeSpec &rhs);
+/*
+	static constexpr int Compare(const TimeSpec &lhs, const TimeSpec &rhs);
 	//	Used to support a C-style interface...
-	static int      Compare(const TimeSpec *lhs, const TimeSpec *rhs);
+	static constexpr int Compare(const TimeSpec *lhs, const TimeSpec *rhs);
+*/
+	static constexpr int Compare(const TimeSpec &lhs, const TimeSpec &rhs)
+	{
+		return(
+			((int) (lhs.tv_sec  > rhs.tv_sec)  ?  1 :
+					((lhs.tv_sec  < rhs.tv_sec)  ? -1 :
+					((lhs.tv_nsec > rhs.tv_nsec) ?  1 :
+					((lhs.tv_nsec < rhs.tv_nsec) ? -1 : 0)))));
+	}
+
+	//	Used to support a C-style interface...
+	static constexpr int Compare(const TimeSpec *lhs, const TimeSpec *rhs)
+	{
+		return(Compare(*lhs, *rhs));
+	}
 
 	static TimeSpec GetMinimumValue();
 	static TimeSpec GetMaximumValue();
