@@ -255,6 +255,9 @@
     <ClInclude Include="..\..\..\..\include\Utility\ValueTraits.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\..\include\Utility\UniqueId.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\..\Utility\nstrcat.cpp">
@@ -432,6 +435,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\..\Utility\VersionNumber.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Utility\UniqueId.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

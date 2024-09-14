@@ -93,6 +93,7 @@
     <ClInclude Include="..\..\..\..\include\Utility\ToStringErrno.hpp" />
     <ClInclude Include="..\..\..\..\include\Utility\ToStringRadix.hpp" />
     <ClInclude Include="..\..\..\..\include\Utility\ToStringSystemError.hpp" />
+    <ClInclude Include="..\..\..\..\include\Utility\UniqueId.hpp" />
     <ClInclude Include="..\..\..\..\include\Utility\UserName.hpp" />
     <ClInclude Include="..\..\..\..\include\Utility\Utility.hpp" />
     <ClInclude Include="..\..\..\..\include\Utility\ValueToStringRadix.hpp" />
@@ -158,6 +159,7 @@
     <ClCompile Include="..\..\..\..\Utility\ToStreamSystemError.cpp" />
     <ClCompile Include="..\..\..\..\Utility\ToStringErrno.cpp" />
     <ClCompile Include="..\..\..\..\Utility\ToStringSystemError.cpp" />
+    <ClCompile Include="..\..\..\..\Utility\UniqueId.cpp" />
     <ClCompile Include="..\..\..\..\Utility\UserName.cpp" />
     <ClCompile Include="..\..\..\..\Utility\VersionNumber.cpp" />
   </ItemGroup>

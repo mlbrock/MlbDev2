@@ -80,6 +80,11 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ZZZ_LogManager", "ZZZ_LogMa
 		{2E67D9A5-8445-4C86-A609-116BB531F4A2} = {2E67D9A5-8445-4C86-A609-116BB531F4A2}
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ZZZ_UniqueId", "ZZZ_UniqueId\ZZZ_UniqueId.vcxproj", "{5DB98DAF-B68F-4824-A112-9BA525F8446F}"
+	ProjectSection(ProjectDependencies) = postProject
+		{B2168613-5645-4AAE-95E9-FEE22A415C20} = {B2168613-5645-4AAE-95E9-FEE22A415C20}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -216,6 +221,14 @@ Global
 		{14EB79E9-E238-491B-98BE-A432D2446749}.Release|x64.Build.0 = Release|x64
 		{14EB79E9-E238-491B-98BE-A432D2446749}.Release|x86.ActiveCfg = Release|Win32
 		{14EB79E9-E238-491B-98BE-A432D2446749}.Release|x86.Build.0 = Release|Win32
+		{5DB98DAF-B68F-4824-A112-9BA525F8446F}.Debug|x64.ActiveCfg = Debug|x64
+		{5DB98DAF-B68F-4824-A112-9BA525F8446F}.Debug|x64.Build.0 = Debug|x64
+		{5DB98DAF-B68F-4824-A112-9BA525F8446F}.Debug|x86.ActiveCfg = Debug|Win32
+		{5DB98DAF-B68F-4824-A112-9BA525F8446F}.Debug|x86.Build.0 = Debug|Win32
+		{5DB98DAF-B68F-4824-A112-9BA525F8446F}.Release|x64.ActiveCfg = Release|x64
+		{5DB98DAF-B68F-4824-A112-9BA525F8446F}.Release|x64.Build.0 = Release|x64
+		{5DB98DAF-B68F-4824-A112-9BA525F8446F}.Release|x86.ActiveCfg = Release|Win32
+		{5DB98DAF-B68F-4824-A112-9BA525F8446F}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
