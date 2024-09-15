@@ -43,9 +43,12 @@
 #include <Utility/TimeT.hpp>
 #include <Utility/TimeTM.hpp>
 
+#include <Utility/Compare_timeval.hpp>
+
 #include <cstring>
 #include <ostream>
 
+/*
 #include <boost/config.hpp>
 
 #ifndef _MSC_VER
@@ -58,6 +61,7 @@
 # include <WinSock2.h>
 # pragma warning(pop)
 #endif // #ifndef _MSC_VER
+*/
 
 // ////////////////////////////////////////////////////////////////////////////
 

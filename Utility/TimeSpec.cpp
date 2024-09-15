@@ -694,3 +694,106 @@ std::ostream & operator << (std::ostream &o_str, const TimeSpec &datum)
 
 } // namespace MLB
 
+#ifdef TEST_MAIN
+
+#include <Utility/EmitterSep.hpp>
+
+#include <iomanip>
+#include <iostream>
+
+namespace {
+// ////////////////////////////////////////////////////////////////////////////
+std::string ShowMembers(const timespec &src)
+{
+   std::string dst("{ " + std::to_string(src.tv_sec) + ", " +
+      std::to_string(src.tv_nsec) + "}");
+
+   return(dst);
+}
+// ////////////////////////////////////////////////////////////////////////////
+
+// ////////////////////////////////////////////////////////////////////////////
+template <typename DatumType>
+   std::string GetRelOpText(const std::pair<DatumType, DatumType> &values,
+      const char *rel_op)
+{
+   std::string dst("(" + ShowMembers(values.first) + " " +
+      std::string(rel_op + 9, 2) + " " + ShowMembers(values.second) + ")");
+
+   return(dst);
+}
+// ////////////////////////////////////////////////////////////////////////////
+
+// ////////////////////////////////////////////////////////////////////////////
+#define MLB_TIMESPEC_TEST_RelOpsOne(type_name, vals, rel_op)   \
+   {                    \
+      std::cout                     \
+         << std::left << std::setw(22) << #type_name << std::right << ": " \
+         << GetRelOpText(vals, #rel_op) << " = "            \
+         << std::boolalpha << rel_op   << std::noboolalpha << '\n';        \
+   }
+// ////////////////////////////////////////////////////////////////////////////
+
+
+//std::string vals(ShowMembers(value_a) + " vs " + ShowMembers(value_b));
+// ////////////////////////////////////////////////////////////////////////////
+#define MLB_TIMESPEC_TEST_RelOpsAll(type_name, value_a, value_b)     \
+   {                                                                 \
+      std::pair<type_name, type_name> vals(value_a, value_b);              \
+      std::cout << MLB::Utility::EmitterSep('=');                    \
+      MLB_TIMESPEC_TEST_RelOpsOne(type_name, vals, (value_a <  value_b))   \
+      MLB_TIMESPEC_TEST_RelOpsOne(type_name, vals, (value_a <= value_b))   \
+      MLB_TIMESPEC_TEST_RelOpsOne(type_name, vals, (value_a >  value_b))   \
+      MLB_TIMESPEC_TEST_RelOpsOne(type_name, vals, (value_a >= value_b))   \
+      MLB_TIMESPEC_TEST_RelOpsOne(type_name, vals, (value_a == value_b))   \
+      MLB_TIMESPEC_TEST_RelOpsOne(type_name, vals, (value_a != value_b))   \
+      std::cout << MLB::Utility::EmitterSep('=') << '\n';            \
+   }
+// ////////////////////////////////////////////////////////////////////////////
+
+// ////////////////////////////////////////////////////////////////////////////
+#define MLB_TIMESPEC_TEST_Values(type_name)  \
+   {                 \
+      for (uint32_t idx_a_1 = 1; idx_a_1 <= 2; ++idx_a_1) {                \
+         for (uint32_t idx_a_2= 1; idx_a_2 <= 2; ++idx_a_2) {                 \
+            for (uint32_t idx_b_1 = 1; idx_b_1 <= 2; ++idx_b_1) {                \
+               for (uint32_t idx_b_2 = 1; idx_b_2 <= 2; ++idx_b_2) {                \
+                  type_name value_a = type_name { idx_a_1, idx_a_2 };                \
+                  type_name value_b = type_name { idx_b_1, idx_b_2 };                \
+                  MLB_TIMESPEC_TEST_RelOpsAll(type_name, value_a, value_b) \
+               }                 \
+            }                 \
+         }                 \
+      }                 \
+   }
+// ////////////////////////////////////////////////////////////////////////////
+
+// ////////////////////////////////////////////////////////////////////////////
+void TEST_RunRelOpTests()
+{
+   MLB_TIMESPEC_TEST_Values(timespec)
+   MLB_TIMESPEC_TEST_Values(MLB::Utility::TimeSpec)
+}
+// ////////////////////////////////////////////////////////////////////////////
+
+
+} // Anonymous namespace
+
+// ////////////////////////////////////////////////////////////////////////////
+int main()
+{
+   int return_code = EXIT_SUCCESS;
+
+   try {
+      TEST_RunRelOpTests();
+	}
+   catch (const std::exception &except) {
+      return_code = EXIT_FAILURE;
+      std::cerr << "\n\nRegression test error: " << except.what() << std::endl;
+   }
+
+   return(return_code);
+}
+
+#endif // #ifdef TEST_MAIN
+

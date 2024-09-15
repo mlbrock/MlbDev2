@@ -42,6 +42,11 @@
 
 #include <Utility/TimeVal.hpp>
 
+#include <Utility/Compare_timespec.hpp>
+
+/*
+#include <compare>							//	CODE NOTE: Check if necessary.
+
 #include <string>
 
 #include <boost/config.hpp>
@@ -56,8 +61,31 @@ struct timespec {
 #else
 # include <unistd.h>
 #endif // # if defined(_MSC_VER)
+*/
 
 // ////////////////////////////////////////////////////////////////////////////
+
+/*
+#if defined(BOOST_CXX_VERSION) && (BOOST_CXX_VERSION >= 201703L)
+// ////////////////////////////////////////////////////////////////////////////
+constexpr auto operator <=> (const timespec &lhs, const timespec &rhs)
+{                    
+   std::weak_ordering cmp = lhs.tv_sec <=> rhs.tv_sec;
+
+   return((cmp != std::weak_ordering::equivalent) ? cmp : (lhs.tv_nsec <=> rhs.tv_nsec));
+}
+// ////////////////////////////////////////////////////////////////////////////
+
+// ////////////////////////////////////////////////////////////////////////////
+constexpr bool operator == (const timespec &lhs, const timespec &rhs)
+{
+   return((lhs.tv_sec == rhs.tv_sec) && (lhs.tv_nsec == rhs.tv_nsec));
+}   
+// ////////////////////////////////////////////////////////////////////////////
+#else
+# error "The timespec comparison operators have not yet been implemented."
+#endif // #if defined(BOOST_CXX_VERSION) && (BOOST_CXX_VERSION >= 201703L)
+*/
 
 namespace MLB {
 
