@@ -36,9 +36,11 @@
 // Required include files...
 // ////////////////////////////////////////////////////////////////////////////
 
-#include <compare>
-
 #include <boost/config.hpp>
+
+#if defined(BOOST_CXX_VERSION) && (BOOST_CXX_VERSION >= 201703L)
+# include <compare>
+#endif // #if defined(BOOST_CXX_VERSION) && (BOOST_CXX_VERSION >= 201703L)
 
 #if defined(_MSC_VER)
 # if (_MSC_VER < 1900)
@@ -70,15 +72,14 @@ constexpr bool operator == (const timespec &lhs, const timespec &rhs)
 }   
 // ////////////////////////////////////////////////////////////////////////////
 #else
-# error "The timespec comparison operators have not yet been implemented."
 // ////////////////////////////////////////////////////////////////////////////
 constexpr int Compare(const timespec &lhs, const timespec &rhs)
 {
-   return(
-      ((int) (lhs.tv_sec  > rhs.tv_sec)  ?  1 :
-            ((lhs.tv_sec  < rhs.tv_sec)  ? -1 :
-            ((lhs.tv_nsec > rhs.tv_nsec) ?  1 :
-            ((lhs.tv_nsec < rhs.tv_nsec) ? -1 : 0)))));
+	return(
+		((int) (lhs.tv_sec  > rhs.tv_sec)  ?  1 :
+				((lhs.tv_sec  < rhs.tv_sec)  ? -1 :
+				((lhs.tv_nsec > rhs.tv_nsec) ?  1 :
+				((lhs.tv_nsec < rhs.tv_nsec) ? -1 : 0)))));
 }
 // ////////////////////////////////////////////////////////////////////////////
 

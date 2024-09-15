@@ -36,9 +36,11 @@
 // Required include files...
 // ////////////////////////////////////////////////////////////////////////////
 
-#include <compare>
-
 #include <boost/config.hpp>
+
+#if defined(BOOST_CXX_VERSION) && (BOOST_CXX_VERSION >= 201703L)
+# include <compare>
+#endif // #if defined(BOOST_CXX_VERSION) && (BOOST_CXX_VERSION >= 201703L)
 
 #ifndef _MSC_VER
 # include <sys/time.h>
@@ -57,7 +59,7 @@
 // ////////////////////////////////////////////////////////////////////////////
 constexpr auto operator <=> (const timeval &lhs, const timeval &rhs)
 {                    
-   std::weak_ordering cmp = lhs.tv_sec <=> rhs.tv_sec;
+	std::weak_ordering cmp = lhs.tv_sec <=> rhs.tv_sec;
 
    return((cmp != std::weak_ordering::equivalent) ? cmp :
 		(lhs.tv_usec <=> rhs.tv_usec));
@@ -67,19 +69,18 @@ constexpr auto operator <=> (const timeval &lhs, const timeval &rhs)
 // ////////////////////////////////////////////////////////////////////////////
 constexpr bool operator == (const timeval &lhs, const timeval &rhs)
 {
-   return((lhs.tv_sec == rhs.tv_sec) && (lhs.tv_usec == rhs.tv_usec));
+	return((lhs.tv_sec == rhs.tv_sec) && (lhs.tv_usec == rhs.tv_usec));
 }   
 // ////////////////////////////////////////////////////////////////////////////
 #else
-# error "The timeval comparison operators have not yet been implemented."
 // ////////////////////////////////////////////////////////////////////////////
 constexpr int Compare(const timeval &lhs, const timeval &rhs)
 {
-   return(
-      ((int) (lhs.tv_sec  > rhs.tv_sec)  ?  1 :
-            ((lhs.tv_sec  < rhs.tv_sec)  ? -1 :
-            ((lhs.tv_usec > rhs.tv_usec) ?  1 :
-            ((lhs.tv_usec < rhs.tv_usec) ? -1 : 0)))));
+	return(
+		((int) (lhs.tv_sec  > rhs.tv_sec)  ?  1 :
+				((lhs.tv_sec  < rhs.tv_sec)  ? -1 :
+				((lhs.tv_usec > rhs.tv_usec) ?  1 :
+				((lhs.tv_usec < rhs.tv_usec) ? -1 : 0)))));
 }
 // ////////////////////////////////////////////////////////////////////////////
 
