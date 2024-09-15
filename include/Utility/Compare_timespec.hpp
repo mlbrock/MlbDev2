@@ -3,7 +3,7 @@
 // MLB Utility Library Include File
 // ////////////////////////////////////////////////////////////////////////////
 /*
-   File Name         :  Comparetimespec.hpp
+   File Name         :  Compare_timespec.hpp
 
    File Description  :  Compare functions for struct timespec.
 
@@ -18,14 +18,14 @@
 */
 // ////////////////////////////////////////////////////////////////////////////
 
-#ifndef HH__MLB__Utility__Comparetimespec_hpp__HH
+#ifndef HH__MLB__Utility__Compare_timespec_hpp__HH
 
-#define HH__MLB__Utility__Comparetimespec_hpp__HH   1
+#define HH__MLB__Utility__Compare_timespec_hpp__HH   1
 
 // ////////////////////////////////////////////////////////////////////////////
 // ////////////////////////////////////////////////////////////////////////////
 /**
-   \file Comparetimespec.hpp
+   \file Compare_timespec.hpp
 
    \brief   The TimeSpec class definition include file.
 */
@@ -125,5 +125,5 @@ constexpr bool operator != (const timespec &lhs, const timespec &rhs)
 // ////////////////////////////////////////////////////////////////////////////
 #endif // #if defined(BOOST_CXX_VERSION) && (BOOST_CXX_VERSION >= 201703L)
 
-#endif // #ifndef HH__MLB__Utility__Comparetimespec_hpp__HH
+#endif // #ifndef HH__MLB__Utility__Compare_timespec_hpp__HH
 
