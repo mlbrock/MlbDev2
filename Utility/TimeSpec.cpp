@@ -37,7 +37,7 @@
 
 // ////////////////////////////////////////////////////////////////////////////
 
-// Note: TimeSpec::AddSecondsInternal() is implemented in Time.cpp.
+// Note: TimeSpec::AddSeconds() is implemented in TimeSupport.cpp.
 
 namespace MLB {
 
@@ -106,61 +106,6 @@ TimeSpec::~TimeSpec()
 {
 }
 // ////////////////////////////////////////////////////////////////////////////
-
-/*
-#if (!defined(BOOST_CXX_VERSION)) || (BOOST_CXX_VERSION < 201703L)
-// ////////////////////////////////////////////////////////////////////////////
-constexpr bool TimeSpec::operator <  (const TimeSpec &other) const
-{
-	return(Compare(*this, other) <  0);
-}
-// ////////////////////////////////////////////////////////////////////////////
-
-// ////////////////////////////////////////////////////////////////////////////
-constexpr bool TimeSpec::operator >  (const TimeSpec &other) const
-{
-	return(Compare(*this, other) >  0);
-}
-// ////////////////////////////////////////////////////////////////////////////
-
-// ////////////////////////////////////////////////////////////////////////////
-constexpr bool TimeSpec::operator <= (const TimeSpec &other) const
-{
-	return(Compare(*this, other) <= 0);
-}
-// ////////////////////////////////////////////////////////////////////////////
-
-// ////////////////////////////////////////////////////////////////////////////
-constexpr bool TimeSpec::operator >= (const TimeSpec &other) const
-{
-	return(Compare(*this, other) >= 0);
-}
-// ////////////////////////////////////////////////////////////////////////////
-
-// ////////////////////////////////////////////////////////////////////////////
-constexpr bool TimeSpec::operator == (const TimeSpec &other) const
-{
-	return(Compare(*this, other) == 0);
-}
-// ////////////////////////////////////////////////////////////////////////////
-
-// ////////////////////////////////////////////////////////////////////////////
-constexpr bool TimeSpec::operator != (const TimeSpec &other) const
-{
-	return(Compare(*this, other) != 0);
-}
-// ////////////////////////////////////////////////////////////////////////////
-#endif // #if (!defined(BOOST_CXX_VERSION)) || (BOOST_CXX_VERSION < 201703L)
-*/
-
-/*
-// ////////////////////////////////////////////////////////////////////////////
-constexpr int TimeSpec::Compare(const TimeSpec &other) const
-{
-	return(Compare(*this, other));
-}
-// ////////////////////////////////////////////////////////////////////////////
-*/
 
 // ////////////////////////////////////////////////////////////////////////////
 TimeSpec &TimeSpec::SetToNow()
@@ -583,26 +528,6 @@ TimeSpec TimeSpec::Now()
 }
 // ////////////////////////////////////////////////////////////////////////////
 
-/*
-// ////////////////////////////////////////////////////////////////////////////
-constexpr int TimeSpec::Compare(const TimeSpec &lhs, const TimeSpec &rhs)
-{
-	return(
-		((int) (lhs.tv_sec  > rhs.tv_sec)  ?  1 :
-				((lhs.tv_sec  < rhs.tv_sec)  ? -1 :
-				((lhs.tv_nsec > rhs.tv_nsec) ?  1 :
-				((lhs.tv_nsec < rhs.tv_nsec) ? -1 : 0)))));
-}
-// ////////////////////////////////////////////////////////////////////////////
-
-// ////////////////////////////////////////////////////////////////////////////
-constexpr int TimeSpec::Compare(const TimeSpec *lhs, const TimeSpec *rhs)
-{
-	return(Compare(*lhs, *rhs));
-}
-// ////////////////////////////////////////////////////////////////////////////
-*/
-
 // ////////////////////////////////////////////////////////////////////////////
 TimeSpec TimeSpec::GetMinimumValue()
 {
@@ -702,6 +627,7 @@ std::ostream & operator << (std::ostream &o_str, const TimeSpec &datum)
 #include <iostream>
 
 namespace {
+
 // ////////////////////////////////////////////////////////////////////////////
 std::string ShowMembers(const timespec &src)
 {
@@ -725,47 +651,45 @@ template <typename DatumType>
 // ////////////////////////////////////////////////////////////////////////////
 
 // ////////////////////////////////////////////////////////////////////////////
-#define MLB_TIMESPEC_TEST_RelOpsOne(type_name, vals, rel_op)   \
-   {                    \
-      std::cout                     \
+#define MLB_TIMESPEC_TEST_RelOpsOne(type_name, vals, rel_op)   				\
+   {                    																	\
+      std::cout                     													\
          << std::left << std::setw(22) << #type_name << std::right << ": " \
-         << GetRelOpText(vals, #rel_op) << " = "            \
+         << GetRelOpText(vals, #rel_op) << " = "            					\
          << std::boolalpha << rel_op   << std::noboolalpha << '\n';        \
    }
 // ////////////////////////////////////////////////////////////////////////////
 
-
-//std::string vals(ShowMembers(value_a) + " vs " + ShowMembers(value_b));
 // ////////////////////////////////////////////////////////////////////////////
-#define MLB_TIMESPEC_TEST_RelOpsAll(type_name, value_a, value_b)     \
-   {                                                                 \
-      std::pair<type_name, type_name> vals(value_a, value_b);              \
-      std::cout << MLB::Utility::EmitterSep('=');                    \
-      MLB_TIMESPEC_TEST_RelOpsOne(type_name, vals, (value_a <  value_b))   \
-      MLB_TIMESPEC_TEST_RelOpsOne(type_name, vals, (value_a <= value_b))   \
-      MLB_TIMESPEC_TEST_RelOpsOne(type_name, vals, (value_a >  value_b))   \
-      MLB_TIMESPEC_TEST_RelOpsOne(type_name, vals, (value_a >= value_b))   \
-      MLB_TIMESPEC_TEST_RelOpsOne(type_name, vals, (value_a == value_b))   \
-      MLB_TIMESPEC_TEST_RelOpsOne(type_name, vals, (value_a != value_b))   \
-      std::cout << MLB::Utility::EmitterSep('=') << '\n';            \
-   }
+#define MLB_TIMESPEC_TEST_RelOpsAll(type_name, value_a, value_b)  			\
+	{  																							\
+		std::pair<type_name, type_name> vals(value_a, value_b);  				\
+		std::cout << MLB::Utility::EmitterSep('=');  								\
+		MLB_TIMESPEC_TEST_RelOpsOne(type_name, vals, (value_a <  value_b))	\
+		MLB_TIMESPEC_TEST_RelOpsOne(type_name, vals, (value_a <= value_b))	\
+		MLB_TIMESPEC_TEST_RelOpsOne(type_name, vals, (value_a >  value_b))	\
+		MLB_TIMESPEC_TEST_RelOpsOne(type_name, vals, (value_a >= value_b))	\
+		MLB_TIMESPEC_TEST_RelOpsOne(type_name, vals, (value_a == value_b))	\
+		MLB_TIMESPEC_TEST_RelOpsOne(type_name, vals, (value_a != value_b))	\
+		std::cout << MLB::Utility::EmitterSep('=') << '\n';						\
+	}
 // ////////////////////////////////////////////////////////////////////////////
 
 // ////////////////////////////////////////////////////////////////////////////
-#define MLB_TIMESPEC_TEST_Values(type_name)  \
-   {                 \
-      for (uint32_t idx_a_1 = 1; idx_a_1 <= 2; ++idx_a_1) {                \
-         for (uint32_t idx_a_2= 1; idx_a_2 <= 2; ++idx_a_2) {                 \
-            for (uint32_t idx_b_1 = 1; idx_b_1 <= 2; ++idx_b_1) {                \
-               for (uint32_t idx_b_2 = 1; idx_b_2 <= 2; ++idx_b_2) {                \
-                  type_name value_a = type_name { idx_a_1, idx_a_2 };                \
-                  type_name value_b = type_name { idx_b_1, idx_b_2 };                \
-                  MLB_TIMESPEC_TEST_RelOpsAll(type_name, value_a, value_b) \
-               }                 \
-            }                 \
-         }                 \
-      }                 \
-   }
+#define MLB_TIMESPEC_TEST_Values(type_name)  										\
+	{  																							\
+		for (uint32_t idx_a_1 = 1; idx_a_1 <= 2; ++idx_a_1) { 					\
+			for (uint32_t idx_a_2= 1; idx_a_2 <= 2; ++idx_a_2) {  				\
+				for (uint32_t idx_b_1 = 1; idx_b_1 <= 2; ++idx_b_1) { 			\
+					for (uint32_t idx_b_2 = 1; idx_b_2 <= 2; ++idx_b_2) { 		\
+						type_name value_a = type_name { idx_a_1, idx_a_2 };		\
+						type_name value_b = type_name { idx_b_1, idx_b_2 };		\
+						MLB_TIMESPEC_TEST_RelOpsAll(type_name, value_a, value_b)	\
+					}  																			\
+				}  																				\
+			}  																					\
+		}  																						\
+	}
 // ////////////////////////////////////////////////////////////////////////////
 
 // ////////////////////////////////////////////////////////////////////////////
@@ -775,7 +699,6 @@ void TEST_RunRelOpTests()
    MLB_TIMESPEC_TEST_Values(MLB::Utility::TimeSpec)
 }
 // ////////////////////////////////////////////////////////////////////////////
-
 
 } // Anonymous namespace
 
@@ -794,6 +717,7 @@ int main()
 
    return(return_code);
 }
+// ////////////////////////////////////////////////////////////////////////////
 
 #endif // #ifdef TEST_MAIN
 

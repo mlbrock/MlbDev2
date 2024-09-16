@@ -48,21 +48,6 @@
 #include <cstring>
 #include <ostream>
 
-/*
-#include <boost/config.hpp>
-
-#ifndef _MSC_VER
-# include <sys/time.h>
-#elif (_MSC_VER < 1900)
-# include <WinSock2.h>
-#else
-# pragma warning(push)
-# pragma warning(disable:5039)
-# include <WinSock2.h>
-# pragma warning(pop)
-#endif // #ifndef _MSC_VER
-*/
-
 // ////////////////////////////////////////////////////////////////////////////
 
 namespace MLB {
