@@ -23,6 +23,8 @@
     <ClInclude Include="..\..\..\..\include\Utility\AnyToString.hpp" />
     <ClInclude Include="..\..\..\..\include\Utility\ArgCheck.hpp" />
     <ClInclude Include="..\..\..\..\include\Utility\CheckCmdLineArgs.hpp" />
+    <ClInclude Include="..\..\..\..\include\Utility\Compare_timespec.hpp" />
+    <ClInclude Include="..\..\..\..\include\Utility\Compare_timeval.hpp" />
     <ClInclude Include="..\..\..\..\include\Utility\CriticalEventHandler.hpp" />
     <ClInclude Include="..\..\..\..\include\Utility\CurrentPath.hpp" />
     <ClInclude Include="..\..\..\..\include\Utility\DemangleCppName.hpp" />
