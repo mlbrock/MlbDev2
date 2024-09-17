@@ -30,6 +30,7 @@ SRCS		=	\
 			CreateMFStore.cpp		\
 			EnsureFileBackingStore.cpp	\
 			FixUpFileSizePending.cpp	\
+			GetWriterAdvisoryLock.cpp	\
 			MFStoreControl.cpp		\
 			MFStoreSection.cpp
 
