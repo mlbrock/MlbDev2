@@ -32,17 +32,6 @@
 #include <cstring>
 #include <limits>
 
-/*
-#include <Utility/EmitterSep.hpp>
-#include <Utility/GranularRound.hpp>
-#include <Utility/ThrowErrno.hpp>
-
-#include <cstring>
-#include <stdexcept>
-
-#include <boost/io/ios_state.hpp>
-*/
-
 // ////////////////////////////////////////////////////////////////////////////
 
 namespace MLB {
@@ -52,65 +41,6 @@ namespace NatsWrapper {
 // ////////////////////////////////////////////////////////////////////////////
 class NatsSubscription;
 // ////////////////////////////////////////////////////////////////////////////
-
-// ////////////////////////////////////////////////////////////////////////////
-/*
-class NatsConnection
-{
-public:
-	NatsConnection(NatsOptions &nats_options);
-	NatsConnection(const char *urls, std::size_t urls_length);
-	NatsConnection(const std::string_view &urls);
-	NatsConnection(const std::string &urls);
-	NatsConnection(const char *urls);
-
-	~NatsConnection();
-
-	      natsConnection *GetPtr();
-	const natsConnection *GetPtr() const;
-
-	void Close();
-	void Destroy();
-	void FlushTimeout(int64_t time_out);
-	void Publish(const char *subject_name, std::size_t subject_name_length,
-		const void *data_ptr, std::size_t data_length);
-	void Publish(const std::string_view &subject_name, const void *data_ptr,
-		std::size_t data_length);
-	void Publish(const std::string &subject_name, const void *data_ptr,
-		std::size_t data_length);
-	void Publish(const char *subject_name, const void *data_ptr,
-		std::size_t data_length);
-
-	NatsSubscription SubscribeSync(const char *subject_name,
-		std::size_t subject_name_length);
-	NatsSubscription SubscribeSync(const std::string &subject_name);
-	NatsSubscription SubscribeSync(const char *subject_name);
-
-	static NatsConnection Connect(NatsOptions &nats_options);
-	static NatsConnection ConnectTo(const char *urls, std::size_t urls_length);
-	static NatsConnection ConnectTo(const std::string_view &urls);
-	static NatsConnection ConnectTo(const std::string &urls);
-	static NatsConnection ConnectTo(const char *urls);
-
-private:
-	std::shared_ptr<natsConnection> nats_connection_sptr_;
-};
-*/
-// ////////////////////////////////////////////////////////////////////////////
-
-} // namespace NatsWrapper
-
-} // namespace MLB
-
-// ////////////////////////////////////////////////////////////////////////////
-// ****************************************************************************
-// ****************************************************************************
-// ****************************************************************************
-// ////////////////////////////////////////////////////////////////////////////
-
-namespace MLB {
-
-namespace NatsWrapper {
 
 // ////////////////////////////////////////////////////////////////////////////
 NatsConnection::NatsConnection(NatsOptions &nats_options)
@@ -191,15 +121,6 @@ void NatsConnection::Close()
 	if (nats_connection_sptr_)
 		natsConnection_Close(nats_connection_sptr_.get());
 }
-// ////////////////////////////////////////////////////////////////////////////
-
-// ////////////////////////////////////////////////////////////////////////////
-/*
-void NatsConnection::Destroy()
-{
-	nats_connection_sptr_.reset();
-}
-*/
 // ////////////////////////////////////////////////////////////////////////////
 
 // ////////////////////////////////////////////////////////////////////////////

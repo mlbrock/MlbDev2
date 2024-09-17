@@ -32,17 +32,6 @@
 
 #include <cstring>
 
-/*
-#include <Utility/EmitterSep.hpp>
-#include <Utility/GranularRound.hpp>
-#include <Utility/ThrowErrno.hpp>
-
-#include <cstring>
-#include <stdexcept>
-
-#include <boost/io/ios_state.hpp>
-*/
-
 // ////////////////////////////////////////////////////////////////////////////
 
 namespace MLB {
@@ -134,84 +123,6 @@ void NatsSubscription::Unsubscribe()
 }
 // ////////////////////////////////////////////////////////////////////////////
 
-/*
-// ////////////////////////////////////////////////////////////////////////////
-void NatsSubscription::Destroy()
-{
-	if (nats_subscription_sptr_)
-		nats_subscription_sptr_.release();
-}
-// ////////////////////////////////////////////////////////////////////////////
-
-// ////////////////////////////////////////////////////////////////////////////
-void NatsSubscription::FlushTimeout(int64_t time_out)
-{
-	NatsWrapper_THROW_IF_NOT_OK(::natsConnection_FlushTimeout,
-		(GetPtr(), time_out))
-}
-// ////////////////////////////////////////////////////////////////////////////
-
-// ////////////////////////////////////////////////////////////////////////////
-void NatsSubscription::Publish(const char *subject_name,
-	std::size_t subject_name_length, const void *data_ptr,
-	std::size_t data_length)
-{
-	if (!subject_name)
-		throw std::invalid_argument("The pointer to the subject name on which "
-			"data is to be published is NULL.");
-
-	if (!subject_name)
-		throw std::invalid_argument("The length of the subject name on which "
-			"data to be published is 0.");
-
-	if (!data_ptr)
-		throw std::invalid_argument("The pointer to data to be published "
-			"is NULL.");
-
-	if (!data_length)
-		throw std::invalid_argument("The length of the data to be published "
-			"is 0.");
-
-	if (data_length >
-		 static_cast<std::size>(std::numeric_limits<int>::max()))
-		throw std::invalid_argument("Length of the data to be published is "
-			"greater than the maximum permissible by the data type NATS uses to "
-			"specify the length of published data (" +
-			std::to_string(std::numeric_limits<int>::max()) + ").");
-
-	NatsWrapper_THROW_IF_NOT_OK(::natsConnection_Publish,
-		(GetPtr(), subject_name, data_ptr, data_length))
-}
-// ////////////////////////////////////////////////////////////////////////////
-
-// ////////////////////////////////////////////////////////////////////////////
-void NatsSubscription::Publish(const std::string_view &subject_name,
-	const void *data_ptr, std::size_t data_length)
-{
-	Publish(subject_name.data(), subject_name.size(), data_ptr, data_length);
-}
-// ////////////////////////////////////////////////////////////////////////////
-
-// ////////////////////////////////////////////////////////////////////////////
-void NatsSubscription::Publish(const std::string &subject_name,
-	const void *data_ptr, std::size_t data_length)
-{
-	Publish(subject_name.c_str(), subject_name.size(), data_ptr, data_length);
-}
-// ////////////////////////////////////////////////////////////////////////////
-
-// ////////////////////////////////////////////////////////////////////////////
-void NatsSubscription::Publish(const char *subject_name, const void *data_ptr,
-	std::size_t data_length)
-{
-	if (!subject_name)
-		throw std::invalid_argument("Subject name on which to publish is NULL.");
-
-	Publish(subject_name, ::strlen(subject_name), data_ptr, data_length);
-}
-// ////////////////////////////////////////////////////////////////////////////
-*/
-
 // ////////////////////////////////////////////////////////////////////////////
 void NatsSubscription::NatsMsgHandler(natsConnection * /* nats_conn_ptr */,
 	natsSubscription * /* nats_subs_ptr */, natsMsg * /* nats_msg_ptr */)
@@ -259,9 +170,6 @@ void NatsSubscription::NatsMsgHandler(natsConnection *nats_conn_ptr,
 #include <Utility/Sleep.hpp>
 
 #include <iostream>
-
-//using namespace MLB::Utility;
-//using namespace MLB::NatsWrapper;
 
 namespace {
 

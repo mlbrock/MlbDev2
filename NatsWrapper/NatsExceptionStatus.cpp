@@ -83,19 +83,6 @@ natsStatus NatsExceptionStatus::GetNatsStatus() const
 std::string NatsExceptionStatus::GetStatusString(natsStatus nats_code,
 	const char *func_name, const char *params)
 {
-/*
-	func_name = (func_name && *func_name) ? func_name : "*UNKNOWN-FUNCTION*";
-
-	const char *nats_text = ::natsStatus_GetText(nats_code);
-
-	nats_text = (nats_text && *nats_text) ? nats_text : "*UNKNOWN-NATS-TEXT*";
-
-	std::string status_string("NATS error code " + std::to_string(nats_code) +
-		" (\"" + std::string(nats_text) + "\") was encountered in function " +
-		std::string(func_name) + "().");
-
-	return(status_string);
-*/
 	std::string tmp_string("Error was encountered in function " +
 		std::string(func_name) + ((params && *params) ? params : "()"));
 

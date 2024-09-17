@@ -25,58 +25,6 @@
 
 #include <NatsWrapper/NatsMsg.hpp>
 
-/*
-#include <Utility/EmitterSep.hpp>
-#include <Utility/GranularRound.hpp>
-#include <Utility/ThrowErrno.hpp>
-
-#include <cstring>
-#include <stdexcept>
-
-#include <boost/io/ios_state.hpp>
-*/
-
-// ////////////////////////////////////////////////////////////////////////////
-
-namespace MLB {
-
-namespace NatsWrapper {
-
-// ////////////////////////////////////////////////////////////////////////////
-/*
-class NatsMsg
-{
-	NatsMsg(natsMsg *nats_msg);
-
-	friend NatsMsg NatsSubscription::NextMessage(int64_t time_out);
-
-public:
-	NatsMsg(NatsSubscription &nats_subs, int64_t time_out);
-
-	~NatsMsg();
-
-	const char *GetSubject() const;
-	const char *GetReply() const;
-	const char *GetData() const;
-	int         GetDataLength() const;
-
-	natsMsg    *GetPtr();
-	natsMsg    *GetPtrChecked();
-
-private:
-	std::shared_ptr<NatsMsg> nats_msg_sptr_;
-};
-*/
-// ////////////////////////////////////////////////////////////////////////////
-
-} // namespace NatsWrapper
-
-} // namespace MLB
-
-// ////////////////////////////////////////////////////////////////////////////
-// ****************************************************************************
-// ****************************************************************************
-// ****************************************************************************
 // ////////////////////////////////////////////////////////////////////////////
 
 namespace MLB {
@@ -88,14 +36,6 @@ namespace NatsWrapper {
 NatsMsg::NatsMsg(natsMsg *nats_msg)
 	:nats_msg_sptr_()
 {
-/*
-	natsMsg *nats_msg = NULL;
-
-	NatsWrapper_THROW_IF_NOT_OK(::natsSubscription_NextMsg,
-		&nats_msg, nats_subs.GetPtr(), time_out)
-
-	nats_msg_sptr_ = std::make_shared<natsMsg>(GetPtr(), ::natsMsg_Destroy);
-*/
 	if (nats_msg)
 		nats_msg_sptr_.reset(nats_msg, ::natsMsg_Destroy);
 }
@@ -187,29 +127,8 @@ natsMsg *NatsMsg::GetPtrChecked()
 // ////////////////////////////////////////////////////////////////////////////
 const natsMsg *NatsMsg::GetPtrChecked() const
 {
-/*
-	if (!nats_msg_sptr_.get())
-		throw std::runtime_error("Attempt to make use of the underlying NATS "
-			"message pointer, but it is NULL.");
-
-	return(nats_msg_sptr_.get());
-*/
 	return(GetPtrChecked_Helper(nats_msg_sptr_.get()));
 }
-// ////////////////////////////////////////////////////////////////////////////
-
-// ////////////////////////////////////////////////////////////////////////////
-/*
-NatsMsg NatsMsg::NextMessage(int64_t time_out)
-{
-	natsMsg *nats_msg = NULL;
-
-	NatsWrapper_THROW_IF_NOT_OK_OR_TIMEOUT(::natsMsg_NextMsg,
-		(&nats_msg, nats_conn.GetPtr(), subject_name))
-
-	nats_msg_sptr_.reset(GetPtr(), ::natsMsg_Destroy);
-}
-*/
 // ////////////////////////////////////////////////////////////////////////////
 
 } // namespace NatsWrapper

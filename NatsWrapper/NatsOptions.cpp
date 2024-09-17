@@ -30,51 +30,6 @@
 
 #include <Utility/ArgCheck.hpp>
 
-/*
-#include <Utility/EmitterSep.hpp>
-#include <Utility/GranularRound.hpp>
-#include <Utility/ThrowErrno.hpp>
-
-#include <cstring>
-#include <stdexcept>
-
-#include <boost/io/ios_state.hpp>
-*/
-
-// ////////////////////////////////////////////////////////////////////////////
-
-namespace MLB {
-
-namespace NatsWrapper {
-
-/*
-// ////////////////////////////////////////////////////////////////////////////
-class NatsOptions
-{
-public:
-	NatsOptions();
-
-	~NatsOptions();
-
-	void Destroy();
-
-	      natsOptions *GetPtr();
-	const natsOptions *GetPtr() const;
-
-private:
-	std::shared_ptr<natsOptions> nats_options_sptr_;
-};
-// ////////////////////////////////////////////////////////////////////////////
-*/
-
-} // namespace NatsWrapper
-
-} // namespace MLB
-
-// ////////////////////////////////////////////////////////////////////////////
-// ****************************************************************************
-// ****************************************************************************
-// ****************************************************************************
 // ////////////////////////////////////////////////////////////////////////////
 
 namespace MLB {

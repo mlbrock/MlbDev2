@@ -36,7 +36,6 @@
 // Required include files...
 // ////////////////////////////////////////////////////////////////////////////
 
-//#include <NatsWrapper/NatsConnection.hpp>
 #include <NatsWrapper/NatsWrapper.hpp>
 
 #include <memory>
@@ -73,9 +72,6 @@ public:
 	NatsMsg NextMsg(int64_t time_out);
 
 	void Unsubscribe();
-/*
-	void Destroy();
-*/
 
 protected:
 	virtual void NatsMsgHandler(natsConnection *nats_conn_ptr,
