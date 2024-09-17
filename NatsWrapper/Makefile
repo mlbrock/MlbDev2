@@ -29,6 +29,7 @@ SRCS		=	\
 			NatsConnection.cpp	\
 			NatsContext.cpp		\
 			NatsExceptionStatus.cpp	\
+			NatsInbox.cpp		\
 			NatsMsg.cpp		\
 			NatsOptions.cpp		\
 			NatsSubscription.cpp

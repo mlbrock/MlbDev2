@@ -3,11 +3,11 @@
 // MLB NatsWrapper Library Include File
 // ////////////////////////////////////////////////////////////////////////////
 /*
-   File Name         :  NatsMsg.hpp
+   File Name         :  NatsInbox.hpp
 
-   File Description  :  Include file for the NatsMsg class.
+   File Description  :  Include file for the NatsInbox class.
 
-   Revision History  :  2024-08-17 --- Creation.
+   Revision History  :  2024-09-16 --- Creation.
                            Michael L. Brock
 
       Copyright Michael L. Brock 2024.
@@ -18,16 +18,16 @@
 */
 // ////////////////////////////////////////////////////////////////////////////
 
-#ifndef HH__MLB__NatsWrapper__NatsMsg_hpp__HH
+#ifndef HH__MLB__NatsWrapper__NatsInbox_hpp__HH
 
-#define HH__MLB__NatsWrapper__NatsMsg_hpp__HH 1
+#define HH__MLB__NatsWrapper__NatsInbox_hpp__HH 1
 
 // ////////////////////////////////////////////////////////////////////////////
 // ////////////////////////////////////////////////////////////////////////////
 /**
-   \file NatsMsg.hpp
+   \file NatsInbox.hpp
 
-   \brief   Main include file for the NatsMsg class.
+   \brief   Main include file for the NatsInbox class.
 */
 // ////////////////////////////////////////////////////////////////////////////
 
@@ -38,7 +38,8 @@
 
 #include <NatsWrapper/NatsSubscription.hpp>
 
-#include <string>
+//#include <string>
+#include <string_view>
 
 // ////////////////////////////////////////////////////////////////////////////
 
@@ -47,31 +48,20 @@ namespace MLB {
 namespace NatsWrapper {
 
 // ////////////////////////////////////////////////////////////////////////////
-class NatsMsg
+class NatsInbox
 {
-	NatsMsg(natsMsg *nats_msg);
-
-	friend NatsMsg NatsSubscription::NextMsg(int64_t time_out);
-
 public:
-	NatsMsg(NatsSubscription &nats_subs, int64_t time_out);
+	NatsInbox();
 
-	virtual ~NatsMsg();
+	virtual ~NatsInbox();
 
-	const char *GetSubject() const;
-	const char *GetReply() const;
-	const char *GetData() const;
-	int         GetDataLength() const;
-
-	bool        IsNoResponders() const;
-
-	      natsMsg    *GetPtr();
-	const natsMsg    *GetPtr() const;
-	      natsMsg    *GetPtrChecked();
-	const natsMsg    *GetPtrChecked() const;
+	      natsInbox        *GetPtr();
+	const natsInbox        *GetPtr() const;
+	      std::string       GetInboxAsString() const;
+	      std::string_view  GetInboxAsStringView() const;
 
 private:
-	std::shared_ptr<natsMsg> nats_msg_sptr_;
+	std::shared_ptr<natsInbox> nats_inbox_sptr_;
 };
 // ////////////////////////////////////////////////////////////////////////////
 
@@ -79,5 +69,5 @@ private:
 
 } // namespace MLB
 
-#endif // #ifndef HH__MLB__NatsWrapper__NatsMsg_hpp__HH
+#endif // #ifndef HH__MLB__NatsWrapper__NatsInbox_hpp__HH
 
