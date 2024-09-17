@@ -39,7 +39,7 @@ NatsInbox::NatsInbox()
 	natsInbox *nats_inbox = NULL;
 
 	NatsWrapper_THROW_IF_NOT_OK(::natsInbox_Create,
-		(&nats_inbox, time_out))
+		(&nats_inbox))
 
 	nats_inbox_sptr_.reset(nats_inbox, ::natsInbox_Destroy);
 }

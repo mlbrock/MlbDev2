@@ -91,7 +91,9 @@ int NatsMsg::GetDataLength() const
 // ////////////////////////////////////////////////////////////////////////////
 bool NatsMsg::IsNoResponders() const
 {
-	return(::natsMsg_IsNoResponders(GetPtrChecked()));
+	GetPtrChecked();
+
+	return(::natsMsg_IsNoResponders(nats_msg_sptr_.get()));
 }
 // ////////////////////////////////////////////////////////////////////////////
 
