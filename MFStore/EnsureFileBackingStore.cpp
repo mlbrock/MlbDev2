@@ -70,6 +70,8 @@ void EnsureFileBackingStore_Helper(const char *file_name,
 		o_str << "Attempt to ensure file ";
 		if (file_name && *file_name)
 			o_str << '\'' << file_name << "' ";
+		else
+			o_str << "*UNKNOWN-FILE-NAME*";
 		o_str << "using file handle " << file_handle << " has backing "
 			"storage assigned beginning at offset " << store_offset << " and "
 			"continuing for " << store_length << " bytes failed: " <<
