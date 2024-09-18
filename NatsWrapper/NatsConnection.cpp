@@ -25,6 +25,7 @@
 
 #include <NatsWrapper/NatsConnection.hpp>
 
+#include <NatsWrapper/NatsMsg.hpp>
 #include <NatsWrapper/NatsSubscription.hpp>
 
 #include <Utility/ArgCheck.hpp>
@@ -211,7 +212,7 @@ void NatsConnection::PublishString(const std::string &subject_name,
 // ////////////////////////////////////////////////////////////////////////////
 
 // ////////////////////////////////////////////////////////////////////////////
-void NatsConnection::PublishMsg(const NatsMsg &msg)
+void NatsConnection::PublishMsg(NatsMsg &msg)
 {
 	NatsWrapper_THROW_IF_NOT_OK(::natsConnection_PublishMsg,
 		(GetPtr(), msg.GetPtrChecked()))
@@ -260,7 +261,7 @@ void NatsConnection::PublishRequest(const std::string &send_subject,
 
 // ////////////////////////////////////////////////////////////////////////////
 void NatsConnection::PublishRequestString(const char *send_subject,
-	const char *reply_subject, const chat *str)
+	const char *reply_subject, const char *str)
 {
 	MLB::Utility::ThrowIfNullOrEmpty(send_subject,
 		"The send subject name on which data is to be published");

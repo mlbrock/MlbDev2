@@ -81,7 +81,7 @@ public:
 	void PublishString(const char *subject_name, const char *str);
 	void PublishString(const std::string &subject_name, const std::string &str);
 
-	void PublishMsg(const NatsMsg &msg);
+	void PublishMsg(NatsMsg &msg);
 
 	void PublishRequest(const char *send_subject, const char *reply_subject,
 		const void *data_ptr, std::size_t data_length);

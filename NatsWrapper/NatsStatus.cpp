@@ -119,8 +119,7 @@ const std::set<natsStatus> &GetNatsStatusSet()
     NATS_MISSED_HEARTBEAT,              ///< For JetStream subscriptions, it means that the library detected that server heartbeats have been missed.
 	};
 
-	return(std::pair<natsStatus, natsStatus>(
-		*NatsStatusSet.begin(), *NatsStatusSet.rbegin()));
+	return(NatsStatusSet);
 }
 // ////////////////////////////////////////////////////////////////////////////
 
@@ -174,7 +173,8 @@ natsStatus CheckIsValidNatsStatus(natsStatus nats_code)
 // ////////////////////////////////////////////////////////////////////////////
 const char *GetNatsStatusTextPtr(natsStatus nats_code)
 {
-	return((IsValid(nats_code)) ? ::natsStatus_GetText(nats_code) : nullptr);
+	return((IsValidNatsStatus(nats_code)) ?
+		::natsStatus_GetText(nats_code) : nullptr);
 }
 // ////////////////////////////////////////////////////////////////////////////
 
@@ -209,13 +209,14 @@ void TEST_NatsStatus()
 {
 	using namespace MLB::NatsWrapper;
 
-	for (int nats_code = GetNatsStatusMin(); nats_code <= GetNatsStatusMax();
-		++nats_code) {
+	for (natsStatus nats_code = GetNatsStatusMin();
+		nats_code <= GetNatsStatusMax(); ) {
 		std::cout << "NatsStatus " << std::setw(5) << nats_code << ": ";
-		if (IsValidNatsStatus())
-			std::cout << GetNatsStatusPtr() << '\n';
+		if (IsValidNatsStatus(nats_code))
+			std::cout << GetNatsStatusTextPtr(nats_code) << '\n';
 		else
 			std::cout << "*NOT-VALID*\n";
+		nats_code = static_cast<natsStatus>(static_cast<int>(nats_code) + 1);
 	}
 }
 // ////////////////////////////////////////////////////////////////////////////

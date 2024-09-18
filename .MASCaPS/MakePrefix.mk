@@ -70,7 +70,7 @@ LIB_SSL_DIR	=	/usr/lib64
 LIB_SSL_NAMES_A	=
 LIB_SSL_NAMES_SO=	ssl
 
-INC_CRYPTO_DIR	=	???
+INC_CRYPTO_DIR	=
 LIB_CRYPTO_DIR	=	/usr/lib64
 LIB_CRYPTO_NAMES_A	=
 LIB_CRYPTO_NAMES_SO	=	crypto
@@ -86,7 +86,7 @@ LIB_PROTOBUF_C_NAMES_A	=
 LIB_PROTOBUF_C_NAMES_SO	=	protobuf-c
 
 INC_NATS_DIR	=	/home/mlbrock/DevEnv/GitRepos/nats-io/nats.c/src
-LIB_NATS_DIR	=	/home/mlbrock/DevEnv/GitRepos/nats-io/nats.c/___MLB_Build_Dir/lib
+LIB_NATS_DIR	=	/home/mlbrock/DevEnv/GitRepos/nats-io/nats.c/___MLB_BuildDir/lib
 LIB_NATS_NAMES_A	=	nats_static
 LIB_NATS_NAMES_SO	=	nats
 
@@ -172,8 +172,8 @@ MLB_LIB_FULL	=	\
 
 LDLIBS		=	\
 			-Bstatic	\
-			${addprefix -l,${LIB_NATS_NAMES_A}}	\
 			${addprefix -l,${MLB_LIB_NAMES}}	\
+			${addprefix -l,${LIB_NATS_NAMES_A}}	\
 			-Bdynamic	\
 			${addprefix -l,${LIB_CRYPTO_NAMES_SO}}	\
 			${addprefix -l,${LIB_SSL_NAMES_SO}}	\

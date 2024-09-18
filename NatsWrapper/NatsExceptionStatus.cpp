@@ -25,7 +25,7 @@
 
 #include <NatsWrapper/NatsExceptionStatus.hpp>
 
-#include <set>									// CODE NOTE: for NatsStatusSet ONLY.
+#include <NatsWrapper/NatsStatus.hpp>
 
 // ////////////////////////////////////////////////////////////////////////////
 
@@ -138,8 +138,8 @@ void TEST_NatsExceptionStatus()
 		}
 	}
 
-	std::cout << "*** MIN=" << GetNatsStatusMin()
-		<< "MAX=" << GetNatsStatusMax() << std::endl;
+	std::cout << "*** MIN natsStatus=" << GetNatsStatusMin()
+		<< " ---> MAX natsStatus=" << GetNatsStatusMax() << std::endl;
 }
 // ////////////////////////////////////////////////////////////////////////////
 
