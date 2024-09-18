@@ -64,8 +64,11 @@ public:
 	const natsConnection *GetPtr() const;
 
 	void Close();
+
 	void Destroy();
+
 	void FlushTimeout(int64_t time_out);
+
 	void Publish(const char *subject_name, std::size_t subject_name_length,
 		const void *data_ptr, std::size_t data_length);
 	void Publish(const std::string_view &subject_name, const void *data_ptr,
@@ -75,6 +78,22 @@ public:
 	void Publish(const char *subject_name, const void *data_ptr,
 		std::size_t data_length);
 
+	void PublishString(const char *subject_name, const char *str);
+	void PublishString(const std::string &subject_name, const std::string &str);
+
+	void PublishMsg(const NatsMsg &msg);
+
+	void PublishRequest(const char *send_subject, const char *reply_subject,
+		const void *data_ptr, std::size_t data_length);
+	void PublishRequest(const std::string &send_subject,
+		const std::string &reply_subject, const void *data_ptr,
+		std::size_t data_length);
+
+	void PublishRequestString(const char *send_subject,
+		const char *reply_subject, const char *str);
+	void PublishRequestString(const std::string &send_subject,
+		const std::string &reply_subject, const std::string &str);
+
 	NatsSubscription SubscribeSync(const char *subject_name,
 		std::size_t subject_name_length);
 	NatsSubscription SubscribeSync(const std::string &subject_name);
@@ -82,7 +101,6 @@ public:
 
 	static NatsConnection Connect(NatsOptions &nats_options);
 	static NatsConnection ConnectTo(const char *urls, std::size_t urls_length);
-	static NatsConnection ConnectTo(const std::string_view &urls);
 	static NatsConnection ConnectTo(const std::string &urls);
 	static NatsConnection ConnectTo(const char *urls);
 
