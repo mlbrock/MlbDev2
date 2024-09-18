@@ -32,6 +32,7 @@ SRCS		=	\
 			NatsInbox.cpp		\
 			NatsMsg.cpp		\
 			NatsOptions.cpp		\
+			NatsStatus.cpp		\
 			NatsSubscription.cpp
 
 #LINK_STATIC	=	${LINK_STATIC_BIN}
