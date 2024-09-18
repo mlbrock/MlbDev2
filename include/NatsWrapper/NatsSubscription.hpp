@@ -80,6 +80,7 @@ protected:
 	static void NatsMsgHandler(natsConnection *nats_conn_ptr,
 		natsSubscription *nats_subs_ptr,
 		natsMsg *nats_msg_ptr, void *closure_ptr);
+
 private:
 	std::shared_ptr<natsSubscription> nats_subscription_sptr_;
 };
