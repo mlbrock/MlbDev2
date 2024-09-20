@@ -56,12 +56,21 @@ class NatsMsg;
 class NatsSubscription
 {
 public:
+	// Performs a natsConnection_Subscribe()
+	NatsSubscription(NatsConnection &nats_conn, const char *subject_name,
+		natsMsgHandler call_back, void *closure = nullptr);
+	NatsSubscription(NatsConnection &nats_conn, const std::string &subject_name,
+		natsMsgHandler call_back, void *closure = nullptr);
+
+	// Performs a natsConnection_SubscribeTimeout()
+	NatsSubscription(NatsConnection &nats_conn, const char *subject_name,
+		int64_t time_out, natsMsgHandler call_back, void *closure = nullptr);
+	NatsSubscription(NatsConnection &nats_conn, const std::string &subject_name,
+		int64_t time_out, natsMsgHandler call_back, void *closure = nullptr);
+
 	// Performs a natsConnection_SubscribeSync()
-	NatsSubscription(NatsConnection &nats_conn,
-		const char *subject_name, std::size_t subject_name_length);
-	NatsSubscription(NatsConnection &nats_conn, const std::string_view &subject_name);
-	NatsSubscription(NatsConnection &nats_conn, const std::string &subject_name);
 	NatsSubscription(NatsConnection &nats_conn, const char *subject_name);
+	NatsSubscription(NatsConnection &nats_conn, const std::string &subject_name);
 
 	virtual ~NatsSubscription();
 

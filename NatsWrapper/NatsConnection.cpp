@@ -286,26 +286,49 @@ void NatsConnection::PublishRequestString(const std::string &send_subject,
 // ////////////////////////////////////////////////////////////////////////////
 
 // ////////////////////////////////////////////////////////////////////////////
-NatsSubscription NatsConnection::SubscribeSync(const char *subject_name,
-	std::size_t subject_name_length)
+NatsSubscription NatsConnection::Subscribe(const char *subject_name,
+	natsMsgHandler call_back, void *closure)
 {
-	return(NatsSubscription(*this, subject_name, subject_name_length));
+	return(NatsSubscription(*this, subject_name, call_back, closure));
 }
 // ////////////////////////////////////////////////////////////////////////////
 
 // ////////////////////////////////////////////////////////////////////////////
-NatsSubscription NatsConnection::SubscribeSync(const std::string &subject_name)
+NatsSubscription NatsConnection::Subscribe(const std::string &subject_name,
+	natsMsgHandler call_back, void *closure)
 {
-	return(SubscribeSync(subject_name.c_str(), subject_name.size()));
+	return(Subscribe(subject_name.c_str(), call_back, closure));
+}
+// ////////////////////////////////////////////////////////////////////////////
+
+// ////////////////////////////////////////////////////////////////////////////
+NatsSubscription NatsConnection::SubscribeTimeout(const char *subject_name,
+	int64_t time_out, natsMsgHandler call_back, void *closure)
+{
+	return(NatsSubscription(*this, subject_name, time_out, call_back, closure));
+}
+// ////////////////////////////////////////////////////////////////////////////
+
+// ////////////////////////////////////////////////////////////////////////////
+NatsSubscription NatsConnection::SubscribeTimeout(
+	const std::string &subject_name, int64_t time_out, natsMsgHandler call_back,
+	void *closure)
+{
+	return(Subscribe(subject_name.c_str(), time_out, call_back, closure));
 }
 // ////////////////////////////////////////////////////////////////////////////
 
 // ////////////////////////////////////////////////////////////////////////////
 NatsSubscription NatsConnection::SubscribeSync(const char *subject_name)
 {
-	MLB::Utility::ThrowIfNull(subject_name, "The subscription subject name");
+	return(NatsSubscription(*this, subject_name));
+}
+// ////////////////////////////////////////////////////////////////////////////
 
-	return(SubscribeSync(subject_name, ::strlen(subject_name)));
+// ////////////////////////////////////////////////////////////////////////////
+NatsSubscription NatsConnection::SubscribeSync(const std::string &subject_name)
+{
+	return(SubscribeSync(subject_name.c_str()));
 }
 // ////////////////////////////////////////////////////////////////////////////
 

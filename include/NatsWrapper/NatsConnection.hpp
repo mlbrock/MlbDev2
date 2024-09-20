@@ -94,10 +94,18 @@ public:
 	void PublishRequestString(const std::string &send_subject,
 		const std::string &reply_subject, const std::string &str);
 
-	NatsSubscription SubscribeSync(const char *subject_name,
-		std::size_t subject_name_length);
-	NatsSubscription SubscribeSync(const std::string &subject_name);
+	NatsSubscription Subscribe(const char *subject_name,
+		natsMsgHandler call_back, void *closure);
+	NatsSubscription Subscribe(const std::string &subject_name,
+		natsMsgHandler call_back, void *closure);
+
+	NatsSubscription SubscribeTimeout(const char *subject_name,
+		int64_t time_out, natsMsgHandler call_back, void *closure);
+	NatsSubscription SubscribeTimeout(const std::string &subject_name,
+		int64_t time_out, natsMsgHandler call_back, void *closure);
+
 	NatsSubscription SubscribeSync(const char *subject_name);
+	NatsSubscription SubscribeSync(const std::string &subject_name);
 
 	static NatsConnection Connect(NatsOptions &nats_options);
 	static NatsConnection ConnectTo(const char *urls, std::size_t urls_length);

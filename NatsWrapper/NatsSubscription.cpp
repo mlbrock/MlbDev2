@@ -40,14 +40,62 @@ namespace NatsWrapper {
 
 // ////////////////////////////////////////////////////////////////////////////
 NatsSubscription::NatsSubscription(NatsConnection &nats_conn,
-	const char *subject_name, std::size_t subject_name_length)
+	const char *subject_name, natsMsgHandler call_back, void *closure)
 	:nats_subscription_sptr_()
 {
-	if (!subject_name)
-		throw std::invalid_argument("The pointer to the subject name is NULL.");
+	MLB::Utility::ThrowIfNull(subject_name, "The subscription subject name");
 
-	if (!subject_name_length)
-		throw std::invalid_argument("The length of the subject name is 0.");
+	natsSubscription *nats_sub = NULL;
+
+	NatsWrapper_THROW_IF_NOT_OK(::natsConnection_Subscribe,
+		(&nats_sub, nats_conn.GetPtr(), subject_name, call_back, closure))
+
+	nats_subscription_sptr_.reset(nats_sub, ::natsSubscription_Destroy);
+}
+// ////////////////////////////////////////////////////////////////////////////
+
+// ////////////////////////////////////////////////////////////////////////////
+NatsSubscription::NatsSubscription(NatsConnection &nats_conn,
+	const std::string &subject_name, natsMsgHandler cb, void *closure)
+	:NatsSubscription(nats_conn, subject_name.c_str(), call_back, closure)
+{
+}
+// ////////////////////////////////////////////////////////////////////////////
+
+// ////////////////////////////////////////////////////////////////////////////
+NatsSubscription::NatsSubscription(NatsConnection &nats_conn,
+	const char *subject_name, int64_t time_out, natsMsgHandler call_back,
+	void *closure)
+	:nats_subscription_sptr_()
+{
+	MLB::Utility::ThrowIfNull(subject_name, "The subscription subject name");
+
+	natsSubscription *nats_sub = NULL;
+
+	NatsWrapper_THROW_IF_NOT_OK(::natsConnection_SubscribeTimeout,
+		(&nats_sub, nats_conn.GetPtr(), subject_name, time_out,
+		 call_back, closure))
+
+	nats_subscription_sptr_.reset(nats_sub, ::natsSubscription_Destroy);
+}
+// ////////////////////////////////////////////////////////////////////////////
+
+// ////////////////////////////////////////////////////////////////////////////
+NatsSubscription::NatsSubscription(NatsConnection &nats_conn,
+	const std::string &subject_name, int64_t time_out, natsMsgHandler cb,
+	void *closure)
+	:NatsSubscription(nats_conn, subject_name.c_str(), int64_t time_out,
+		call_back, closure)
+{
+}
+// ////////////////////////////////////////////////////////////////////////////
+
+// ////////////////////////////////////////////////////////////////////////////
+NatsSubscription::NatsSubscription(NatsConnection &nats_conn,
+	const char *subject_name)
+	:nats_subscription_sptr_()
+{
+	MLB::Utility::ThrowIfNull(subject_name, "The subscription subject name");
 
 	natsSubscription *nats_sub = NULL;
 
@@ -60,25 +108,8 @@ NatsSubscription::NatsSubscription(NatsConnection &nats_conn,
 
 // ////////////////////////////////////////////////////////////////////////////
 NatsSubscription::NatsSubscription(NatsConnection &nats_conn,
-	const std::string_view &subject_name)
-	:NatsSubscription(nats_conn, subject_name.data(), subject_name.size())
-{
-}
-// ////////////////////////////////////////////////////////////////////////////
-
-// ////////////////////////////////////////////////////////////////////////////
-NatsSubscription::NatsSubscription(NatsConnection &nats_conn,
 	const std::string &subject_name)
-	:NatsSubscription(nats_conn, subject_name.c_str(), subject_name.size())
-{
-}
-// ////////////////////////////////////////////////////////////////////////////
-
-// ////////////////////////////////////////////////////////////////////////////
-NatsSubscription::NatsSubscription(NatsConnection &nats_conn,
-	const char *subject_name)
-	:NatsSubscription(nats_conn, MLB::Utility::ThrowIfNull(subject_name,
-		"The subject name string"), ::strlen(subject_name))
+	:NatsSubscription(nats_conn, subject_name.c_str())
 {
 }
 // ////////////////////////////////////////////////////////////////////////////
