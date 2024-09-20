@@ -98,13 +98,6 @@ void NatsOptions::SetServers(const char **servers, int servers_count)
 		servers, "The server count and server list passed to "
 		"NatsOptions::SetServers()");
 
-	for (int idx = 0; idx < servers_count; ++idx)
-		std::cout
-			<< "SetServers() " << std::setw(7) << idx << ": ["
-			<< servers[idx] << "]\n";
-
-return;
-
 	NatsWrapper_THROW_IF_NOT_OK(::natsOptions_SetServers,
 		(GetPtr(), servers, servers_count))
 }

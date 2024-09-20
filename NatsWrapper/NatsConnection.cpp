@@ -314,7 +314,8 @@ NatsSubscription NatsConnection::SubscribeTimeout(
 	const std::string &subject_name, int64_t time_out, natsMsgHandler call_back,
 	void *closure)
 {
-	return(Subscribe(subject_name.c_str(), time_out, call_back, closure));
+	return(SubscribeTimeout(subject_name.c_str(), time_out,
+		call_back, closure));
 }
 // ////////////////////////////////////////////////////////////////////////////
 

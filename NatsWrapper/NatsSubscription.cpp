@@ -56,7 +56,7 @@ NatsSubscription::NatsSubscription(NatsConnection &nats_conn,
 
 // ////////////////////////////////////////////////////////////////////////////
 NatsSubscription::NatsSubscription(NatsConnection &nats_conn,
-	const std::string &subject_name, natsMsgHandler cb, void *closure)
+	const std::string &subject_name, natsMsgHandler call_back, void *closure)
 	:NatsSubscription(nats_conn, subject_name.c_str(), call_back, closure)
 {
 }
@@ -82,9 +82,9 @@ NatsSubscription::NatsSubscription(NatsConnection &nats_conn,
 
 // ////////////////////////////////////////////////////////////////////////////
 NatsSubscription::NatsSubscription(NatsConnection &nats_conn,
-	const std::string &subject_name, int64_t time_out, natsMsgHandler cb,
+	const std::string &subject_name, int64_t time_out, natsMsgHandler call_back,
 	void *closure)
-	:NatsSubscription(nats_conn, subject_name.c_str(), int64_t time_out,
+	:NatsSubscription(nats_conn, subject_name.c_str(), time_out,
 		call_back, closure)
 {
 }
