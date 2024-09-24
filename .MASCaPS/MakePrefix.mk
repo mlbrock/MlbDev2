@@ -85,8 +85,8 @@ LIB_PROTOBUF_C_DIR	=	/usr/lib64
 LIB_PROTOBUF_C_NAMES_A	=
 LIB_PROTOBUF_C_NAMES_SO	=	protobuf-c
 
-INC_NATS_DIR	=	/home/mlbrock/DevEnv/GitRepos/nats-io/nats.c/src
-LIB_NATS_DIR	=	/home/mlbrock/DevEnv/GitRepos/nats-io/nats.c/___MLB_BuildDir/lib
+INC_NATS_DIR		=	${MASCaPS_DIR_PARENT}/../nats-io/nats.c/src
+LIB_NATS_DIR		=	${MASCaPS_DIR_PARENT}/../nats-io/nats.c/___MLB_BuildDir/lib
 LIB_NATS_NAMES_A	=	nats_static
 LIB_NATS_NAMES_SO	=	nats
 
