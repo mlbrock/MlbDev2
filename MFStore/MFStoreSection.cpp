@@ -30,6 +30,7 @@
 #include <Utility/ThrowErrno.hpp>
 
 #include <cstring>
+#include <sstream>
 #include <stdexcept>
 
 #include <boost/io/ios_state.hpp>
@@ -326,7 +327,8 @@ const std::size_t                           TabularColCount  =
 // ////////////////////////////////////////////////////////////////////////////
 std::size_t GetTabularColWidth(std::size_t col_idx)
 {
-	return((col_idx < (TabularColCount - 1)) ? 20 : 63);
+	return(
+		static_cast<std::size_t>((col_idx < (TabularColCount - 1)) ? 20 : 63));
 }
 // ////////////////////////////////////////////////////////////////////////////
 
