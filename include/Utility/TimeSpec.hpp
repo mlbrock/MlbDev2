@@ -44,48 +44,7 @@
 
 #include <Utility/Compare_timespec.hpp>
 
-/*
-#include <compare>							//	CODE NOTE: Check if necessary.
-
-#include <string>
-
-#include <boost/config.hpp>
-
-#if defined(_MSC_VER)
-# if (_MSC_VER < 1900)
-struct timespec {
-   time_t tv_sec;
-   long   tv_nsec;
-};
-# endif // # if (_MSC_VER < 1900)
-#else
-# include <unistd.h>
-#endif // # if defined(_MSC_VER)
-*/
-
 // ////////////////////////////////////////////////////////////////////////////
-
-/*
-#if defined(BOOST_CXX_VERSION) && (BOOST_CXX_VERSION >= 201703L)
-// ////////////////////////////////////////////////////////////////////////////
-constexpr auto operator <=> (const timespec &lhs, const timespec &rhs)
-{                    
-   std::weak_ordering cmp = lhs.tv_sec <=> rhs.tv_sec;
-
-   return((cmp != std::weak_ordering::equivalent) ? cmp : (lhs.tv_nsec <=> rhs.tv_nsec));
-}
-// ////////////////////////////////////////////////////////////////////////////
-
-// ////////////////////////////////////////////////////////////////////////////
-constexpr bool operator == (const timespec &lhs, const timespec &rhs)
-{
-   return((lhs.tv_sec == rhs.tv_sec) && (lhs.tv_nsec == rhs.tv_nsec));
-}   
-// ////////////////////////////////////////////////////////////////////////////
-#else
-# error "The timespec comparison operators have not yet been implemented."
-#endif // #if defined(BOOST_CXX_VERSION) && (BOOST_CXX_VERSION >= 201703L)
-*/
 
 namespace MLB {
 
@@ -219,11 +178,6 @@ struct API_UTILITY TimeSpec : public timespec {
 
 	static TimeSpec Now();
 
-/*
-	static constexpr int Compare(const TimeSpec &lhs, const TimeSpec &rhs);
-	//	Used to support a C-style interface...
-	static constexpr int Compare(const TimeSpec *lhs, const TimeSpec *rhs);
-*/
 	static constexpr int Compare(const TimeSpec &lhs, const TimeSpec &rhs)
 	{
 		return(
