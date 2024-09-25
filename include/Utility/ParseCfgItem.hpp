@@ -37,10 +37,9 @@
 // ////////////////////////////////////////////////////////////////////////////
 
 #include <Utility/ParseNumericString.hpp>
-//#include <Utility/ReadFile.hpp>
 #include <Utility/StringCompareIgnoreCase.hpp>
-//#include <Utility/StringTrim.hpp>
 
+#include <cstdint>
 #include <functional>
 #include <map>
 #include <string>
