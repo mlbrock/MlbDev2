@@ -623,6 +623,7 @@ std::ostream & operator << (std::ostream &o_str, const TimeSpec &datum)
 
 #include <Utility/EmitterSep.hpp>
 
+#include <cstdint>
 #include <iomanip>
 #include <iostream>
 
