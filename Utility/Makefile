@@ -87,6 +87,7 @@ SRCS		=	\
 			ToStreamSystemError.cpp		\
 			ToStringErrno.cpp		\
 			ToStringSystemError.cpp		\
+			UniqueId.cpp			\
 			UserName.cpp			\
 			VersionNumber.cpp
 
