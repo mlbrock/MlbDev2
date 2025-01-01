@@ -50,6 +50,7 @@ SRCS		=	\
 			PageSize.cpp			\
 			ParseCfgFile.cpp		\
 			ParseCfgItem.cpp		\
+			ParseCsv.cpp			\
 			PathMetaChar.cpp		\
 			PathNameCanonicalizeSlashes.cpp	\
 			PathNameGetDirectory.cpp	\

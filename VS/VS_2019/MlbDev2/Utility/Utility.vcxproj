@@ -53,6 +53,7 @@
     <ClInclude Include="..\..\..\..\include\Utility\PageSize.hpp" />
     <ClInclude Include="..\..\..\..\include\Utility\ParseCfgFile.hpp" />
     <ClInclude Include="..\..\..\..\include\Utility\ParseCfgItem.hpp" />
+    <ClInclude Include="..\..\..\..\include\Utility\ParseCsv.hpp" />
     <ClInclude Include="..\..\..\..\include\Utility\ParseNumericString.hpp" />
     <ClInclude Include="..\..\..\..\include\Utility\PathMetaChar.hpp" />
     <ClInclude Include="..\..\..\..\include\Utility\PathNameCanonicalizeSlashes.hpp" />
@@ -124,6 +125,7 @@
     <ClCompile Include="..\..\..\..\Utility\PageSize.cpp" />
     <ClCompile Include="..\..\..\..\Utility\ParseCfgFile.cpp" />
     <ClCompile Include="..\..\..\..\Utility\ParseCfgItem.cpp" />
+    <ClCompile Include="..\..\..\..\Utility\ParseCsv.cpp" />
     <ClCompile Include="..\..\..\..\Utility\PathMetaChar.cpp" />
     <ClCompile Include="..\..\..\..\Utility\PathNameCanonicalizeSlashes.cpp" />
     <ClCompile Include="..\..\..\..\Utility\PathNameGetDirectory.cpp" />
