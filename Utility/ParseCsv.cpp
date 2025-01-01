@@ -224,7 +224,6 @@ ParseCsvColList ParseCsvState::ParseCsvLine(
 // ////////////////////////////////////////////////////////////////////////////
 
 // ////////////////////////////////////////////////////////////////////////////
-/*
 std::string_view ParseLineState::ParseLineSingle(
 	const ParseCsvControl &parse_control)
 {
@@ -233,7 +232,7 @@ std::string_view ParseLineState::ParseLineSingle(
 	if (IsEnd())
 		return(dst);
 
-	if (current_offset_ >= src_data.size()) {
+	if (current_offset_ >= src_data_.size()) {
 		at_end_flag_ = true;
 		return(dst);
 	}
@@ -242,10 +241,20 @@ std::string_view ParseLineState::ParseLineSingle(
 		parse_control.GetNextSepIndex(src_data_, current_offset_);
 
 	if (end_idx != std::string::npos) {
-		if ((src_data_[end_idx] == '\n'))
+		std::size_t next_idx = end_idx;
+		if ((src_data_[end_idx] == '\n') && (end_idx > current_offset_) &&
+			 (src_data_[end_idx - 1] == '\r'))
+			--end_idx;
 	}
+	else {
+		std::string_view(src_data_.data() + current_offset_,
+			src_data_.size() - current_offset_).swap(dst);
+		current_offset_ = src_data_.size();
+		at_end_flag_    = true;
+	}
+
+	return(dst);
 }
-*/
 // ////////////////////////////////////////////////////////////////////////////
 
 } // namespace Utility
