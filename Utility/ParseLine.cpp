@@ -30,21 +30,14 @@
 #include <charconv>
 #include <climits>
 #include <cstring>
-#include <iostream>
-#include <iomanip>
+#include <ios>
+#include <stdexcept>
 
 // ////////////////////////////////////////////////////////////////////////////
 
 namespace MLB {
 
 namespace Utility {
-
-// ////////////////////////////////////////////////////////////////////////////
-/*
-const char EscapeList_Ascii[]  = "\0\a\b\n\f\r\t\v";
-const char EscapeList_Symbol[] = "0abnfrtv";
-*/
-// ////////////////////////////////////////////////////////////////////////////
 
 // ////////////////////////////////////////////////////////////////////////////
 const std::string EscapeList_Raw("\0\a\b\n\f\r\t\v", 8);
@@ -85,26 +78,18 @@ std::string XLateEscapeChars(const std::string_view &src,
 			if (::isprint(this_char))
 				dst.push_back(this_char);
 			else {
-//				const char *raw_ptr = nullptr;
 				std::size_t raw_idx = std::string::npos;
 				if ((!chars_raw.empty()) && (!chars_map.empty())) {
-//					raw_ptr = ::strchr(chars_raw.data(), this_char);
 					raw_idx = chars_raw.find(this_char);
 					if (raw_idx != std::string::npos) {
-/*
-						std::size_t raw_idx =
-							static_cast<std::size_t>(raw_ptr - chars_raw.data());
-*/
 						if (raw_idx < chars_map.size()) {
 							dst += '\\';
 							dst += chars_map[raw_idx];
 						}
 						else
 							raw_idx = std::string::npos;
-//							raw_ptr = nullptr;
 					}
 				}
-//				if (!raw_ptr) {
 				if (raw_idx == std::string::npos) {
 					uint32_t ascii_val          = static_cast<unsigned int>(
 						static_cast<unsigned char>(this_char));
@@ -151,44 +136,6 @@ std::string XLateEscapeChars(const char *src,
 }
 // ////////////////////////////////////////////////////////////////////////////
 
-/*
-// ////////////////////////////////////////////////////////////////////////////
-std::string XLateEscapeChars(const std::string_view &src,
-	const std::string_view &chars_raw, const std::string_view &chars_map)
-	
-{
-	std::string dst;
-	char        hex_buffer[(CHAR_BIT * sizeof(unsigned char)) + 1];
-
-	if (!src.empty()) {
-		for (const char &this_char : src) {
-			if (::isprint(this_char))
-				dst.push_back(this_char);
-			else {
-				const char *escaped_ptr = ::strchr(EscapeList_Ascii, this_char);
-				if (escaped_ptr)
-					dst += "\\" + EscapeList_Symbol[escaped_ptr - EscapeList_Ascii];
-				else {
-					uint32_t ascii_val          = static_cast<unsigned int>(
-						static_cast<unsigned char>(this_char));
-					std::to_chars_result result = std::to_chars(hex_buffer,
-						hex_buffer + sizeof(hex_buffer) - 1, ascii_val, 16);
-					if (result.ec != std::errc())
-						throw std::invalid_argument(
-							std::make_error_code(result.ec).message());
-					*result.ptr  = '\0';
-					dst         += "\\x";
-					dst         += hex_buffer;
-				}
-			}
-		}
-	}
-
-	return(dst);
-}
-// ////////////////////////////////////////////////////////////////////////////
-*/
-
 } // namespace Utility
 
 } // namespace MLB
@@ -220,12 +167,6 @@ ParseLineState::ParseLineState(const std::string &src_data)
 	:ParseLineState(std::string_view(src_data.data(), src_data.size()))
 {
 }
-// ////////////////////////////////////////////////////////////////////////////
-
-// ////////////////////////////////////////////////////////////////////////////
-// ****************************************************************************
-// ****************************************************************************
-// ****************************************************************************
 // ////////////////////////////////////////////////////////////////////////////
 
 // ////////////////////////////////////////////////////////////////////////////
@@ -279,51 +220,12 @@ std::string_view ParseLineState::ParseLineSingle()
 #ifdef TEST_MAIN
 
 #include <Utility/EmitterSep.hpp>
-//#include <Utility/StringPadRight.hpp>
-//#include <Utility/XLateToHuman.hpp>
+
+#include <iostream>
+#include <iomanip>
+#include <vector>
 
 namespace {
-
-/*
-// ////////////////////////////////////////////////////////////////////////////
-const char EscapeList_Ascii[]  = "\0\a\b\f\r\t\v";
-const char EscapeList_Symbol[] = "0abfrtv";
-// ////////////////////////////////////////////////////////////////////////////
-
-// ////////////////////////////////////////////////////////////////////////////
-std::string XLateToEscape(const std::string &src)
-{
-	std::string dst;
-	char        hex_buffer[(CHAR_BIT * sizeof(unsigned char)) + 1];
-
-	if (!src.empty()) {
-		for (const char &this_char : src) {
-			if (::isprint(this_char))
-				dst.push_back(this_char);
-			else {
-				const char *escaped_ptr = ::strchr(EscapeList_Ascii, this_char);
-				if (escaped_ptr)
-					dst += "\\" + EscapeList_Symbol[escaped_ptr - EscapeList_Ascii];
-				else {
-					uint32_t ascii_val          = static_cast<unsigned int>(
-						static_cast<unsigned char>(this_char));
-					std::to_chars_result result = std::to_chars(hex_buffer,
-						hex_buffer + sizeof(hex_buffer) - 1, ascii_val, 16);
-					if (result.ec != std::errc())
-						throw std::invalid_argument(
-							std::make_error_code(result.ec).message());
-					*result.ptr  = '\0';
-					dst         += "\\x";
-					dst         += hex_buffer;
-				}
-			}
-		}
-	}
-
-	return(dst);
-}
-// ////////////////////////////////////////////////////////////////////////////
-*/
 
 // ////////////////////////////////////////////////////////////////////////////
 const std::vector<std::string> TEST_TestList =
@@ -342,13 +244,6 @@ const std::vector<std::string> TEST_TestList =
 // ////////////////////////////////////////////////////////////////////////////
 
 // ////////////////////////////////////////////////////////////////////////////
-/*
-const std::string TEST_EscapeList_Raw("\0\a\b\f\r\t\v");
-const std::string TEST_EscapeList_Map("0abfrtv");
-*/
-// ////////////////////////////////////////////////////////////////////////////
-
-// ////////////////////////////////////////////////////////////////////////////
 void TEST_RunTest()
 {
 	using namespace MLB::Utility;
@@ -356,10 +251,6 @@ void TEST_RunTest()
 	for (const std::string &this_element : TEST_TestList) {
 		std::cout << EmitterSep('=');
 		std::cout << "INPUT   :\n" <<
-/*
-			XLateEscapeChars(this_element,
-				TEST_EscapeList_Raw, TEST_EscapeList_Map) << std::endl;
-*/
 			XLateEscapeChars(this_element) << std::endl;
 		ParseLineState line_state(this_element);
 		while (!line_state.IsEnd()) {
