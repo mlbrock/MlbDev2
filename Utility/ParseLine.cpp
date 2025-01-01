@@ -116,9 +116,9 @@ std::string XLateEscapeChars(const std::string_view &src,
 					}
 				}
 				if (raw_idx == std::string::npos) {
-					uint32_t ascii_val          = static_cast<unsigned int>(
+					unsigned int         ascii_val = static_cast<unsigned int>(
 						static_cast<unsigned char>(this_char));
-					std::to_chars_result result = std::to_chars(hex_buffer,
+					std::to_chars_result result    = std::to_chars(hex_buffer,
 						hex_buffer + sizeof(hex_buffer) - 1, ascii_val, 16);
 					if (result.ec != std::errc())
 						throw std::invalid_argument(
