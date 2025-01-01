@@ -91,7 +91,8 @@ SRCS		=	\
 			ToStringSystemError.cpp		\
 			UniqueId.cpp			\
 			UserName.cpp			\
-			VersionNumber.cpp
+			VersionNumber.cpp		\
+			XLateEscapeChars.cpp
 
 #LINK_STATIC	=	${LINK_STATIC_BIN}
 
