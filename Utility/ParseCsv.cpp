@@ -265,6 +265,8 @@ std::string_view ParseLineState::ParseLineSingle(
 #include <Utility/XLateToHuman.hpp>
 
 #include <charconv>
+#include <climits>
+#include <cstring>
 
 namespace {
 
