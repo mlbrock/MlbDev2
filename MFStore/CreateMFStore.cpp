@@ -70,13 +70,36 @@ MFStoreControl CreateMFStoreForOS(const std::string &file_name,
 #else
 
 // ////////////////////////////////////////////////////////////////////////////
-MFStoreControl CreateMFStoreForOS(const std::string & /* file_name */,
-	MFStoreLen /* file_size */, MFStoreLen /* mmap_size */,
-	MFStoreLen /* storage_gran */)
+MFStoreControl CreateMFStoreForOS(const std::string &file_name,
+	MFStoreLen file_size, MFStoreLen mmap_size, MFStoreLen storage_gran)
 {
-	throw std::logic_error("Operation not supported on this operating system.");
+//	throw std::logic_error("Operation not supported on this operating system.");
 
-//	return(MFStoreControl(file_name, true, file_size, mmap_size, storage_gran));
+	HANDLE file_handle;
+
+	file_handle = ::CreateFileA(
+		file_name.c_str(),
+/*
+		static_cast<DWORD>((is_read_only_) ? FILE_READ_DATA :
+			(FILE_READ_DATA | FILE_WRITE_DATA)),
+*/
+		(FILE_READ_DATA | FILE_WRITE_DATA),
+		FILE_SHARE_READ,
+		NULL,
+		CREATE_NEW,
+		FILE_ATTRIBUTE_NORMAL,
+		NULL);
+
+	if (file_handle == INVALID_HANDLE_VALUE) {
+		std::ostringstream o_str;
+		o_str << "Attempt to open file '" + file_name + "' for memory-mapping "
+			"use with 'CreateFile()' failed";
+		MLB::Utility::ThrowSystemError(o_str.str());
+	}
+
+	EnsureFileBackingStore(file_name, file_handle, 0, file_size);
+
+	return(MFStoreControl(file_name, true, file_size, mmap_size, storage_gran));
 }
 // ////////////////////////////////////////////////////////////////////////////
 
@@ -158,9 +181,9 @@ MFStoreControl CreateMFStoreAdjusted(const std::string &file_name,
 #include <Utility/HostName.hpp>
 #include <Utility/ParseNumericString.hpp>
 #include <Utility/ProcessId.hpp>
-#include <Utility/Sleep.hpp>
-#include <Utility/TimeSpec.hpp>
 #include <Utility/UserName.hpp>
+
+#include <Utility/TimeSpec.hpp>
 
 #include <iostream>
 
@@ -209,23 +232,7 @@ MFStoreSectionList TEST_CreateSections()
 // ////////////////////////////////////////////////////////////////////////////
 void TEST_CreateMFStore(bool reuse_file_name = false, uint64_t mmap_size = 0)
 {
-/*
-	using namespace MLB::MFStore;
-	using namespace MLB::Utility;
-
-	MFStoreSectionList section_list;
-
-	for (std::size_t section_idx = 0; section_idx < TEST_SectionCount;
-		++section_idx)
-		MFStoreSection::AppendSection(TEST_SectionList[section_idx], section_list);
-
-	MFStoreSection::FixupSectionList(section_list);
-
-	MFStoreSection::CheckSectionList(1, section_list);
-
-	MFStoreSection::ToStreamTabular(section_list);
-	std::cout << '\n';
-*/
+reuse_file_name = true;
 	MFStoreSectionList section_list = TEST_CreateSections();
 
 	MFStoreSection::ToStreamTabular(section_list) << '\n';

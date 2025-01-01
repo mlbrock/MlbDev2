@@ -30,6 +30,8 @@
 
 #include <sstream>
 
+#include <boost/interprocess/detail/os_file_functions.hpp>
+
 // ////////////////////////////////////////////////////////////////////////////
 
 namespace MLB {
@@ -60,6 +62,12 @@ void EnsureFileBackingStore_Helper(const char *file_name,
 				std::to_string(falloc_return);
 			MLB::Utility::ThrowErrno(falloc_return, error_text);
 		}
+#elif defined(BOOST_INTERPROCESS_WINDOWS)
+		// In boost/interprocess/detail/os_file_functions.hpp .
+		if (!boost::interprocess::ipcdetail::truncate_file(file_handle,
+			store_offset + store_length))
+			MLB::Utility::ThrowSystemError("NTFS file truncation attempt "
+				"failed.");
 #else
 		throw std::logic_error("No logic to implement allocation of file system "
 			"backing store to the file has been implemented.");

@@ -90,6 +90,12 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MFStore", "MFStore\MFStore.
 		{2E67D9A5-8445-4C86-A609-116BB531F4A2} = {2E67D9A5-8445-4C86-A609-116BB531F4A2}
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ZZZ_MFST_CreateMFStore", "ZZZ_MFST_CreateMFStore\ZZZ_MFST_CreateMFStore.vcxproj", "{E966EFA4-BBDE-437E-B948-9570FDC07472}"
+	ProjectSection(ProjectDependencies) = postProject
+		{B2168613-5645-4AAE-95E9-FEE22A415C20} = {B2168613-5645-4AAE-95E9-FEE22A415C20}
+		{F46FC3F1-D90F-47B2-A2AC-58225009CBB6} = {F46FC3F1-D90F-47B2-A2AC-58225009CBB6}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -242,6 +248,14 @@ Global
 		{F46FC3F1-D90F-47B2-A2AC-58225009CBB6}.Release|x64.Build.0 = Release|x64
 		{F46FC3F1-D90F-47B2-A2AC-58225009CBB6}.Release|x86.ActiveCfg = Release|Win32
 		{F46FC3F1-D90F-47B2-A2AC-58225009CBB6}.Release|x86.Build.0 = Release|Win32
+		{E966EFA4-BBDE-437E-B948-9570FDC07472}.Debug|x64.ActiveCfg = Debug|x64
+		{E966EFA4-BBDE-437E-B948-9570FDC07472}.Debug|x64.Build.0 = Debug|x64
+		{E966EFA4-BBDE-437E-B948-9570FDC07472}.Debug|x86.ActiveCfg = Debug|Win32
+		{E966EFA4-BBDE-437E-B948-9570FDC07472}.Debug|x86.Build.0 = Debug|Win32
+		{E966EFA4-BBDE-437E-B948-9570FDC07472}.Release|x64.ActiveCfg = Release|x64
+		{E966EFA4-BBDE-437E-B948-9570FDC07472}.Release|x64.Build.0 = Release|x64
+		{E966EFA4-BBDE-437E-B948-9570FDC07472}.Release|x86.ActiveCfg = Release|Win32
+		{E966EFA4-BBDE-437E-B948-9570FDC07472}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

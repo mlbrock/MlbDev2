@@ -43,6 +43,15 @@
 # pragma warning(disable:4061 4365)
 #endif // #ifdef _Windows
 
+/*
+   IMPL NOTE: Absolutely required before including Boost headers which might use
+              Windows.h in order to prevent MSVC++ 2019 from spewing errors.
+*/
+#ifdef _Windows
+# include <boost/process.hpp>
+# define BOOST_USE_WINDOWS_H
+#endif // #ifdef _Windows
+
 #include <boost/interprocess/file_mapping.hpp>
 #include <boost/interprocess/mapped_region.hpp>
 
