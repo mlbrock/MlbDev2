@@ -51,6 +51,7 @@ SRCS		=	\
 			ParseCfgFile.cpp		\
 			ParseCfgItem.cpp		\
 			ParseCsv.cpp			\
+			ParseLine.cpp			\
 			PathMetaChar.cpp		\
 			PathNameCanonicalizeSlashes.cpp	\
 			PathNameGetDirectory.cpp	\
