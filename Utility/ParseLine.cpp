@@ -85,19 +85,27 @@ std::string XLateEscapeChars(const std::string_view &src,
 			if (::isprint(this_char))
 				dst.push_back(this_char);
 			else {
-				const char *raw_ptr = nullptr;
+//				const char *raw_ptr = nullptr;
+				std::size_t raw_idx = std::string::npos;
 				if ((!chars_raw.empty()) && (!chars_map.empty())) {
-					raw_ptr = ::strchr(chars_raw.data(), this_char);
-					if (raw_ptr) {
+//					raw_ptr = ::strchr(chars_raw.data(), this_char);
+					raw_idx = chars_raw.find(this_char);
+					if (raw_idx != std::string::npos) {
+/*
 						std::size_t raw_idx =
 							static_cast<std::size_t>(raw_ptr - chars_raw.data());
-						if (raw_idx < chars_map.size())
-							dst += "\\" + chars_map[raw_idx];
+*/
+						if (raw_idx < chars_map.size()) {
+							dst += '\\';
+							dst += chars_map[raw_idx];
+						}
 						else
-							raw_ptr = nullptr;
+							raw_idx = std::string::npos;
+//							raw_ptr = nullptr;
 					}
 				}
-				if (!raw_ptr) {
+//				if (!raw_ptr) {
+				if (raw_idx == std::string::npos) {
 					uint32_t ascii_val          = static_cast<unsigned int>(
 						static_cast<unsigned char>(this_char));
 					std::to_chars_result result = std::to_chars(hex_buffer,
