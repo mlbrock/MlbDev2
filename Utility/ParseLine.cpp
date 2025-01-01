@@ -39,6 +39,7 @@ namespace MLB {
 
 namespace Utility {
 
+/*
 // ////////////////////////////////////////////////////////////////////////////
 const std::string EscapeList_Raw("\0\a\b\n\f\r\t\v", 8);
 const std::string EscapeList_Map("0abnfrtv");
@@ -50,20 +51,44 @@ const std::string EscapeList_Raw_With_E("\0\a\b\n\f\r\t\v\e");
 const std::string EscapeList_Map_With_E("0abnfrtve");
 #endif // #ifndef _MSC_VER
 // ////////////////////////////////////////////////////////////////////////////
+*/
+
+// ////////////////////////////////////////////////////////////////////////////
+const std::string &GetEscapeListRaw();
+const std::string &GetEscapeListMap();
+// ////////////////////////////////////////////////////////////////////////////
 
 // ////////////////////////////////////////////////////////////////////////////
 std::string XLateEscapeChars(const std::string_view &src,
-	const std::string &chars_raw = EscapeList_Raw,
-	const std::string &chars_map = EscapeList_Map);
+	const std::string &chars_raw = GetEscapeListRaw(),
+	const std::string &chars_map = GetEscapeListMap());
 std::string XLateEscapeChars(const std::string &src,
-	const std::string &chars_raw = EscapeList_Raw,
-	const std::string &chars_map = EscapeList_Map);
+	const std::string &chars_raw = GetEscapeListRaw(),
+	const std::string &chars_map = GetEscapeListMap());
 std::string XLateEscapeChars(const char *src, std::size_t src_length,
-	const std::string &chars_raw = EscapeList_Raw,
-	const std::string &chars_map = EscapeList_Map);
+	const std::string &chars_raw = GetEscapeListRaw(),
+	const std::string &chars_map = GetEscapeListMap());
 std::string XLateEscapeChars(const char *src,
-	const std::string &chars_raw = EscapeList_Raw,
-	const std::string &chars_map = EscapeList_Map);
+	const std::string &chars_raw = GetEscapeListRaw(),
+	const std::string &chars_map = GetEscapeListMap());
+// ////////////////////////////////////////////////////////////////////////////
+
+// ////////////////////////////////////////////////////////////////////////////
+const std::string &GetEscapeListRaw()
+{
+	static const std::string EscapeList_Raw("\0\a\b\n\f\r\t\v", 8);
+
+	return(EscapeList_Raw);
+}
+// ////////////////////////////////////////////////////////////////////////////
+
+// ////////////////////////////////////////////////////////////////////////////
+const std::string &GetEscapeListMap()
+{
+	static const std::string EscapeList_Map("0abnfrtv");
+
+	return(EscapeList_Map);
+}
 // ////////////////////////////////////////////////////////////////////////////
 
 // ////////////////////////////////////////////////////////////////////////////
