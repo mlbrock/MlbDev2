@@ -36,7 +36,9 @@
 // Required include files...
 // ////////////////////////////////////////////////////////////////////////////
 
-#include <Utility/ReadFile.hpp>
+#include <Utility/Utility.hpp>
+
+#include <string_view>
 
 // ////////////////////////////////////////////////////////////////////////////
 
@@ -51,15 +53,11 @@ public:
 	ParseLineState(std::string_view src_data_);
 	ParseLineState(const std::string &src_data_);
 
-	bool IsEnd() const
-	{
-		return(at_end_flag_);
-	}
+	bool IsEnd() const;
 
-	std::size_t GetLineIndex() const
-	{
-		return(line_index_);
-	}
+	std::size_t GetLineIndex() const;
+	std::size_t GetLineOffset() const;
+	std::size_t GetCurrentOffset() const;
 
 	std::string_view ParseLineSingle();
 
