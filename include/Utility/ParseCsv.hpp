@@ -38,6 +38,7 @@
 
 #include <Utility/Utility.hpp>
 
+#include <string>
 #include <string_view>
 #include <vector>
 
