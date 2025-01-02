@@ -36,10 +36,9 @@
 // Required include files...
 // ////////////////////////////////////////////////////////////////////////////
 
-#include <Utility/ReadFile.hpp>
-#include <Utility/StringTrim.hpp>
+#include <Utility/Utility.hpp>
 
-#include <stdexcept>
+#include <string_view>
 #include <vector>
 
 // ////////////////////////////////////////////////////////////////////////////
@@ -62,12 +61,6 @@ public:
 	inline bool IsValueSep(char in_char) const
 	{
 		return(value_sep_list_.find_first_of(in_char, 0) != std::string::npos);
-	}
-
-	inline std::size_t GetNextLineIndex(const std::string_view &src_data,
-		std::size_t current_offset = 0) const
-	{
-		return(src_data.find_first_of(line_sep_list_, current_offset));
 	}
 
 	inline std::size_t GetNextSepIndex(const std::string_view &src_line,
@@ -114,5 +107,5 @@ private:
 
 } // namespace MLB
 
-#endif // #ifndef HH__MLB__Utility__GetCmdLineArg_hpp__HH
+#endif // #ifndef HH__MLB__Utility__ParseCsv_hpp__HH
 

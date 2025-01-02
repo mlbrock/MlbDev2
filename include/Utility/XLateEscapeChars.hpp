@@ -70,5 +70,5 @@ std::string XLateEscapeChars(const char *src,
 
 } // namespace MLB
 
-#endif // #ifndef HH__MLB__Utility__GetCmdLineArg_hpp__HH
+#endif // #ifndef HH__MLB__Utility__XLateEscapeChars_hpp__HH
 
