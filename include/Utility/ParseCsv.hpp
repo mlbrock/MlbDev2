@@ -52,7 +52,8 @@ namespace Utility {
 class ParseCsvControl
 {
 public:
-	ParseCsvControl(const std::string &value_sep_list = ",");
+	ParseCsvControl(const std::string &value_sep_list = ",",
+		const std::string &line_sep_list = "\n", bool enable_crlf = true);
 
 	inline bool IsLineSep(char in_char) const
 	{
@@ -70,9 +71,14 @@ public:
 		return(src_line.find_first_of(value_sep_list_, current_offset));
 	}
 
+	std::size_t GetValueEnd(const std::string_view &src_line,
+		std::size_t current_offset = 0) const;
+
 private:
-	std::string line_sep_list_;
 	std::string value_sep_list_;
+	std::string line_sep_list_;
+	bool        enable_crlf_;
+	std::size_t max_nested_lines_;
 };
 // ////////////////////////////////////////////////////////////////////////////
 
@@ -95,6 +101,11 @@ public:
 	ParseCsvColList &ParseCsvLine(ParseCsvColList &col_list,
 		const ParseCsvControl &parse_control = ParseCsvControl());
 	ParseCsvColList  ParseCsvLine(
+		const ParseCsvControl &parse_control = ParseCsvControl());
+
+	ParseCsvColList &ParseCsvLine_NEW(ParseCsvColList &col_list,
+		const ParseCsvControl &parse_control = ParseCsvControl());
+	ParseCsvColList  ParseCsvLine_NEW(
 		const ParseCsvControl &parse_control = ParseCsvControl());
 
 private:
