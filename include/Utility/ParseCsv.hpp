@@ -38,6 +38,8 @@
 
 #include <Utility/Utility.hpp>
 
+#include <ostream>
+
 #include <string>
 #include <string_view>
 #include <vector>
@@ -53,7 +55,8 @@ class ParseCsvControl
 {
 public:
 	ParseCsvControl(const std::string &value_sep_list = ",",
-		const std::string &line_sep_list = "\n", bool enable_crlf = true);
+		const std::string &line_sep_list = "\n", bool enable_crlf = true,
+		std::size_t max_nested_lines = 0);
 
 	inline bool IsLineSep(char in_char) const
 	{
@@ -72,7 +75,7 @@ public:
 	}
 
 	std::size_t GetValueEnd(const std::string_view &src_line,
-		std::size_t current_offset = 0) const;
+		std::size_t current_offset, std::size_t &error_offset) const;
 
 private:
 	std::string value_sep_list_;
@@ -84,6 +87,31 @@ private:
 
 // ////////////////////////////////////////////////////////////////////////////
 using ParseCsvColList = std::vector<std::string_view>;
+// ////////////////////////////////////////////////////////////////////////////
+
+// ////////////////////////////////////////////////////////////////////////////
+struct ParseCsvPosition
+{
+	ParseCsvPosition(std::size_t row_idx = 0, std::size_t col_idx = 0,
+		std::size_t row_off = 0)
+		:row_idx_(row_idx)
+		,col_idx_(col_idx)
+		,row_off_(row_off)
+	{
+	}
+
+	std::ostream &ToStream(std::ostream &o_str) const
+	{
+		o_str << "line number " << (row_idx_ + 1) << ", column number " <<
+			(col_idx_ + 1);
+
+		return(o_str);
+	}
+
+	std::size_t row_idx_;
+	std::size_t col_idx_;
+	std::size_t row_off_;
+};
 // ////////////////////////////////////////////////////////////////////////////
 
 // ////////////////////////////////////////////////////////////////////////////
@@ -109,6 +137,7 @@ public:
 		const ParseCsvControl &parse_control = ParseCsvControl());
 
 private:
+	ParseCsvPosition position_;
 	std::string_view src_line_;
 	std::size_t      current_offset_;
 	bool             at_end_flag_;
