@@ -27,6 +27,8 @@
 
 #include <Utility/ArgCheck.hpp>
 
+#include <iostream>
+
 // ////////////////////////////////////////////////////////////////////////////
 
 namespace MLB {
@@ -157,53 +159,15 @@ ParseCsvState::ParseCsvState(const std::string &src_line)
 // ////////////////////////////////////////////////////////////////////////////
 
 // ////////////////////////////////////////////////////////////////////////////
+bool ParseCsvState::ParseCsvLine(const ParseCsvControl &parse_control,
+	ParseCsvPosition &current_pos, ParseCsvColList &col_list)
+{
+	return(ParseCsvLine(parse_control, position_, current_pos, col_list));
+}
+// ////////////////////////////////////////////////////////////////////////////
+
+// ////////////////////////////////////////////////////////////////////////////
 ParseCsvColList &ParseCsvState::ParseCsvLine(ParseCsvColList &col_list,
-	const ParseCsvControl &parse_control)
-{
-	col_list.clear();
-
-	if (IsEnd())
-		return(col_list);
-
-	while (current_offset_ <= src_line_.size()) {
-		if (current_offset_ == src_line_.size()) {
-			col_list.push_back(std::string_view());
-			current_offset_ = src_line_.size();
-			at_end_flag_    = true;
-			break;
-		}
-		std::size_t end_idx =
-			parse_control.GetNextSepIndex(src_line_, current_offset_);
-		if (end_idx != std::string::npos) {
-			col_list.emplace_back(src_line_.data() + current_offset_,
-				end_idx - current_offset_);
-			current_offset_ = end_idx + 1;
-		}
-		else {
-			col_list.emplace_back(src_line_.data() + current_offset_,
-				src_line_.size() - current_offset_);
-			current_offset_ = src_line_.size();
-			at_end_flag_    = true;
-			break;
-		}
-	}
-
-	return(col_list);
-}
-// ////////////////////////////////////////////////////////////////////////////
-
-// ////////////////////////////////////////////////////////////////////////////
-ParseCsvColList ParseCsvState::ParseCsvLine(
-	const ParseCsvControl &parse_control)
-{
-	ParseCsvColList col_list;
-
-	return(ParseCsvLine(col_list, parse_control));
-}
-// ////////////////////////////////////////////////////////////////////////////
-
-// ////////////////////////////////////////////////////////////////////////////
-ParseCsvColList &ParseCsvState::ParseCsvLine_NEW(ParseCsvColList &col_list,
 	const ParseCsvControl &parse_control)
 {
 	col_list.clear();
@@ -231,12 +195,61 @@ ParseCsvColList &ParseCsvState::ParseCsvLine_NEW(ParseCsvColList &col_list,
 // ////////////////////////////////////////////////////////////////////////////
 
 // ////////////////////////////////////////////////////////////////////////////
-ParseCsvColList ParseCsvState::ParseCsvLine_NEW(
+ParseCsvColList ParseCsvState::ParseCsvLine(
 	const ParseCsvControl &parse_control)
 {
 	ParseCsvColList col_list;
 
-	return(ParseCsvLine_NEW(col_list, parse_control));
+	return(ParseCsvLine(col_list, parse_control));
+}
+// ////////////////////////////////////////////////////////////////////////////
+
+// ////////////////////////////////////////////////////////////////////////////
+bool ParseCsvState::ParseCsvLine(const ParseCsvControl &parse_control,
+	ParseCsvPosition &original_pos, ParseCsvPosition &current_pos,
+	ParseCsvColList &col_list)
+{
+	col_list.clear();
+
+	if (IsEnd())
+		return(false);
+
+	ParseCsvPosition tmp_current_pos = original_pos;
+
+	while (tmp_current_pos.row_off_ <= src_line_.size()) {
+		if (tmp_current_pos.row_off_ == src_line_.size()) {
+			col_list.push_back(std::string_view());
+			at_end_flag_ = true;
+			break;
+		}
+		std::size_t error_idx = 0;
+		std::size_t start_idx = tmp_current_pos.row_off_;
+		std::size_t end_idx   =
+			parse_control.GetValueEnd(src_line_,
+				tmp_current_pos.row_off_, error_idx);
+		col_list.emplace_back(src_line_.data() + start_idx,
+			end_idx - start_idx);
+		if (end_idx >= src_line_.size()) {
+			std::cerr << "***** [" << end_idx << '/' << src_line_.size()
+				<< "] ******" << std::endl;
+			at_end_flag_ = true;
+			break;
+		}
+		else if (!parse_control.IsLineSep(src_line_[end_idx]))
+			tmp_current_pos.row_off_ = end_idx + 1;
+		else {
+			tmp_current_pos.is_line_end_ = true;
+			++original_pos.row_idx_;
+			original_pos.col_idx_        = 0;
+			original_pos.row_off_        = end_idx + 1;
+			original_pos.is_line_end_    = false;
+			break;
+		}
+	}
+
+	current_pos = tmp_current_pos;
+
+	return(true);
 }
 // ////////////////////////////////////////////////////////////////////////////
 
@@ -265,13 +278,15 @@ const std::vector<std::string> TEST_TestList =
 {
 //"A\"\"B",
 //"A\"\"\"\"B",
+//	"\n",
 	"A\nB",
+	"A,B,C\nD\n\nE,F,G",
 	"A'\n'B",
 	"A'\n\n'B",
 	"A,,',,\n,,',,B",
-"A,,\",,\n,,\",,B",
+//"A,,\",,\n,,\",,B",
 	"A,'B','C,,'',,D',E",
-"A,\"B\",\"C,,\"\",,D\",E",
+//"A,\"B\",\"C,,\"\",,D\",E",
 	"A,B,C,,",
 	"",
 	",",
@@ -288,30 +303,8 @@ const std::vector<std::string> TEST_TestList =
 // ////////////////////////////////////////////////////////////////////////////
 
 // ////////////////////////////////////////////////////////////////////////////
+/*
 void TEST_RunTest()
-{
-	using namespace MLB::Utility;
-
-	ParseCsvColList col_list;
-
-	for (const std::string &this_element : TEST_TestList) {
-		std::cout <<
-			EmitterSep((&this_element == &TEST_TestList.front()) ? '=' : '-');
-		std::cout << "INPUT   : [" << this_element << "]" << std::endl;
-		ParseCsvState csv_state(this_element);
-		std::size_t   col_index = 0;
-		csv_state.ParseCsvLine(col_list);
-		for (const auto &this_col : col_list)
-			std::cout << "   " << std::setw(5) << col_index++
-				<< ": [" << this_col << "]\n";
-	}
-
-	std::cout << EmitterSep('=') << std::endl;
-}
-// ////////////////////////////////////////////////////////////////////////////
-
-// ////////////////////////////////////////////////////////////////////////////
-void TEST_RunTest_NEW()
 {
 	using namespace MLB::Utility;
 
@@ -325,10 +318,50 @@ void TEST_RunTest_NEW()
 			<< "]" << std::endl;
 		ParseCsvState csv_state(this_element);
 		std::size_t   col_index = 0;
-		csv_state.ParseCsvLine_NEW(col_list, parse_control);
+		csv_state.ParseCsvLine(col_list, parse_control);
 		for (const auto &this_col : col_list)
 			std::cout << "   " << std::setw(5) << col_index++
 				<< ": [" << XLateEscapeChars(this_col) << "]\n";
+	}
+
+	std::cout << EmitterSep('=') << std::endl;
+}
+*/
+// ////////////////////////////////////////////////////////////////////////////
+
+// ////////////////////////////////////////////////////////////////////////////
+void TEST_RunTest()
+{
+	using namespace MLB::Utility;
+
+	ParseCsvControl parse_control(",", "\n", true, 2);
+	ParseCsvColList col_list;
+
+	for (const std::string &this_element : TEST_TestList) {
+		std::cout <<
+			EmitterSep((&this_element == &TEST_TestList.front()) ? '=' : '-');
+		std::cout << "INPUT   : [" << XLateEscapeChars(this_element)
+			<< "]" << std::endl;
+		ParseCsvState csv_state(this_element);
+//		const ParseCsvPosition &pos_ref(csv_state.GetPosition());
+//		ParseCsvPosition start_pos;
+		ParseCsvPosition end_pos;
+//		csv_state.ParseCsvLine(col_list, parse_control);
+		for ( ; ; ) {
+			ParseCsvPosition start_pos(csv_state.GetPosition());
+			if (!csv_state.ParseCsvLine(parse_control, end_pos, col_list))
+				break;
+			std::size_t col_index = 0;
+			for (const auto &this_col : col_list)
+				std::cout << "   "
+					<< std::setfill('0')
+					<< "RIDX=" << std::setw(5) << start_pos.row_idx_ << ":"
+					<< "CIDX=" << std::setw(5) << start_pos.col_idx_ << ":"
+					<< "ROFF=" << std::setw(5) << start_pos.row_off_ << ":"
+					<< "CNUM=" << std::setw(5) << col_index++
+					<< std::setfill(' ')
+					<< ": [" << XLateEscapeChars(this_col) << "]\n";
+		}
 	}
 
 	std::cout << EmitterSep('=') << std::endl;
@@ -341,7 +374,7 @@ void TEST_RunTest_NEW()
 int main()
 {
 	try {
-		TEST_RunTest_NEW();
+		TEST_RunTest();
 	}
 	catch (const std::exception &except) {
 		std::cerr << "\n\nERROR: " << except.what() << std::endl;

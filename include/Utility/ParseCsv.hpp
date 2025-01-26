@@ -97,6 +97,7 @@ struct ParseCsvPosition
 		:row_idx_(row_idx)
 		,col_idx_(col_idx)
 		,row_off_(row_off)
+		,is_line_end_(false)
 	{
 	}
 
@@ -111,6 +112,7 @@ struct ParseCsvPosition
 	std::size_t row_idx_;
 	std::size_t col_idx_;
 	std::size_t row_off_;
+	bool        is_line_end_;
 };
 // ////////////////////////////////////////////////////////////////////////////
 
@@ -126,15 +128,22 @@ public:
 		return(at_end_flag_);
 	}
 
+	const ParseCsvPosition &GetPosition() const
+	{
+		return(position_);
+	}
+
+	bool ParseCsvLine(const ParseCsvControl &parse_control,
+		ParseCsvPosition &current_pos, ParseCsvColList &col_list);
+
 	ParseCsvColList &ParseCsvLine(ParseCsvColList &col_list,
 		const ParseCsvControl &parse_control = ParseCsvControl());
 	ParseCsvColList  ParseCsvLine(
 		const ParseCsvControl &parse_control = ParseCsvControl());
 
-	ParseCsvColList &ParseCsvLine_NEW(ParseCsvColList &col_list,
-		const ParseCsvControl &parse_control = ParseCsvControl());
-	ParseCsvColList  ParseCsvLine_NEW(
-		const ParseCsvControl &parse_control = ParseCsvControl());
+	bool ParseCsvLine(const ParseCsvControl &parse_control,
+		ParseCsvPosition &original_pos, ParseCsvPosition &current_pos,
+		ParseCsvColList &col_list);
 
 private:
 	ParseCsvPosition position_;
