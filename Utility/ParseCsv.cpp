@@ -41,7 +41,7 @@ ParseCsvControl::ParseCsvControl(const std::string &value_sep_list,
 	std::size_t max_nested_lines)
 	:value_sep_list_(ThrowIfEmpty(value_sep_list,
 		"The CSV parser value separator character list"))
-	,line_sep_list_("\n")
+	,line_sep_list_(line_sep_list)
 	,enable_crlf_(enable_crlf)
 	,max_nested_lines_(max_nested_lines)
 {
@@ -65,10 +65,16 @@ ParseCsvControl::ParseCsvControl(const std::string &value_sep_list,
 		throw std::invalid_argument("The specified line separator list "
 			"does not contain a line-feed character, but the enable CRLF flag "
 			"is set to 'true'.");
+
+	if (enable_crlf && (line_sep_list_.find('\r') != std::string::npos))
+		throw std::invalid_argument("The specified line separator list "
+			"includes a carriage-return character, but the enable CRLF flag "
+			"is set to 'true'.");
 }
 // ////////////////////////////////////////////////////////////////////////////
 
 // ////////////////////////////////////////////////////////////////////////////
+/*
 std::size_t ParseCsvControl::GetValueEnd(const std::string_view &src_line,
 	std::size_t current_offset, std::size_t &error_offset) const
 {
@@ -138,6 +144,88 @@ std::size_t ParseCsvControl::GetValueEnd(const std::string_view &src_line,
 
 	return(current_offset);
 }
+*/
+std::size_t ParseCsvControl::GetValueEnd(const std::string_view &src_line,
+	std::size_t current_offset, std::size_t &next_offset,
+	std::size_t &error_offset) const
+{
+	if (current_offset >= src_line.size()) {
+		error_offset = current_offset;
+		throw std::invalid_argument("Invocation of ParseCsvState::GetValueEnd()"
+			" with a source datum length of " + std::to_string(src_line.size()) +
+			" and a current offset of " + std::to_string(current_offset) + ".");
+	}
+
+	std::size_t start_offset = current_offset;
+	std::size_t last_offset  = src_line.size() - 1;
+
+	while (current_offset <= last_offset) {
+		char this_char = src_line[current_offset];
+		if ((this_char == '"') || (this_char == '\'')) {
+			char        quote_char   = this_char;
+			bool        in_quote     = true;
+			std::size_t quote_offset = current_offset;
+			std::size_t nested_count = 0;
+			while (++current_offset <= last_offset) {
+				this_char = src_line[current_offset];
+				if (this_char == quote_char) {
+					// Is this a quoted by doubling ('' or "") quote char?
+					if ((current_offset - 1) == quote_offset) {
+						in_quote = false;
+						break;
+					}
+					if ((current_offset < last_offset) &&
+						 (src_line[current_offset - 1] == quote_char))
+						++current_offset;
+					else {
+						// If not, it's the end of the quote.
+						in_quote = false;
+						if (current_offset == last_offset) {
+							next_offset = current_offset;
+							return(current_offset);
+						}
+						break;
+					}
+				}
+				else if (IsLineSep(this_char)) {
+					if (nested_count == max_nested_lines_) {
+						error_offset = current_offset;
+						throw std::invalid_argument("The CSV quoted string value "
+							"contains more line separator characters than is "
+							"permitted by the current CSV parser configuration (" +
+							std::to_string(max_nested_lines_) + ").");
+					}
+					++nested_count;
+				}
+			}
+			if (in_quote) {
+				error_offset = quote_offset;
+				throw std::invalid_argument("Unterminated quote character: "
+					"opening of quote was at index " +
+					std::to_string(quote_offset) + ".");
+			}
+			++current_offset;
+		}
+		else if (IsValueSep(this_char)) {
+			next_offset = current_offset + 1;
+			return(current_offset);
+		}
+		else if (IsLineSep(this_char)) {
+			next_offset = current_offset + 1;
+			if ((this_char == '\n') && enable_crlf_ &&
+				 (current_offset > start_offset) &&
+				 (src_line[current_offset - 1] == '\r'))
+				current_offset--;
+			return(current_offset);
+		}
+		else
+			++current_offset;
+	}
+
+	next_offset = current_offset + ((current_offset < last_offset) ? 1 : 0);
+
+	return(current_offset);
+}
 // ////////////////////////////////////////////////////////////////////////////
 
 // ////////////////////////////////////////////////////////////////////////////
@@ -158,14 +246,7 @@ ParseCsvState::ParseCsvState(const std::string &src_line)
 }
 // ////////////////////////////////////////////////////////////////////////////
 
-// ////////////////////////////////////////////////////////////////////////////
-bool ParseCsvState::ParseCsvLine(const ParseCsvControl &parse_control,
-	ParseCsvPosition &current_pos, ParseCsvColList &col_list)
-{
-	return(ParseCsvLine(parse_control, position_, current_pos, col_list));
-}
-// ////////////////////////////////////////////////////////////////////////////
-
+/*
 // ////////////////////////////////////////////////////////////////////////////
 ParseCsvColList &ParseCsvState::ParseCsvLine(ParseCsvColList &col_list,
 	const ParseCsvControl &parse_control)
@@ -203,6 +284,7 @@ ParseCsvColList ParseCsvState::ParseCsvLine(
 	return(ParseCsvLine(col_list, parse_control));
 }
 // ////////////////////////////////////////////////////////////////////////////
+*/
 
 // ////////////////////////////////////////////////////////////////////////////
 bool ParseCsvState::ParseCsvLine(const ParseCsvControl &parse_control,
@@ -224,9 +306,10 @@ bool ParseCsvState::ParseCsvLine(const ParseCsvControl &parse_control,
 		}
 		std::size_t error_idx = 0;
 		std::size_t start_idx = tmp_current_pos.row_off_;
+		std::size_t next_idx  = 0;
 		std::size_t end_idx   =
 			parse_control.GetValueEnd(src_line_,
-				tmp_current_pos.row_off_, error_idx);
+				tmp_current_pos.row_off_, next_idx, error_idx);
 		col_list.emplace_back(src_line_.data() + start_idx,
 			end_idx - start_idx);
 		if (end_idx >= src_line_.size()) {
@@ -250,6 +333,14 @@ bool ParseCsvState::ParseCsvLine(const ParseCsvControl &parse_control,
 	current_pos = tmp_current_pos;
 
 	return(true);
+}
+// ////////////////////////////////////////////////////////////////////////////
+
+// ////////////////////////////////////////////////////////////////////////////
+bool ParseCsvState::ParseCsvLine(const ParseCsvControl &parse_control,
+	ParseCsvPosition &current_pos, ParseCsvColList &col_list)
+{
+	return(ParseCsvLine(parse_control, position_, current_pos, col_list));
 }
 // ////////////////////////////////////////////////////////////////////////////
 
@@ -330,12 +421,130 @@ void TEST_RunTest()
 // ////////////////////////////////////////////////////////////////////////////
 
 // ////////////////////////////////////////////////////////////////////////////
+void TEST_RunTestStep()
+{
+	using namespace MLB::Utility;
+
+	ParseCsvControl          parse_control(",", "\n", true, 2);
+	std::vector<std::string> src_list = {
+//		",",
+//		"\n",
+//		"\r\n",
+//		"\r\n\n",
+//		"\r\n\r\n",
+		",A,B",
+		"A,B",
+		"A\nB",
+		"A\r\nB",
+		"AA,BB",
+		"",
+		",",
+		",,",
+		",,,,,",
+		",,,,,\n",
+		",,,,,\r\n",
+	};
+
+	for (const auto &this_element : src_list)
+	{
+		std::size_t start_offset = 0;
+		std::size_t end_offset   = 0;
+		std::size_t next_offset  = 0;
+		std::size_t error_offset = 0;
+		std::size_t test_index   = 0;
+		std::cout << EmitterSep('=');
+		std::cout << "INPUT   : [" << XLateEscapeChars(this_element)
+			<< "]" << std::endl;
+		while (start_offset <= this_element.size()) {
+/*
+			std::cout
+				<< std::setw(3) << test_index << ": "
+				<< "START=" << std::setw(10) << start_offset << " / "
+				<< "END  =" << std::setw(10) << end_offset   << " / "
+				<< "NEXT =" << std::setw(10) << next_offset  << '\n';
+*/
+			end_offset = parse_control.GetValueEnd(this_element,
+				start_offset, next_offset, error_offset);
+/*
+//			std::cout << EmitterSep('-') << std::endl;
+			std::cout
+				<< std::setw(3) << test_index << ": "
+				<< "START=" << std::setw(10) << start_offset << " / "
+				<< "END  =" << std::setw(10) << end_offset   << " / "
+				<< "NEXT =" << std::setw(10) << next_offset  << '\n';
+			std::cout << '[' << XLateEscapeChars(std::string(
+				this_element.c_str() + start_offset,
+				this_element.c_str() + end_offset)) << "]\n";
+*/
+			std::cout
+				<< "   START:" << std::setw(5) << start_offset
+				<< "  END:"    << std::setw(5) << end_offset
+				<< " NEXT:"    << std::setw(5) << end_offset
+				<< " ["        << XLateEscapeChars(std::string(
+				this_element.c_str() + start_offset,
+				this_element.c_str() + end_offset)) << "]\n";
+			++test_index;
+			start_offset = next_offset;
+			end_offset   = 0;
+			next_offset  = 0;
+		}
+	}
+
+	std::cout << EmitterSep('=') << std::endl;
+}
+// ////////////////////////////////////////////////////////////////////////////
+
+// ////////////////////////////////////////////////////////////////////////////
 void TEST_RunTest()
 {
 	using namespace MLB::Utility;
 
 	ParseCsvControl parse_control(",", "\n", true, 2);
 	ParseCsvColList col_list;
+
+/*
+	{
+		std::size_t start_offset = 0;
+		std::size_t end_offset   = 0;
+		std::size_t next_offset  = 0;
+		std::size_t error_offset = 0;
+		std::size_t test_index   = 0;
+//		std::string src_data(",A,B");
+//		std::string src_data("A,B");
+//		std::string src_data("A\nB");
+//		std::string src_data("A\r\nB");
+		std::string src_data("AA,BB");
+std::cout
+	<< std::setw(3) << test_index << ": "
+	<< "START=" << std::setw(10) << start_offset << " / "
+	<< "END  =" << std::setw(10) << end_offset   << " / "
+	<< "NEXT =" << std::setw(10) << next_offset  << '\n';
+		end_offset = parse_control.GetValueEnd(src_data,
+			start_offset, next_offset, error_offset);
+std::cout
+	<< std::setw(3) << test_index << ": "
+	<< "START=" << std::setw(10) << start_offset << " / "
+	<< "END  =" << std::setw(10) << end_offset   << " / "
+	<< "NEXT =" << std::setw(10) << next_offset  << '\n';
+++test_index;
+		start_offset = next_offset;
+		end_offset   = 0;
+		next_offset  = 0;
+std::cout
+	<< std::setw(3) << test_index << ": "
+	<< "START=" << std::setw(10) << start_offset << " / "
+	<< "END  =" << std::setw(10) << end_offset   << " / "
+	<< "NEXT =" << std::setw(10) << next_offset  << '\n';
+		end_offset = parse_control.GetValueEnd(src_data,
+			start_offset, next_offset, error_offset);
+std::cout
+	<< std::setw(3) << test_index << ": "
+	<< "START=" << std::setw(10) << start_offset << " / "
+	<< "END  =" << std::setw(10) << end_offset   << " / "
+	<< "NEXT =" << std::setw(10) << next_offset  << '\n';
+++test_index;
+	}
+*/
 
 	for (const std::string &this_element : TEST_TestList) {
 		std::cout <<
@@ -373,14 +582,18 @@ void TEST_RunTest()
 // ////////////////////////////////////////////////////////////////////////////
 int main()
 {
+	int return_code = EXIT_SUCCESS;
+
 	try {
-		TEST_RunTest();
+//		TEST_RunTest();
+TEST_RunTestStep();
 	}
 	catch (const std::exception &except) {
+		return_code = EXIT_FAILURE;
 		std::cerr << "\n\nERROR: " << except.what() << std::endl;
 	}
 
-	return (EXIT_SUCCESS);
+	return(return_code);
 }
 // ////////////////////////////////////////////////////////////////////////////
 

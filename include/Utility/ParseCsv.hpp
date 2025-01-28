@@ -74,8 +74,13 @@ public:
 		return(src_line.find_first_of(value_sep_list_, current_offset));
 	}
 
+/*
 	std::size_t GetValueEnd(const std::string_view &src_line,
 		std::size_t current_offset, std::size_t &error_offset) const;
+*/
+	std::size_t GetValueEnd(const std::string_view &src_line,
+		std::size_t current_offset, std::size_t &next_offset,
+		std::size_t &error_offset) const;
 
 private:
 	std::string value_sep_list_;
@@ -133,17 +138,18 @@ public:
 		return(position_);
 	}
 
-	bool ParseCsvLine(const ParseCsvControl &parse_control,
-		ParseCsvPosition &current_pos, ParseCsvColList &col_list);
-
+/*
 	ParseCsvColList &ParseCsvLine(ParseCsvColList &col_list,
 		const ParseCsvControl &parse_control = ParseCsvControl());
 	ParseCsvColList  ParseCsvLine(
 		const ParseCsvControl &parse_control = ParseCsvControl());
+*/
 
 	bool ParseCsvLine(const ParseCsvControl &parse_control,
 		ParseCsvPosition &original_pos, ParseCsvPosition &current_pos,
 		ParseCsvColList &col_list);
+	bool ParseCsvLine(const ParseCsvControl &parse_control,
+		ParseCsvPosition &current_pos, ParseCsvColList &col_list);
 
 private:
 	ParseCsvPosition position_;
