@@ -269,6 +269,7 @@ reuse_file_name = true;
 
 	MFStoreControl mfstore_ctl(CreateMFStore(file_name, file_size, mmap_size));
 
+	mfstore_ctl.SetSectionList(section_list);
 	mfstore_ctl.CheckSectionList();
 
 	std::cout << " done.\n" << std::endl;
