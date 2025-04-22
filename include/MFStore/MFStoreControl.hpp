@@ -102,9 +102,9 @@ public:
 	}
 
 	bool                      IsActive() const;
-	bool                      CheckIsActive() const;
+	bool                      CheckIsActive(bool throw_on_error = true) const;
 	bool                      IsWriter() const;
-	bool                      CheckIsWriter() const;
+	bool                      CheckIsWriter(bool throw_on_error = true) const;
 	const std::string        &GetFileName() const;
 	MFStoreFileHandle         GetFileHandle() const;
 	MFStoreLen                GetFileSize() const;
@@ -115,6 +115,9 @@ public:
 	MappedRegionSPtr          GetRegionSPtr() const;
 	const MFStoreSectionList &GetSectionList() const;
 	void                      SetSectionList(const MFStoreSectionList &src);
+
+	void CheckSectionList() const;
+	void CheckSectionList(const MFStoreSectionList &section_list) const;
 
 private:
 	FileMappingSPtr    mapping_sptr_;

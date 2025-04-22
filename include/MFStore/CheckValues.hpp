@@ -67,6 +67,13 @@ void       CheckInitialFileAndMmapSizes(MFStoreLen file_size,
 	MFStoreLen mmap_size, MFStoreLen storage_gran = MFStoreAllocGran);
 // ////////////////////////////////////////////////////////////////////////////
 
+// ////////////////////////////////////////////////////////////////////////////
+bool CheckOffset(MFStoreLen file_size, MFStoreLen src_offset,
+	bool throw_on_error = true);
+bool CheckExtent(MFStoreLen file_size, MFStoreLen src_offset,
+	MFStoreLen src_length = 0, bool throw_on_error = true);
+// ////////////////////////////////////////////////////////////////////////////
+
 } // namespace MFStore
 
 } // namespace MLB

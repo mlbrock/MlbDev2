@@ -97,13 +97,15 @@ bool MFStoreControl::IsActive() const
 // ////////////////////////////////////////////////////////////////////////////
 
 // ////////////////////////////////////////////////////////////////////////////
-bool MFStoreControl::CheckIsActive() const
+bool MFStoreControl::CheckIsActive(bool throw_on_error) const
 {
-	if (!IsActive())
-		throw std::runtime_error("The MFStoreControl instance contains at "
-			"least one empty shared pointer.");
+	if (IsActive())
+		return(true);
+	else if (throw_on_error)
+		throw std::runtime_error("The MFStoreControl instance does not contain "
+			"an active file mapping.");
 
-	return(true);
+	return(false);
 }
 // ////////////////////////////////////////////////////////////////////////////
 
@@ -116,13 +118,15 @@ bool MFStoreControl::IsWriter() const
 // ////////////////////////////////////////////////////////////////////////////
 
 // ////////////////////////////////////////////////////////////////////////////
-bool MFStoreControl::CheckIsWriter() const
+bool MFStoreControl::CheckIsWriter(bool throw_on_error) const
 {
-	if (!IsWriter())
+	if (IsWriter())
+		return(true);
+	else if (throw_on_error)
 		throw std::runtime_error("The MFStoreControl instance is not open "
 			"for writing.");
 
-	return(true);
+	return(false);
 }
 // ////////////////////////////////////////////////////////////////////////////
 
@@ -197,6 +201,23 @@ const MFStoreSectionList &MFStoreControl::GetSectionList() const
 void MFStoreControl::SetSectionList(const MFStoreSectionList &src)
 {
 	section_list_ = src;
+}
+// ////////////////////////////////////////////////////////////////////////////
+
+// ////////////////////////////////////////////////////////////////////////////
+void MFStoreControl::CheckSectionList() const
+{
+	CheckSectionList(section_list_);
+}
+// ////////////////////////////////////////////////////////////////////////////
+
+// ////////////////////////////////////////////////////////////////////////////
+void MFStoreControl::CheckSectionList(const MFStoreSectionList &section_list)
+	const
+{
+	CheckIsActive(true);
+
+	MFStoreSection::CheckSectionList(section_list, alloc_gran_, file_size_);
 }
 // ////////////////////////////////////////////////////////////////////////////
 

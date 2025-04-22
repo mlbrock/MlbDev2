@@ -96,7 +96,7 @@ public:
 	static void FixupSectionList(MFStoreSectionList &dst,
 		uint64_t section_gran = MFStoreAllocGran);
 	static void CheckSectionList(const MFStoreSectionList &dst,
-		uint64_t section_gran = MFStoreAllocGran);
+		uint64_t section_gran = MFStoreAllocGran, uint64_t file_size = 0);
 	static void CheckSectionList(std::size_t section_list_index,
 		const MFStoreSectionList &dst, uint64_t section_gran = MFStoreAllocGran);
 

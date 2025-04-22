@@ -25,6 +25,8 @@
 
 #include <MFStore/MFStoreSection.hpp>
 
+#include <MFStore/CheckValues.hpp>
+
 #include <Utility/EmitterSep.hpp>
 #include <Utility/GranularRound.hpp>
 #include <Utility/ThrowErrno.hpp>
@@ -224,7 +226,7 @@ void MFStoreSection::FixupSectionList(MFStoreSectionList &dst,
 
 // ////////////////////////////////////////////////////////////////////////////
 void MFStoreSection::CheckSectionList(const MFStoreSectionList &dst,
-	uint64_t section_gran)
+	uint64_t section_gran, uint64_t file_size)
 {
 	if (dst.empty())
 		throw std::invalid_argument("Section list is empty.");
@@ -261,6 +263,9 @@ void MFStoreSection::CheckSectionList(const MFStoreSectionList &dst,
 			if (!section.description_[0])
 				throw std::invalid_argument("The section description string is "
 					"empty.");
+			if (file_size)
+				CheckExtent(file_size, section.section_offset_,
+					section.length_padded_, true);
 		}
 		catch (const std::exception &except) {
 			throw std::invalid_argument("Section at index " +
@@ -325,10 +330,10 @@ const std::size_t                           TabularColCount  =
 // ////////////////////////////////////////////////////////////////////////////
 
 // ////////////////////////////////////////////////////////////////////////////
-std::size_t GetTabularColWidth(std::size_t col_idx)
+std::streamsize GetTabularColWidth(std::size_t col_idx)
 {
-	return(
-		static_cast<std::size_t>((col_idx < (TabularColCount - 1)) ? 20 : 63));
+	return(static_cast<std::streamsize>(
+		(col_idx < (TabularColCount - 1)) ? 20 : 63));
 }
 // ////////////////////////////////////////////////////////////////////////////
 

@@ -167,6 +167,40 @@ void CheckInitialFileAndMmapSizes(MFStoreLen file_size, MFStoreLen mmap_size,
 }
 // ////////////////////////////////////////////////////////////////////////////
 
+// ////////////////////////////////////////////////////////////////////////////
+bool CheckOffset(MFStoreLen file_size, MFStoreLen src_offset,
+	bool throw_on_error)
+{
+	if (src_offset < file_size)
+		return(true);
+	else if (throw_on_error)
+		throw std::invalid_argument("The specified offset (" +
+			std::to_string(src_offset) + ") is not less than the file size (" +
+			std::to_string(file_size) + ").");
+
+	return(false);
+}
+// ////////////////////////////////////////////////////////////////////////////
+
+// ////////////////////////////////////////////////////////////////////////////
+bool CheckExtent(MFStoreLen file_size, MFStoreLen src_offset,
+	MFStoreLen src_length, bool throw_on_error)
+{
+	if (!CheckOffset(file_size, src_offset, throw_on_error))
+		return(false);
+
+	if ((!src_length) || ((src_offset + src_length) < file_size))
+		return(true);
+	else if (throw_on_error)
+		throw std::invalid_argument("The specified extent starting at offset (" +
+			std::to_string(src_offset) + ") with an extent length of " +
+			std::to_string(src_length) + " bytes is not less than the file "
+			"size (" + std::to_string(file_size) + ").");
+
+	return(false);
+}
+// ////////////////////////////////////////////////////////////////////////////
+
 } // namespace MFStore
 
 } // namespace MLB
