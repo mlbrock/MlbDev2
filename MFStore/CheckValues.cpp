@@ -189,12 +189,12 @@ bool CheckExtent(MFStoreLen file_size, MFStoreLen src_offset,
 	if (!CheckOffset(file_size, src_offset, throw_on_error))
 		return(false);
 
-	if ((!src_length) || ((src_offset + src_length) < file_size))
+	if ((!src_length) || ((src_offset + src_length) <= file_size))
 		return(true);
 	else if (throw_on_error)
 		throw std::invalid_argument("The specified extent starting at offset (" +
 			std::to_string(src_offset) + ") with an extent length of " +
-			std::to_string(src_length) + " bytes is not less than the file "
+			std::to_string(src_length) + " bytes is greater than the file "
 			"size (" + std::to_string(file_size) + ").");
 
 	return(false);
