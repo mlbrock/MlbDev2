@@ -149,11 +149,29 @@ std::size_t ParseCsvControl::GetValueEnd(const std::string_view &src_line,
 	std::size_t current_offset, std::size_t &next_offset,
 	std::size_t &error_offset) const
 {
+/*
 	if (current_offset >= src_line.size()) {
 		error_offset = current_offset;
 		throw std::invalid_argument("Invocation of ParseCsvState::GetValueEnd()"
 			" with a source datum length of " + std::to_string(src_line.size()) +
 			" and a current offset of " + std::to_string(current_offset) + ".");
+	}
+*/
+	if (current_offset > src_line.size()) {
+		error_offset = current_offset;
+		throw std::invalid_argument("Invocation of ParseCsvState::GetValueEnd()"
+			" with a source datum length of " + std::to_string(src_line.size()) +
+			" and a current offset of " + std::to_string(current_offset) + ".");
+	}
+	else if (current_offset == src_line.size()) {
+/*
+		error_offset = current_offset;
+		throw std::invalid_argument("Invocation of ParseCsvState::GetValueEnd()"
+			" with a source datum length of " + std::to_string(src_line.size()) +
+			" and a current offset of " + std::to_string(current_offset) + ".");
+*/
+		next_offset = current_offset;
+		return(current_offset);
 	}
 
 	std::size_t start_offset = current_offset;
@@ -479,10 +497,12 @@ void TEST_RunTestStep()
 			std::cout
 				<< "   START:" << std::setw(5) << start_offset
 				<< "  END:"    << std::setw(5) << end_offset
-				<< " NEXT:"    << std::setw(5) << end_offset
+				<< " NEXT:"    << std::setw(5) << next_offset
 				<< " ["        << XLateEscapeChars(std::string(
 				this_element.c_str() + start_offset,
 				this_element.c_str() + end_offset)) << "]\n";
+			if (next_offset == end_offset)
+				break;
 			++test_index;
 			start_offset = next_offset;
 			end_offset   = 0;
