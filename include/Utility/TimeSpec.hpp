@@ -136,6 +136,9 @@ struct API_UTILITY TimeSpec : public timespec {
 	TimeVal ToTimeVal() const;
 
 	unsigned long long ToTicks() const;
+	unsigned long long ToSeconds() const;
+	unsigned long long ToMilliseconds() const;
+	unsigned long long ToMicroseconds() const;
 	unsigned long long ToNanoseconds() const;
 
 	double GetDouble() const;
@@ -174,6 +177,9 @@ struct API_UTILITY TimeSpec : public timespec {
 
 	static TimeSpec FromString(const std::string &in_date);
 	static TimeSpec FromString(const char *in_date);
+	static TimeSpec FromSeconds(unsigned long long nsecs);
+	static TimeSpec FromMilliseconds(unsigned long long nsecs);
+	static TimeSpec FromMicroseconds(unsigned long long nsecs);
 	static TimeSpec FromNanoseconds(unsigned long long nsecs);
 
 	static TimeSpec Now();

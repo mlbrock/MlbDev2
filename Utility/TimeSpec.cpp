@@ -347,6 +347,27 @@ unsigned long long TimeSpec::ToTicks() const
 // ////////////////////////////////////////////////////////////////////////////
 
 // ////////////////////////////////////////////////////////////////////////////
+unsigned long long TimeSpec::ToSeconds() const
+{
+	return(static_cast<unsigned long long>(tv_sec));
+}
+// ////////////////////////////////////////////////////////////////////////////
+
+// ////////////////////////////////////////////////////////////////////////////
+unsigned long long TimeSpec::ToMilliseconds() const
+{
+	return(ToNanoseconds() / 1000000ULL);
+}
+// ////////////////////////////////////////////////////////////////////////////
+
+// ////////////////////////////////////////////////////////////////////////////
+unsigned long long TimeSpec::ToMicroseconds() const
+{
+	return(ToNanoseconds() / 1000ULL);
+}
+// ////////////////////////////////////////////////////////////////////////////
+
+// ////////////////////////////////////////////////////////////////////////////
 unsigned long long TimeSpec::ToNanoseconds() const
 {
 	return((static_cast<unsigned long long>(tv_sec) *
@@ -470,6 +491,29 @@ TimeSpec TimeSpec::FromString(const char *in_date)
 TimeSpec TimeSpec::FromString(const std::string &in_date)
 {
 	return(TimeSpec::FromString(in_date.c_str()));
+}
+// ////////////////////////////////////////////////////////////////////////////
+
+// ////////////////////////////////////////////////////////////////////////////
+TimeSpec TimeSpec::FromSeconds(unsigned long long secs)
+{
+	return(TimeSpec(static_cast<time_t>(secs)));
+}
+// ////////////////////////////////////////////////////////////////////////////
+
+// ////////////////////////////////////////////////////////////////////////////
+TimeSpec TimeSpec::FromMilliseconds(unsigned long long msecs)
+{
+	return(TimeSpec(static_cast<time_t>(msecs / 1000ULL),
+		static_cast<long>((msecs % 1000ULL) * 1000000ULL)));
+}
+// ////////////////////////////////////////////////////////////////////////////
+
+// ////////////////////////////////////////////////////////////////////////////
+TimeSpec TimeSpec::FromMicroseconds(unsigned long long usecs)
+{
+	return(TimeSpec(static_cast<time_t>(usecs / 1000000ULL),
+		static_cast<long>((usecs % 1000000ULL) * 1000ULL)));
 }
 // ////////////////////////////////////////////////////////////////////////////
 
@@ -680,9 +724,9 @@ template <typename DatumType>
 #define MLB_TIMESPEC_TEST_Values(type_name)  										\
 	{  																							\
 		for (uint32_t idx_a_1 = 1; idx_a_1 <= 2; ++idx_a_1) { 					\
-			for (uint32_t idx_a_2= 1; idx_a_2 <= 2; ++idx_a_2) {  				\
+			for (long idx_a_2= 1; idx_a_2 <= 2; ++idx_a_2) {  						\
 				for (uint32_t idx_b_1 = 1; idx_b_1 <= 2; ++idx_b_1) { 			\
-					for (uint32_t idx_b_2 = 1; idx_b_2 <= 2; ++idx_b_2) { 		\
+					for (long idx_b_2 = 1; idx_b_2 <= 2; ++idx_b_2) { 				\
 						type_name value_a = type_name { idx_a_1, idx_a_2 };		\
 						type_name value_b = type_name { idx_b_1, idx_b_2 };		\
 						MLB_TIMESPEC_TEST_RelOpsAll(type_name, value_a, value_b)	\
@@ -701,6 +745,21 @@ void TEST_RunRelOpTests()
 }
 // ////////////////////////////////////////////////////////////////////////////
 
+// ////////////////////////////////////////////////////////////////////////////
+void TEST_ExplicitConversions()
+{
+	using namespace MLB::Utility;
+
+	TimeSpec now;
+
+	std::cout << "Now         : " << now << '\n';
+	std::cout << "Seconds     : " << TimeSpec::FromSeconds(now.ToSeconds())           << '\n';
+	std::cout << "Milliseconds: " << TimeSpec::FromMilliseconds(now.ToMilliseconds()) << '\n';
+	std::cout << "Microseconds: " << TimeSpec::FromMicroseconds(now.ToMicroseconds()) << '\n';
+	std::cout << "Nanoseconds : " << TimeSpec::FromNanoseconds(now.ToNanoseconds())   << '\n';
+}
+// ////////////////////////////////////////////////////////////////////////////
+
 } // Anonymous namespace
 
 // ////////////////////////////////////////////////////////////////////////////
@@ -710,6 +769,7 @@ int main()
 
    try {
       TEST_RunRelOpTests();
+		TEST_ExplicitConversions();
 	}
    catch (const std::exception &except) {
       return_code = EXIT_FAILURE;
