@@ -177,9 +177,9 @@ struct API_UTILITY TimeSpec : public timespec {
 
 	static TimeSpec FromString(const std::string &in_date);
 	static TimeSpec FromString(const char *in_date);
-	static TimeSpec FromSeconds(unsigned long long nsecs);
-	static TimeSpec FromMilliseconds(unsigned long long nsecs);
-	static TimeSpec FromMicroseconds(unsigned long long nsecs);
+	static TimeSpec FromSeconds(unsigned long long secs);
+	static TimeSpec FromMilliseconds(unsigned long long msecs);
+	static TimeSpec FromMicroseconds(unsigned long long usecs);
 	static TimeSpec FromNanoseconds(unsigned long long nsecs);
 
 	static TimeSpec Now();
