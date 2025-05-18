@@ -75,11 +75,11 @@ use warnings;
 			$CFLS_LineNumbers . "') exceeds the number of lines in the file ('" .
 			($#line_list + 1) + "').");
 	}
-	elsif (!length($line_list[$line_number])) {
-		printf("%10d: %6d / %6d: 00000     1\n", $line_number + 1, 0, 0);
+	elsif (!length($line_list[$CFLS_LineNumbers - 1])) {
+		printf("%10d: %6d / %6d: 00000     1\n", $CFLS_LineNumbers, 0, 0);
 	}
 	else {
-		$line_number    = $CFLS_LineNumbers;
+		$line_number    = $CFLS_LineNumbers - 1;
 		my $src_line    = $line_list[$line_number];
 		my $src_length  = length($src_line);
 		my $start_idx;
@@ -97,7 +97,7 @@ use warnings;
 			chop @results_list;
 			printf("%10d: %6d / %6d: ",
 				$line_number + 1, $start_idx, length($tmp_part));
-			print $results_list[0], "\n";
+			print $results_list[0], ": [", $tmp_part, "]\n";
 		}
 	}
 
