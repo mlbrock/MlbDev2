@@ -85,10 +85,12 @@ LIB_PROTOBUF_C_DIR	=	/usr/lib64
 LIB_PROTOBUF_C_NAMES_A	=
 LIB_PROTOBUF_C_NAMES_SO	=	protobuf-c
 
-INC_NATS_DIR		=	${MASCaPS_DIR_PARENT}/../nats-io/nats.c/src
-LIB_NATS_DIR		=	${MASCaPS_DIR_PARENT}/../nats-io/nats.c/___MLB_BuildDir/lib
-LIB_NATS_NAMES_A	=	nats_static
-LIB_NATS_NAMES_SO	=	nats
+#INC_NATS_DIR		=	${MASCaPS_DIR_PARENT}/../nats-io/nats.c/src
+#LIB_NATS_DIR		=	${MASCaPS_DIR_PARENT}/../nats-io/nats.c/___MLB_BuildDir/lib
+#LIB_NATS_NAMES_A	=	nats_static
+#LIB_NATS_NAMES_SO	=	nats
+INC_NATS_DIR		=	./
+LIB_NATS_DIR		=	./
 
 # Not supported in g++ 4.1.
 #			-Woverlength-strings \
@@ -144,12 +146,18 @@ CFLAGS		+=	\
 
 OTHER_LIBS	=
 
+#BOOST_LIBS	=	\
+#			${LIB_BOOST_DIR}/libboost_filesystem.a   \
+#			${LIB_BOOST_DIR}/libboost_date_time.a \
+#			${LIB_BOOST_DIR}/libboost_thread.a \
+#			${LIB_BOOST_DIR}/libboost_regex.a \
+#			${LIB_BOOST_DIR}/libboost_system.a
+
 BOOST_LIBS	=	\
 			${LIB_BOOST_DIR}/libboost_filesystem.a   \
 			${LIB_BOOST_DIR}/libboost_date_time.a \
 			${LIB_BOOST_DIR}/libboost_thread.a \
-			${LIB_BOOST_DIR}/libboost_regex.a \
-			${LIB_BOOST_DIR}/libboost_system.a
+			${LIB_BOOST_DIR}/libboost_regex.a
 
 TIBRV_LIB	=	\
 			${LIB_TIBRV_DIR}/libtibrvcmq64.a	\
