@@ -30,3 +30,7 @@
 *.exe
 *.out
 *.app
+
+# The target platform directory
+TargetPlatform/
+
