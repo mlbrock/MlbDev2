@@ -86,11 +86,15 @@ public:
 	bool IsEnd() const;
 
 	/** Returns the index of the last logical line parsed. */
-	std::size_t GetLineIndex() const;
+	std::size_t      GetLineIndex() const;
 	/** Returns the source offset of the last logical line parsed. */
-	std::size_t GetLineOffset() const;
+	std::size_t      GetLineOffset() const;
 	/** Returns the source offset of the next character to be parsed. */
-	std::size_t GetCurrentOffset() const;
+	std::size_t      GetCurrentOffset() const;
+	/** Return the number of unparsed lines in the source data. */
+	std::size_t      GetRemainingLines() const;
+	/** Return a copy of the source data std::string_view. */
+	std::string_view GetSourceData() const;
 
 	/** Parses the next logical line and returns it. */
 	std::string_view              ParseLineSingle();

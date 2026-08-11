@@ -28,6 +28,8 @@
 #include <Utility/ArgCheck.hpp>
 #include <Utility/XLateEscapeChars.hpp>
 
+#include <algorithm>
+
 #include <charconv>
 #include <climits>
 #include <cstring>
@@ -156,6 +158,25 @@ std::size_t ParseLineState::GetCurrentOffset() const
 // ////////////////////////////////////////////////////////////////////////////
 
 // ////////////////////////////////////////////////////////////////////////////
+std::size_t ParseLineState::GetRemainingLines() const
+{
+	if (IsEnd() || (current_offset_ >= src_data_.size()))
+		return(0);
+
+	return(static_cast<std::size_t>(std::count(
+		src_data_.cbegin() + static_cast<std::ptrdiff_t>(current_offset_),
+		src_data_.cend(), '\n') + 1));
+}
+// ////////////////////////////////////////////////////////////////////////////
+
+// ////////////////////////////////////////////////////////////////////////////
+std::string_view ParseLineState::GetSourceData() const
+{
+	return(src_data_);
+}
+// ////////////////////////////////////////////////////////////////////////////
+
+// ////////////////////////////////////////////////////////////////////////////
 std::string_view ParseLineState::ParseLineSingle()
 {
 	std::string_view dst;
@@ -199,9 +220,13 @@ std::string_view ParseLineState::ParseLineSingle()
 std::vector<std::string_view> ParseLineState::ParseLines()
 {
 	std::vector<std::string_view> dst;
+	std::size_t                   remaining_lines = GetRemainingLines();
 
-	while (!IsEnd())
-		dst.emplace_back(ParseLineSingle());
+	if (remaining_lines) {
+		dst.reserve(remaining_lines);
+		while (!IsEnd())
+			dst.emplace_back(ParseLineSingle());
+	}
 
 	return(dst);
 }
@@ -211,10 +236,14 @@ std::vector<std::string_view> ParseLineState::ParseLines()
 std::vector<ParseLineData> ParseLineState::ParseLinesWithInfo()
 {
 	std::vector<ParseLineData> dst;
+	std::size_t                remaining_lines = GetRemainingLines();
 
-	while (!IsEnd()) {
-		std::string_view this_line(ParseLineSingle());
-		dst.emplace_back(this_line, GetLineIndex(), GetLineOffset());
+	if (remaining_lines) {
+		dst.reserve(remaining_lines);
+		while (!IsEnd()) {
+			std::string_view this_line(ParseLineSingle());
+			dst.emplace_back(this_line, GetLineIndex(), GetLineOffset());
+		}
 	}
 
 	return(dst);
@@ -265,6 +294,8 @@ void TEST_RunTest()
 		std::cout << "INPUT      : [" <<
 			XLateEscapeChars(this_element) << ']' << std::endl;
 		ParseLineState line_state(this_element.c_str());
+		std::cout << "ELEMENTS   : " <<
+			line_state.GetRemainingLines() << std::endl;
 		while (!line_state.IsEnd()) {
 			std::cout << EmitterSep('-');
 			std::string_view this_line(line_state.ParseLineSingle());
@@ -272,12 +303,12 @@ void TEST_RunTest()
 				std::setw(5) << line_state.GetLineOffset() << ": [" <<
 				XLateEscapeChars(this_line) << "]\n";
 		}
-/*
+#if 0
 		std::cout << EmitterSep('+');
 		ParseLineState test_state(this_element.c_str());
 		for (const auto &this_line : test_state.ParseLinesWithInfo())
 			std::cout << this_line << '\n';
-*/
+#endif // #if 0
 		std::cout << EmitterSep('=') << std::endl;
 	}
 }
