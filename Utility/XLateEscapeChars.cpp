@@ -42,7 +42,7 @@ namespace Utility {
 // ////////////////////////////////////////////////////////////////////////////
 const std::string &GetEscapeListRaw()
 {
-	static const std::string EscapeList_Raw("\0\a\b\n\f\r\t\v", 8);
+	static const std::string EscapeList_Raw("\0\a\b\n\f\r\t\v\\", 9);
 
 	return(EscapeList_Raw);
 }
@@ -51,11 +51,32 @@ const std::string &GetEscapeListRaw()
 // ////////////////////////////////////////////////////////////////////////////
 const std::string &GetEscapeListMap()
 {
-	static const std::string EscapeList_Map("0abnfrtv");
+	static const std::string EscapeList_Map("0abnfrtv\\");
 
 	return(EscapeList_Map);
 }
 // ////////////////////////////////////////////////////////////////////////////
+
+
+// ////////////////////////////////////////////////////////////////////////////
+const std::string &GetEscapeListRawWithEsc()
+{
+	static const std::string EscapeList_RawWithEsc("\0\a\b\n\f\r\t\v\x1b\\", 10);
+
+	return(EscapeList_RawWithEsc);
+}
+// ////////////////////////////////////////////////////////////////////////////
+
+// ////////////////////////////////////////////////////////////////////////////
+const std::string &GetEscapeListMapWithEsc()
+{
+	static const std::string EscapeList_MapWithEsc("0abnfrtve\\");
+
+	return(EscapeList_MapWithEsc);
+}
+// ////////////////////////////////////////////////////////////////////////////
+
+
 
 // ////////////////////////////////////////////////////////////////////////////
 std::string XLateEscapeChars(const std::string_view &src,
@@ -65,8 +86,12 @@ std::string XLateEscapeChars(const std::string_view &src,
 	char        hex_buffer[(CHAR_BIT * sizeof(unsigned char)) + 1];
 
 	if (!src.empty()) {
+		// We'll need at least this much space. But SSO may have done it for us.
+		if (dst.capacity() < src.size())
+			dst.reserve(src.size());
 		for (const char &this_char : src) {
-			if (::isprint(this_char))
+			if (::isprint(this_char) &&
+				(chars_raw.find(this_char) == std::string::npos))
 				dst.push_back(this_char);
 			else {
 				std::size_t raw_idx = std::string::npos;
