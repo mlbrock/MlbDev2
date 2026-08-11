@@ -29,7 +29,6 @@
 #include <Utility/XLateEscapeChars.hpp>
 
 #include <algorithm>
-
 #include <charconv>
 #include <climits>
 #include <cstring>
@@ -269,31 +268,56 @@ std::vector<ParseLineData> ParseLineState::ParseLinesWithInfo()
 namespace {
 
 // ////////////////////////////////////////////////////////////////////////////
-const std::vector<std::string> TEST_TestList =
+using TestElement = std::pair<std::string, std::vector<std::string_view> >;
+// ////////////////////////////////////////////////////////////////////////////
+
+// ////////////////////////////////////////////////////////////////////////////
+const std::vector<TestElement> TEST_TestList =
 {
-	"A,B,C\n"
-	"\n"
-	",\r\n"
-	",,\n"
-	",,A\n"
-	",,A,B\n"
-	",,A,\tB,,,\n"
-	",,A,B,,,C"
+	{
+		// Next eight adjacent lines comprise a single string.
+		"A,B,C\n"
+		"\n"
+		",\r\n"
+		",,\n"
+		",,A\n"
+		",,A,B\n"
+		",,A,\tB,,,\n"
+		",,A,B,,,C",
+		{
+			"A,B,C",
+			"",
+			",",
+			",,",
+			",,A",
+			",,A,B",
+			",,A,\tB,,,",
+			",,A,B,,,C"
+		}
+	}
 	,
-	"The quick brown fox\njumped over the lazy dog."
+	{
+		"The quick brown fox\njumped over the lazy dog.",
+		{
+			"The quick brown fox",
+			"jumped over the lazy dog."
+		}
+	}
 };
 // ////////////////////////////////////////////////////////////////////////////
 
 // ////////////////////////////////////////////////////////////////////////////
-void TEST_RunTest()
+int TEST_RunTest()
 {
+	int return_code = EXIT_SUCCESS;
+
 	using namespace MLB::Utility;
 
-	for (const std::string &this_element : TEST_TestList) {
+	for (const auto &this_element : TEST_TestList) {
 		std::cout << EmitterSep('=');
 		std::cout << "INPUT      : [" <<
-			XLateEscapeChars(this_element) << ']' << std::endl;
-		ParseLineState line_state(this_element.c_str());
+			XLateEscapeChars(this_element.first) << ']' << std::endl;
+		ParseLineState line_state(this_element.first.c_str());
 		std::cout << "ELEMENTS   : " <<
 			line_state.GetRemainingLines() << std::endl;
 		while (!line_state.IsEnd()) {
@@ -303,14 +327,58 @@ void TEST_RunTest()
 				std::setw(5) << line_state.GetLineOffset() << ": [" <<
 				XLateEscapeChars(this_line) << "]\n";
 		}
+		std::cout << EmitterSep('-');
+		ParseLineState                test_state(this_element.first.c_str());
+		std::vector<std::string_view> line_list(test_state.ParseLines());
+		if (line_list == this_element.second)
+			std::cout << "***** RESULTS MATCH ANTICIPATED OUTPUT\n";
+		else {
+			return_code = EXIT_FAILURE;
+			std::cout << "***** RESULTS DO NOT MATCH ANTICIPATED OUTPUT\n";
+			std::cout << "***** Test case expected " <<
+				this_element.second.size() << " elements, " <<
+				((this_element.second.size() == line_list.size()) ? "and" : "but")
+				<< " " << line_list.size() << " elements were parsed.\n";
+			std::cout << "***** Differences are listed below.\n";
+			std::size_t loop_count =
+				std::max(this_element.second.size(), line_list.size());
+			const auto max_iter    = std::max_element(this_element.second.begin(),
+				this_element.second.end(), [](const std::string_view &lhs,
+				const std::string_view &rhs)
+			{
+				return(XLateEscapeChars(lhs).size() <
+					XLateEscapeChars(rhs).size());
+			});
+			std::size_t max_size = XLateEscapeChars(*max_iter).size();
+			for (std::size_t loop_iter = 0; loop_iter < loop_count; ++loop_iter) {
+				if ((loop_iter < this_element.second.size()) &&
+					 (loop_iter < line_list.size())           &&
+					 (this_element.second[loop_iter] == line_list[loop_iter]))
+					continue;
+				std::cout << std::setw(5) << loop_iter << "/     : [";
+				const std::string_view &str_1(
+					(loop_iter < this_element.second.size()) ?
+					this_element.second[loop_iter] : std::string_view());
+				const std::string_view &str_2(
+					(loop_iter < line_list.size()) ?
+					line_list[loop_iter] : std::string_view());
+				std::cout <<
+					std::left <<
+					std::setw(max_size) << XLateEscapeChars(str_1) << "] ---> [" <<
+					std::setw(max_size) << XLateEscapeChars(str_2) << "]\n" <<
+					std::right;
+			}
+		}
 #if 0
 		std::cout << EmitterSep('+');
-		ParseLineState test_state(this_element.c_str());
+		ParseLineState test_state(this_element.first.c_str());
 		for (const auto &this_line : test_state.ParseLinesWithInfo())
 			std::cout << this_line << '\n';
 #endif // #if 0
 		std::cout << EmitterSep('=') << std::endl;
 	}
+
+	return(return_code);
 }
 // ////////////////////////////////////////////////////////////////////////////
 
@@ -322,7 +390,7 @@ int main()
 	int return_code = EXIT_SUCCESS;
 
 	try {
-		TEST_RunTest();
+		return_code = TEST_RunTest();
 	}
 	catch (const std::exception &except) {
 		return_code = EXIT_FAILURE;
