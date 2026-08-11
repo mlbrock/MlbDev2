@@ -79,8 +79,8 @@ class ParseLineState
 public:
 	explicit ParseLineState(std::string_view src_data);
 	explicit ParseLineState(const std::string &src_data);
-	explicit ParseLineState(const char *src_data, std::size_t src_length);
 	explicit ParseLineState(const char *src_data);
+	         ParseLineState(const char *src_data, std::size_t src_length);
 
 	/** Returns \e true if the entire source data has been parsed. */
 	bool IsEnd() const;

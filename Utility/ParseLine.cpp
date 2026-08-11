@@ -64,7 +64,7 @@ ParseLineData::ParseLineData(std::string_view line_data,
 std::ostream &ParseLineData::ToStream(std::ostream &o_str) const
 {
 	o_str << std::setw(5) << line_index_ << '/' << std::setw(5) <<
-		line_offset_ << ": [" << line_data_ << '\n';
+		line_offset_ << ": [" << line_data_ << ']';
 
 	return(o_str);
 }
@@ -113,16 +113,16 @@ ParseLineState::ParseLineState(const std::string &src_data)
 // ////////////////////////////////////////////////////////////////////////////
 
 // ////////////////////////////////////////////////////////////////////////////
-ParseLineState::ParseLineState(const char *src_ptr, std::size_t src_length)
-	:ParseLineState(std::string_view(src_ptr, src_length))
+ParseLineState::ParseLineState(const char *src_ptr)
+	:ParseLineState(ThrowIfNull(src_ptr, "Source data pointer"),
+		(src_ptr) ? ::strlen(src_ptr) : 0)
 {
 }
 // ////////////////////////////////////////////////////////////////////////////
 
 // ////////////////////////////////////////////////////////////////////////////
-ParseLineState::ParseLineState(const char *src_ptr)
-	:ParseLineState(ThrowIfNull(src_ptr, "Source data pointer"),
-		(src_ptr) ? ::strlen(src_ptr) : 0)
+ParseLineState::ParseLineState(const char *src_ptr, std::size_t src_length)
+	:ParseLineState(std::string_view(src_ptr, src_length))
 {
 }
 // ////////////////////////////////////////////////////////////////////////////
