@@ -54,6 +54,7 @@
     <ClInclude Include="..\..\..\..\include\Utility\ParseCfgFile.hpp" />
     <ClInclude Include="..\..\..\..\include\Utility\ParseCfgItem.hpp" />
     <ClInclude Include="..\..\..\..\include\Utility\ParseCsv.hpp" />
+    <ClInclude Include="..\..\..\..\include\Utility\ParseLine.hpp" />
     <ClInclude Include="..\..\..\..\include\Utility\ParseNumericString.hpp" />
     <ClInclude Include="..\..\..\..\include\Utility\PathMetaChar.hpp" />
     <ClInclude Include="..\..\..\..\include\Utility\PathNameCanonicalizeSlashes.hpp" />
