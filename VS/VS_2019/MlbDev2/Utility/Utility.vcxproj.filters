@@ -458,5 +458,8 @@
     <ClCompile Include="..\..\..\..\Utility\XLateEscapeChars.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\..\Utility\ParseLine.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

@@ -127,6 +127,7 @@
     <ClCompile Include="..\..\..\..\Utility\ParseCfgFile.cpp" />
     <ClCompile Include="..\..\..\..\Utility\ParseCfgItem.cpp" />
     <ClCompile Include="..\..\..\..\Utility\ParseCsv.cpp" />
+    <ClCompile Include="..\..\..\..\Utility\ParseLine.cpp" />
     <ClCompile Include="..\..\..\..\Utility\PathMetaChar.cpp" />
     <ClCompile Include="..\..\..\..\Utility\PathNameCanonicalizeSlashes.cpp" />
     <ClCompile Include="..\..\..\..\Utility\PathNameGetDirectory.cpp" />
