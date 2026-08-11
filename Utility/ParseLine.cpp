@@ -26,10 +26,12 @@
 #include <Utility/ParseLine.hpp>
 
 #include <Utility/ArgCheck.hpp>
+#include <Utility/XLateEscapeChars.hpp>
 
 #include <charconv>
 #include <climits>
 #include <cstring>
+#include <iomanip>
 #include <ios>
 #include <stdexcept>
 
@@ -38,6 +40,58 @@
 namespace MLB {
 
 namespace Utility {
+
+// ////////////////////////////////////////////////////////////////////////////
+ParseLineData::ParseLineData(std::string_view line_data,
+	std::size_t line_index, std::size_t line_offset)
+	:line_data_(line_data)
+	,line_index_(line_index)
+	,line_offset_(line_offset)
+{
+}
+// ////////////////////////////////////////////////////////////////////////////
+
+// ////////////////////////////////////////////////////////////////////////////
+ParseLineData::ParseLineData(std::string_view line_data,
+	const ParseLineState &line_state)
+	:ParseLineData(line_data, line_state.GetLineIndex(),
+		line_state.GetLineOffset())
+{
+}
+// ////////////////////////////////////////////////////////////////////////////
+
+// ////////////////////////////////////////////////////////////////////////////
+std::ostream &ParseLineData::ToStream(std::ostream &o_str) const
+{
+	o_str << std::setw(5) << line_index_ << '/' << std::setw(5) <<
+		line_offset_ << ": [" << line_data_ << '\n';
+
+	return(o_str);
+}
+// ////////////////////////////////////////////////////////////////////////////
+
+// ////////////////////////////////////////////////////////////////////////////
+std::ostream &ParseLineData::ToStreamXLate(std::ostream &o_str) const
+{
+	o_str << std::setw(5) << line_index_ << '/' << std::setw(5) <<
+		line_offset_ << ": [" << XLateEscapeChars(line_data_) << ']';
+
+	return(o_str);
+}
+// ////////////////////////////////////////////////////////////////////////////
+
+// ////////////////////////////////////////////////////////////////////////////
+std::ostream & operator << (std::ostream &o_str, const ParseLineData &datum)
+{
+	return(datum.ToStreamXLate(o_str));
+}
+// ////////////////////////////////////////////////////////////////////////////
+
+// ////////////////////////////////////////////////////////////////////////////
+// ****************************************************************************
+// ****************************************************************************
+// ****************************************************************************
+// ////////////////////////////////////////////////////////////////////////////
 
 // ////////////////////////////////////////////////////////////////////////////
 ParseLineState::ParseLineState(std::string_view src_data)
@@ -54,6 +108,21 @@ ParseLineState::ParseLineState(std::string_view src_data)
 // ////////////////////////////////////////////////////////////////////////////
 ParseLineState::ParseLineState(const std::string &src_data)
 	:ParseLineState(std::string_view(src_data.data(), src_data.size()))
+{
+}
+// ////////////////////////////////////////////////////////////////////////////
+
+// ////////////////////////////////////////////////////////////////////////////
+ParseLineState::ParseLineState(const char *src_ptr, std::size_t src_length)
+	:ParseLineState(std::string_view(src_ptr, src_length))
+{
+}
+// ////////////////////////////////////////////////////////////////////////////
+
+// ////////////////////////////////////////////////////////////////////////////
+ParseLineState::ParseLineState(const char *src_ptr)
+	:ParseLineState(ThrowIfNull(src_ptr, "Source data pointer"),
+		(src_ptr) ? ::strlen(src_ptr) : 0)
 {
 }
 // ////////////////////////////////////////////////////////////////////////////
@@ -99,6 +168,11 @@ std::string_view ParseLineState::ParseLineSingle()
 		return(dst);
 	}
 
+	if (current_offset_) {
+		++line_index_;
+		line_offset_ = current_offset_;
+	}
+
 	std::size_t end_idx = src_data_.find('\n', current_offset_);
 
 	if (end_idx != std::string::npos) {
@@ -117,8 +191,31 @@ std::string_view ParseLineState::ParseLineSingle()
 		at_end_flag_    = true;
 	}
 
-	++line_index_;
-	line_offset_ = current_offset_;
+	return(dst);
+}
+// ////////////////////////////////////////////////////////////////////////////
+
+// ////////////////////////////////////////////////////////////////////////////
+std::vector<std::string_view> ParseLineState::ParseLines()
+{
+	std::vector<std::string_view> dst;
+
+	while (!IsEnd())
+		dst.emplace_back(ParseLineSingle());
+
+	return(dst);
+}
+// ////////////////////////////////////////////////////////////////////////////
+
+// ////////////////////////////////////////////////////////////////////////////
+std::vector<ParseLineData> ParseLineState::ParseLinesWithInfo()
+{
+	std::vector<ParseLineData> dst;
+
+	while (!IsEnd()) {
+		std::string_view this_line(ParseLineSingle());
+		dst.emplace_back(this_line, GetLineIndex(), GetLineOffset());
+	}
 
 	return(dst);
 }
@@ -137,11 +234,8 @@ std::string_view ParseLineState::ParseLineSingle()
 #ifdef TEST_MAIN
 
 #include <Utility/EmitterSep.hpp>
-#include <Utility/XLateEscapeChars.hpp>
 
 #include <iostream>
-#include <iomanip>
-#include <vector>
 
 namespace {
 
@@ -170,15 +264,20 @@ void TEST_RunTest()
 		std::cout << EmitterSep('=');
 		std::cout << "INPUT      : [" <<
 			XLateEscapeChars(this_element) << ']' << std::endl;
-		ParseLineState line_state(this_element);
+		ParseLineState line_state(this_element.c_str());
 		while (!line_state.IsEnd()) {
 			std::cout << EmitterSep('-');
-			std::size_t      line_index  = line_state.GetLineIndex();
-			std::size_t      line_offset = line_state.GetLineOffset();
 			std::string_view this_line(line_state.ParseLineSingle());
-			std::cout << std::setw(5) << line_index << ':' <<
-				std::setw(5) << line_offset << ": [" << this_line << "]\n";
+			std::cout << std::setw(5) << line_state.GetLineIndex() << '/' <<
+				std::setw(5) << line_state.GetLineOffset() << ": [" <<
+				XLateEscapeChars(this_line) << "]\n";
 		}
+/*
+		std::cout << EmitterSep('+');
+		ParseLineState test_state(this_element.c_str());
+		for (const auto &this_line : test_state.ParseLinesWithInfo())
+			std::cout << this_line << '\n';
+*/
 		std::cout << EmitterSep('=') << std::endl;
 	}
 }
@@ -189,14 +288,17 @@ void TEST_RunTest()
 // ////////////////////////////////////////////////////////////////////////////
 int main()
 {
+	int return_code = EXIT_SUCCESS;
+
 	try {
 		TEST_RunTest();
 	}
 	catch (const std::exception &except) {
+		return_code = EXIT_FAILURE;
 		std::cerr << "\n\nERROR: " << except.what() << std::endl;
 	}
 
-	return (EXIT_SUCCESS);
+	return (return_code);
 }
 // ////////////////////////////////////////////////////////////////////////////
 
