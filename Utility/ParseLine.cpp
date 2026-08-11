@@ -168,15 +168,16 @@ void TEST_RunTest()
 
 	for (const std::string &this_element : TEST_TestList) {
 		std::cout << EmitterSep('=');
-		std::cout << "INPUT   : [" <<
+		std::cout << "INPUT      : [" <<
 			XLateEscapeChars(this_element) << ']' << std::endl;
 		ParseLineState line_state(this_element);
 		while (!line_state.IsEnd()) {
 			std::cout << EmitterSep('-');
-			std::size_t      line_index = line_state.GetLineIndex();
+			std::size_t      line_index  = line_state.GetLineIndex();
+			std::size_t      line_offset = line_state.GetLineOffset();
 			std::string_view this_line(line_state.ParseLineSingle());
-			std::cout << "   " << std::setw(5) << ++line_index
-				<< ": [" << this_line << "]\n";
+			std::cout << std::setw(5) << line_index << ':' <<
+				std::setw(5) << line_offset << ": [" << this_line << "]\n";
 		}
 		std::cout << EmitterSep('=') << std::endl;
 	}
