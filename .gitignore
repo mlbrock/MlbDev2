@@ -31,6 +31,12 @@
 *.out
 *.app
 
+# Various test executable artifacts
+test_*
+testpurify_*
+testquantify_*
+testcoverage_*
+
 # The target platform directory
 TargetPlatform/
 
