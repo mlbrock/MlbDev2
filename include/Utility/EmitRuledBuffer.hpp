@@ -31,6 +31,7 @@
 
 #include <Utility/Utility.hpp>
 
+#include <cstdint>
 #include <string>
 #include <vector>
 
