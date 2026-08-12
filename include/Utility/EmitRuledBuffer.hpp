@@ -49,6 +49,7 @@ const int ErbFlag_UseHexNul    = 0x02;
 const int ErbFlag_Use8BitAscii = 0x04;
 const int ErbFlag_HexRule      = 0x08;
 const int ErbFlag_RuleOnTop    = 0x10;
+const int ErbFlag_CEscSeqE     = 0x20;
 const int ErbFlag_Default      = ErbFlag_None;
 
 enum class ErbFlags : uint32_t {
@@ -58,11 +59,13 @@ enum class ErbFlags : uint32_t {
 	/* ErbFlag_*/ Use8BitAscii = 0x04,
 	/* ErbFlag_*/ HexRule      = 0x08,
 	/* ErbFlag_*/ RuleOnTop    = 0x10,
+					  CEscSeqE     = 0x20,
 	/* ErbFlag_*/ Mask         = NoCEscSeqs   |
 										  UseHexNul    |
 										  Use8BitAscii |
 										  HexRule      |
-										  RuleOnTop,
+										  RuleOnTop    |
+										  CEscSeqE,
 	/* ErbFlag_*/ Default      = /* ErbFlag_*/ None
 };
 //	////////////////////////////////////////////////////////////////////////////
@@ -73,6 +76,7 @@ enum class ErbFlags : uint32_t {
 */
 std::underlying_type_t<ErbFlags> ToType(ErbFlags src);
 
+bool        operator ! (ErbFlags src);
 ErbFlags    operator & (ErbFlags lhs, ErbFlags rhs);
 ErbFlags    operator | (ErbFlags lhs, ErbFlags rhs);
 ErbFlags    operator ^ (ErbFlags lhs, ErbFlags rhs);

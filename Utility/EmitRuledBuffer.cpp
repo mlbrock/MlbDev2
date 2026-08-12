@@ -33,6 +33,7 @@
 #include <cstdio>
 #include <cstring>
 #include <ostream>
+#include <numeric>
 
 // ////////////////////////////////////////////////////////////////////////////
 
@@ -49,7 +50,8 @@ const std::vector<std::pair<ErbFlags, std::string> > ErbFlags_List =
 	{ ErbFlags::UseHexNul,		"UseHexNul" 	},
 	{ ErbFlags::Use8BitAscii,	"Use8BitAscii" },
 	{ ErbFlags::HexRule,     	"HexRule" 		},
-	{ ErbFlags::RuleOnTop,		"RuleOnTop"		}
+	{ ErbFlags::RuleOnTop,		"RuleOnTop"		},
+	{ ErbFlags::CEscSeqE,    	"CEscSeqE"		}
 };
 //	////////////////////////////////////////////////////////////////////////////
 
@@ -59,6 +61,13 @@ const std::vector<std::pair<ErbFlags, std::string> > ErbFlags_List =
 std::underlying_type_t<ErbFlags> ToType(ErbFlags src)
 {
 	return(static_cast<std::underlying_type_t<ErbFlags> >(src));
+}
+//	////////////////////////////////////////////////////////////////////////////
+
+//	////////////////////////////////////////////////////////////////////////////
+bool operator ! (ErbFlags src)
+{
+	return(!IsSet(src));
 }
 //	////////////////////////////////////////////////////////////////////////////
 
@@ -157,8 +166,12 @@ std::ostream & operator << (std::ostream &o_str, const ErbFlags &datum)
 namespace {
 
 //	////////////////////////////////////////////////////////////////////////////
-const char *MyCSequenceSrc = "\a\b\t\n\v\f\r";
-const char *MyCSequenceDst = "abtnvfr";
+/*
+	If the CEscSeqE flag is not set, we won't use the first character of
+	the two C-language sequence strings below.
+*/
+const char *MyCSequenceSrc = "\x1b\a\b\t\n\v\f\r\\";
+const char *MyCSequenceDst = "eabtnvfr\\";
 
 const char *MyHexDigitList = "0123456789abcdef";
 //	////////////////////////////////////////////////////////////////////////////
@@ -209,9 +222,16 @@ std::vector<std::string> EmitRuledBuffer(std::size_t src_length,
 	if (src_length < 1)
 		return(dst);
 
-	bool use_c_sequences = !(flags & ErbFlag_NoCEscSeqs);
-	bool use_simple_nul  = !(flags & ErbFlag_UseHexNul);
-	bool use_8bit_ascii  = ((flags & ErbFlag_Use8BitAscii) != 0);
+	bool        use_c_sequences = !(flags & ErbFlag_NoCEscSeqs);
+	bool        use_simple_nul  = !(flags & ErbFlag_UseHexNul);
+	bool        use_8bit_ascii  = ((flags & ErbFlag_Use8BitAscii) != 0);
+	const char *my_c_seq_src    = MyCSequenceSrc;
+	const char *my_c_seq_dst    = MyCSequenceDst;
+
+	if (!(flags & ErbFlag_CEscSeqE)) {
+		++my_c_seq_src;
+		++my_c_seq_dst;
+	}
 
 	dst[0].reserve(src_length);
 	dst[1].reserve(src_length);
@@ -225,16 +245,17 @@ std::vector<std::string> EmitRuledBuffer(std::size_t src_length,
 	while (curr_index < src_length) {
 		if (curr_index == next_rule)
 			HandleRule(dst, curr_index, next_rule, start_offset, flags);
-		if (::isprint(*src_ptr))
+		if ((*src_ptr > -1) && ::isprint(*src_ptr) && (*src_ptr != '\\'))
 			dst[0] += *src_ptr;
-		else if (use_c_sequences &&
-			((c_seq_ptr = ::strchr(MyCSequenceSrc, *src_ptr)) != NULL)) {
+		else if (use_c_sequences && *src_ptr &&
+			((c_seq_ptr = ::strchr(my_c_seq_src, *src_ptr)) != NULL)) {
 			dst[0] += '\\';
-			dst[0] += MyCSequenceDst[c_seq_ptr - MyCSequenceSrc];
+			dst[0] += my_c_seq_dst[c_seq_ptr - my_c_seq_src];
 		}
 		else if ((!(*src_ptr)) && use_simple_nul)
 			dst[0] += "\\0";
-		else if (use_8bit_ascii && (*src_ptr > '~'))
+		else if (use_8bit_ascii &&
+			(static_cast<unsigned char>(*src_ptr) > 127))
 			dst[0] += *src_ptr;
 		else {
 			dst[0] += "\\x";
@@ -310,8 +331,9 @@ void TEST_EmitStringContents(const std::string &src,
 
 	std::cout
 		<< EmitterSep('-')
-		<< "Offset: " << std::setw(20) << start_offset << " / "
-		<< "Flags: x" << std::hex << flags << std::dec << " = "
+		<< "Offset: " << std::setw(10) << start_offset << " / "
+		<< "Flags: " << std::setw(3) << flags << " = 0x"
+		<< std::hex << flags << std::dec << " = "
 		<< ToString(static_cast<ErbFlags>(flags)) << '\n';
 
 	for (std::size_t count_1 = 0; count_1 < dst.size(); ++count_1) 
@@ -383,6 +405,41 @@ void TEST_DoStandAloneTests()
 //	////////////////////////////////////////////////////////////////////////////
 
 //	////////////////////////////////////////////////////////////////////////////
+std::vector<ErbFlags> GetAllErbFlagCombos()
+{
+	std::vector<std::underlying_type_t<ErbFlags> > tmp(ToType(ErbFlags::Mask) + 1);
+
+	std::iota(tmp.begin(), tmp.end(), ToType(ErbFlags::None));
+
+	std::vector<ErbFlags> dst(tmp.size());
+
+	std::transform(tmp.begin(), tmp.end(), dst.begin(),
+		[](uint32_t val) { return(static_cast<ErbFlags>(val)); });
+	
+	return(dst);
+}
+//	////////////////////////////////////////////////////////////////////////////
+
+//	////////////////////////////////////////////////////////////////////////////
+void TEST_AllErbFlagCombos()
+{
+	char                  raw[] = "Data\n SLASH=\\ ESC=\x1b NUL=\0 BIG=\xD1";
+	std::vector<ErbFlags> all_flags(GetAllErbFlagCombos());
+	std::string           datum(raw, sizeof(raw) - 1);
+
+	std::cout
+		<< '\n'
+		<< EmitterSep('=')
+		<< "All ErbFlags Combinations:\n";
+
+	for (const auto &this_element : all_flags)
+		TEST_EmitStringContents(datum, 0, ToType(this_element));
+
+	std::cout << EmitterSep('=') << std::endl;
+}
+//	////////////////////////////////////////////////////////////////////////////
+
+//	////////////////////////////////////////////////////////////////////////////
 int main(int argc, char **argv)
 {
 	std::cout << "Test routine for 'EmitRuledBuffer()'" << std::endl;
@@ -404,11 +461,21 @@ int main(int argc, char **argv)
 		}
 		else
 			TEST_DoStandAloneTests();
+std::cout << std::endl;
+std::cout << "(ErbFlags::Mask & ErbFlags::CEscSeqE)   : " <<
+	ToType(ErbFlags::Mask & ErbFlags::CEscSeqE) << " = " <<
+	((ToType(ErbFlags::Mask & ErbFlags::CEscSeqE)) ? "TRUE" : "FALSE") << '\n';
+std::cout << "(!(ErbFlags::Mask & ErbFlags::CEscSeqE)): " <<
+//	(ToType(!(ErbFlags::Mask & ErbFlags::CEscSeqE))) << " = " <<
+	((!(ErbFlags::Mask & ErbFlags::CEscSeqE))) << " = " <<
+	((!ToType(ErbFlags::Mask & ErbFlags::CEscSeqE)) ? "TRUE" : "FALSE") << '\n';
 	}
 	catch (const std::exception &except) {
 		std::cerr << std::endl << "ERROR: " << except.what() << std::endl;
 		return_code = EXIT_FAILURE;
 	}
+
+	TEST_AllErbFlagCombos();
 
 	return(return_code);
 }
