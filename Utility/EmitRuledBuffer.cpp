@@ -27,15 +27,132 @@
 
 #include <Utility/EmitRuledBuffer.hpp>
 
+#include <Utility/ToStringRadix.hpp>
+
 #include <algorithm>
 #include <cstdio>
 #include <cstring>
+#include <ostream>
 
 // ////////////////////////////////////////////////////////////////////////////
 
 namespace MLB {
 
 namespace Utility {
+
+namespace {
+
+//	////////////////////////////////////////////////////////////////////////////
+const std::vector<std::pair<ErbFlags, std::string> > ErbFlags_List =
+{
+	{ ErbFlags::NoCEscSeqs,		"NoCEscSeqs" 	},
+	{ ErbFlags::UseHexNul,		"UseHexNul" 	},
+	{ ErbFlags::Use8BitAscii,	"Use8BitAscii" },
+	{ ErbFlags::HexRule,     	"HexRule" 		},
+	{ ErbFlags::RuleOnTop,		"RuleOnTop"		}
+};
+//	////////////////////////////////////////////////////////////////////////////
+
+} // Anonymous namespace
+
+//	////////////////////////////////////////////////////////////////////////////
+std::underlying_type_t<ErbFlags> ToType(ErbFlags src)
+{
+	return(static_cast<std::underlying_type_t<ErbFlags> >(src));
+}
+//	////////////////////////////////////////////////////////////////////////////
+
+//	////////////////////////////////////////////////////////////////////////////
+ErbFlags operator & (ErbFlags lhs, ErbFlags rhs)
+{
+	return(static_cast<ErbFlags>(ToType(lhs) & ToType(rhs)));
+}
+//	////////////////////////////////////////////////////////////////////////////
+
+//	////////////////////////////////////////////////////////////////////////////
+ErbFlags operator | (ErbFlags lhs, ErbFlags rhs)
+{
+	return(static_cast<ErbFlags>(ToType(lhs) | ToType(rhs)));
+}
+//	////////////////////////////////////////////////////////////////////////////
+
+//	////////////////////////////////////////////////////////////////////////////
+ErbFlags operator ^ (ErbFlags lhs, ErbFlags rhs)
+{
+	return(static_cast<ErbFlags>(ToType(lhs) ^ ToType(rhs)));
+}
+//	////////////////////////////////////////////////////////////////////////////
+
+//	////////////////////////////////////////////////////////////////////////////
+bool IsSet(ErbFlags src)
+{
+	return(src != ErbFlags::None);
+}
+//	////////////////////////////////////////////////////////////////////////////
+
+//	////////////////////////////////////////////////////////////////////////////
+bool IsValid(ErbFlags src)
+{
+	return((!IsSet(src)) || (!IsSet(src & ErbFlags::Mask)));
+}
+//	////////////////////////////////////////////////////////////////////////////
+
+//	////////////////////////////////////////////////////////////////////////////
+bool CheckIsValid(ErbFlags src)
+{
+	if (!IsValid(src))
+		throw std::invalid_argument("Specified ErbFlags value (" +
+			std::to_string(ToType(src)) + " = " + ToStringHex(ToType(src), 'x') +
+			") is invalid.");
+
+	return(true);
+}
+//	////////////////////////////////////////////////////////////////////////////
+
+//	////////////////////////////////////////////////////////////////////////////
+std::string ToString(ErbFlags src, bool check_is_valid)
+{
+	if (!IsSet(src))
+		return("None");
+
+	if (check_is_valid)
+		CheckIsValid(src);
+
+	std::string dst;
+
+	for (const auto &erb_flag_info : ErbFlags_List) {
+		if (IsSet(src & erb_flag_info.first)) {
+			if (!dst.empty())
+				dst += " | ";
+			dst += erb_flag_info.second;
+			src  = src ^ erb_flag_info.first;
+		}
+	}
+
+	if (IsSet(src)) {
+		if (!dst.empty())
+			dst += " | ";
+		dst += "?" + std::to_string(ToType(src)) + "?";
+	}
+
+	return(dst);
+}
+//	////////////////////////////////////////////////////////////////////////////
+
+//	////////////////////////////////////////////////////////////////////////////
+std::ostream & operator << (std::ostream &o_str, const ErbFlags &datum)
+{
+	o_str << ToString(datum, false);
+
+	return(o_str);
+}
+//	////////////////////////////////////////////////////////////////////////////
+
+//	////////////////////////////////////////////////////////////////////////////
+//	****************************************************************************
+//	****************************************************************************
+//	****************************************************************************
+//	////////////////////////////////////////////////////////////////////////////
 
 namespace {
 
@@ -194,7 +311,8 @@ void TEST_EmitStringContents(const std::string &src,
 	std::cout
 		<< EmitterSep('-')
 		<< "Offset: " << std::setw(20) << start_offset << " / "
-		<< "Flags: " << std::hex << flags << std::dec << '\n';
+		<< "Flags: x" << std::hex << flags << std::dec << " = "
+		<< ToString(static_cast<ErbFlags>(flags)) << '\n';
 
 	for (std::size_t count_1 = 0; count_1 < dst.size(); ++count_1) 
 		std::cout << dst[count_1] << '\n';
