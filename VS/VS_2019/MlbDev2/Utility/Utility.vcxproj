@@ -28,6 +28,7 @@
     <ClInclude Include="..\..\..\..\include\Utility\CriticalEventHandler.hpp" />
     <ClInclude Include="..\..\..\..\include\Utility\CurrentPath.hpp" />
     <ClInclude Include="..\..\..\..\include\Utility\DemangleCppName.hpp" />
+    <ClInclude Include="..\..\..\..\include\Utility\EmitRuledBuffer.hpp" />
     <ClInclude Include="..\..\..\..\include\Utility\EmitterCommentCpp.hpp" />
     <ClInclude Include="..\..\..\..\include\Utility\EmitterSep.hpp" />
     <ClInclude Include="..\..\..\..\include\Utility\EmitterTab.hpp" />
@@ -111,6 +112,7 @@
     <ClCompile Include="..\..\..\..\Utility\CriticalEventHandler.cpp" />
     <ClCompile Include="..\..\..\..\Utility\CurrentPath.cpp" />
     <ClCompile Include="..\..\..\..\Utility\DemangleCppName.cpp" />
+    <ClCompile Include="..\..\..\..\Utility\EmitRuledBuffer.cpp" />
     <ClCompile Include="..\..\..\..\Utility\EnvElement.cpp" />
     <ClCompile Include="..\..\..\..\Utility\GetCmdLineArg.cpp" />
     <ClCompile Include="..\..\..\..\Utility\GetCmdLineArgRegex.cpp" />

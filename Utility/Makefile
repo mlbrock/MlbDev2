@@ -34,6 +34,7 @@ SRCS		=	\
 			CriticalEventHandler.cpp	\
 			CurrentPath.cpp			\
 			DemangleCppName.cpp		\
+			EmitRuledBuffer.cpp		\
 			EnvElement.cpp			\
 			GetCmdLineArg.cpp		\
 			GetCmdLineArgRegex.cpp		\
