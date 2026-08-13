@@ -30,6 +30,7 @@
 #include <Utility/ToStringRadix.hpp>
 
 #include <algorithm>
+#include <charconv>
 #include <cstdio>
 #include <cstring>
 #include <ostream>
@@ -178,15 +179,19 @@ const char *MyHexDigitList = "0123456789abcdef";
 
 //	////////////////////////////////////////////////////////////////////////////
 void HandleRule(std::vector<std::string> &dst, std::size_t curr_index,
-	std::size_t &next_rule, unsigned long long start_offset, ErbFlags flags)
+	std::size_t &next_rule, std::size_t start_offset, ErbFlags flags)
 {
 	if ((curr_index != next_rule) && (curr_index > 10))
 		return;
 
-	unsigned long long next_fixup = (curr_index > 10) ? next_rule : curr_index;
-	unsigned long long rule_fixed = start_offset + next_fixup;
-	char               rule_buffer[1 + 8 + 1];
+	std::size_t next_fixup = (curr_index > 10) ? next_rule : curr_index;
+	std::size_t rule_fixed = start_offset + next_fixup;
+	std::size_t rule_cap   = static_cast<std::size_t>(
+		(!Bool(flags & ErbFlags::HexRule)) ? 100000000 :
+		static_cast<std::size_t>(0x10000000));
+	char        rule_buffer[1 + 8 + 1];
 
+/*
 	if (!Bool(flags & ErbFlags::HexRule))
 		::sprintf(rule_buffer, "%s%llu",
 			(rule_fixed < 100000000) ? "" : "?", rule_fixed % 100000000);
@@ -194,6 +199,37 @@ void HandleRule(std::vector<std::string> &dst, std::size_t curr_index,
 		::sprintf(rule_buffer, "%llx", rule_fixed);
 	else
 		::sprintf(rule_buffer, "?%8.8llx", rule_fixed % 0x100000000);
+*/
+	char *buffer_begin = rule_buffer;
+	char *buffer_end   = rule_buffer + sizeof(rule_buffer) - 1;
+
+/*
+	if (((!Bool(flags & ErbFlags::HexRule)) && (rule_fixed >=   100000000)) ||
+		 (( Bool(flags & ErbFlags::HexRule)) && (rule_fixed >= 0x100000000)))
+		*buffer_begin++ = '?';
+*/
+	if (rule_fixed >= rule_cap)
+		*buffer_begin++ = '?';
+
+	std::to_chars_result result = std::to_chars(buffer_begin,
+		buffer_end, rule_fixed % rule_cap,
+		(Bool(flags & ErbFlags::HexRule)) ? 16 : 10);
+
+	if (result.ec != std::errc())
+		throw std::invalid_argument(
+			std::make_error_code(result.ec).message());
+
+	*result.ptr  = '\0';
+
+/*
+	if (!Bool(flags & ErbFlags::HexRule))
+		::sprintf(rule_buffer, "%s%llu",
+			(rule_fixed < 100000000) ? "" : "?", rule_fixed % 100000000);
+	else if (rule_fixed < 0x100000000)
+		::sprintf(rule_buffer, "%llx", rule_fixed);
+	else
+		::sprintf(rule_buffer, "?%8.8llx", rule_fixed % 0x100000000);
+*/
 
 	std::size_t dst_1_pad = (dst[0].size() - dst[1].size()) - 1;
 	std::size_t dst_2_pad = (dst[0].size() - dst[2].size()) -
@@ -216,7 +252,7 @@ void HandleRule(std::vector<std::string> &dst, std::size_t curr_index,
 */
 //	////////////////////////////////////////////////////////////////////////////
 std::vector<std::string> EmitRuledBuffer(std::size_t src_length,
-	const char *src_ptr, unsigned long long start_offset, ErbFlags flags)
+	const char *src_ptr, std::size_t start_offset, ErbFlags flags)
 {
 	std::vector <std::string> dst(3);
 
@@ -279,7 +315,7 @@ std::vector<std::string> EmitRuledBuffer(std::size_t src_length,
 
 //	////////////////////////////////////////////////////////////////////////////
 std::vector<std::string> EmitRuledBuffer(const char *src_ptr,
-	unsigned long long start_offset, ErbFlags flags)
+	std::size_t start_offset, ErbFlags flags)
 {
 	return(EmitRuledBuffer(::strlen(src_ptr), src_ptr, start_offset, flags));
 }
@@ -287,7 +323,7 @@ std::vector<std::string> EmitRuledBuffer(const char *src_ptr,
 
 //	////////////////////////////////////////////////////////////////////////////
 std::vector<std::string> EmitRuledBuffer(const char *begin_ptr,
-	const char *end_ptr, unsigned long long start_offset, ErbFlags flags)
+	const char *end_ptr, std::size_t start_offset, ErbFlags flags)
 {
 	return(EmitRuledBuffer((end_ptr > begin_ptr) ?
 		static_cast<std::size_t>(end_ptr - begin_ptr) : 0, begin_ptr,
@@ -297,7 +333,7 @@ std::vector<std::string> EmitRuledBuffer(const char *begin_ptr,
 
 //	////////////////////////////////////////////////////////////////////////////
 std::vector<std::string> EmitRuledBuffer(const std::string &src,
-	unsigned long long start_offset, ErbFlags flags)
+	std::size_t start_offset, ErbFlags flags)
 {
 	return(EmitRuledBuffer(src.size(), src.c_str(), start_offset, flags));
 }
@@ -305,7 +341,7 @@ std::vector<std::string> EmitRuledBuffer(const std::string &src,
 
 //	////////////////////////////////////////////////////////////////////////////
 std::vector<std::string> EmitRuledBuffer(std::string_view src,
-	unsigned long long start_offset, ErbFlags flags)
+	std::size_t start_offset, ErbFlags flags)
 {
 	return(EmitRuledBuffer(src.size(), src.data(), start_offset, flags));
 }
@@ -336,7 +372,7 @@ namespace {
 
 //	////////////////////////////////////////////////////////////////////////////
 void TEST_EmitStringContents(const std::string &src,
-	unsigned long long start_offset = 0, ErbFlags flags = ErbFlags::Default)
+	std::size_t start_offset = 0, ErbFlags flags = ErbFlags::Default)
 {
 	std::vector<std::string> dst(EmitRuledBuffer(src, start_offset, flags));
 
@@ -356,7 +392,7 @@ void TEST_EmitStringContents(const std::string &src,
 
 //	////////////////////////////////////////////////////////////////////////////
 void TEST_EmitFileContents(const std::string &file_name,
-	unsigned long long start_offset = 0, ErbFlags flags = ErbFlags::Default)
+	std::size_t start_offset = 0, ErbFlags flags = ErbFlags::Default)
 {
 	std::string file_data(ReadFileData(file_name));
 
@@ -402,8 +438,10 @@ void TEST_DoStandAloneTests()
 		TEST_EmitStringContents(list_ptr[-1],          0, ErbFlags::RuleOnTop);
 		TEST_EmitStringContents(list_ptr[-1],        100);
 		TEST_EmitStringContents(list_ptr[-1],        100, ErbFlags::HexRule);
-		TEST_EmitStringContents(list_ptr[-1], 4294967275);
-		TEST_EmitStringContents(list_ptr[-1], 4294967275, ErbFlags::HexRule);
+		TEST_EmitStringContents(list_ptr[-1], 4294967200);
+		TEST_EmitStringContents(list_ptr[-1], 4294967200, ErbFlags::HexRule);
+		TEST_EmitStringContents(list_ptr[-1], 4294967295);
+		TEST_EmitStringContents(list_ptr[-1], 4294967295, ErbFlags::HexRule);
 		TEST_EmitStringContents(list_ptr[-1], 0xfffffffe);
 		TEST_EmitStringContents(list_ptr[-1], 0xfffffffe, ErbFlags::HexRule);
 		std::cout << EmitterSep('=') << std::endl;

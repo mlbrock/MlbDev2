@@ -85,17 +85,17 @@ std::ostream & operator << (std::ostream &o_str, const ErbFlags &datum);
 	The various EmitRuledBuffer() function overloads ...
 */
 std::vector<std::string> EmitRuledBuffer(std::size_t src_length,
-	const char *src_ptr, unsigned long long start_offset = 0,
+	const char *src_ptr, std::size_t start_offset = 0,
 	ErbFlags flags = ErbFlags::Default);
 std::vector<std::string> EmitRuledBuffer(const char *src_ptr,
-	unsigned long long start_offset = 0, ErbFlags flags = ErbFlags::Default);
+	std::size_t start_offset = 0, ErbFlags flags = ErbFlags::Default);
 std::vector<std::string> EmitRuledBuffer(const char *begin_ptr,
-	const char *end_ptr, unsigned long long start_offset = 0,
+	const char *end_ptr, std::size_t start_offset = 0,
 	ErbFlags flags = ErbFlags::Default);
 std::vector<std::string> EmitRuledBuffer(const std::string &src,
-	unsigned long long start_offset = 0, ErbFlags flags = ErbFlags::Default);
+	std::size_t start_offset = 0, ErbFlags flags = ErbFlags::Default);
 std::vector<std::string> EmitRuledBuffer(std::string_view src,
-	unsigned long long start_offset = 0, ErbFlags flags = ErbFlags::Default);
+	std::size_t start_offset = 0, ErbFlags flags = ErbFlags::Default);
 //	////////////////////////////////////////////////////////////////////////////
 
 } // namespace Utility
