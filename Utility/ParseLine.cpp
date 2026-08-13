@@ -262,6 +262,7 @@ std::vector<ParseLineData> ParseLineState::ParseLinesWithInfo()
 #ifdef TEST_MAIN
 
 #include <Utility/EmitterSep.hpp>
+#include <Utility/EmitRuledBuffer.hpp>
 
 #include <iostream>
 
@@ -315,8 +316,11 @@ int TEST_RunTest()
 
 	for (const auto &this_element : TEST_TestList) {
 		std::cout << EmitterSep('=');
-		std::cout << "INPUT      : [" <<
-			XLateEscapeChars(this_element.first) << ']' << std::endl;
+		std::vector<std::string> ruled_data(EmitRuledBuffer(this_element.first));
+		std::cout
+			<< "INPUT      : [" << ruled_data[0] << "]\n"
+			<< "              " << ruled_data[1] << '\n'
+			<< "              " << ruled_data[2] << std::endl;
 		ParseLineState line_state(this_element.first.c_str());
 		std::cout << "ELEMENTS   : " <<
 			line_state.GetRemainingLines() << std::endl;
@@ -324,8 +328,17 @@ int TEST_RunTest()
 			std::cout << EmitterSep('-');
 			std::string_view this_line(line_state.ParseLineSingle());
 			std::cout << std::setw(5) << line_state.GetLineIndex() << '/' <<
-				std::setw(5) << line_state.GetLineOffset() << ": [" <<
-				XLateEscapeChars(this_line) << "]\n";
+				std::setw(5) << line_state.GetLineOffset() << ": [";
+			if (this_line.empty())
+				std::cout << XLateEscapeChars(this_line) << "]\n";
+			else {
+				ruled_data =
+					EmitRuledBuffer(this_line, line_state.GetLineOffset());
+				std::cout
+					<< ruled_data[0] << "]\n"
+					<< "              " << ruled_data[1] << '\n'
+					<< "              " << ruled_data[2] << std::endl;
+			}
 		}
 		std::cout << EmitterSep('-');
 		ParseLineState                test_state(this_element.first.c_str());
