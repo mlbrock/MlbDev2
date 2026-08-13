@@ -323,6 +323,8 @@ std::vector<std::string> EmitRuledBuffer(const std::string &src,
 
 using namespace MLB::Utility;
 
+namespace {
+
 //	////////////////////////////////////////////////////////////////////////////
 void TEST_EmitStringContents(const std::string &src,
 	unsigned long long start_offset = 0, int flags = ErbFlag_Default)
@@ -353,8 +355,6 @@ void TEST_EmitFileContents(const std::string &file_name,
 }
 //	////////////////////////////////////////////////////////////////////////////
 
-namespace {
-
 //	////////////////////////////////////////////////////////////////////////////
 /*
 A line\nFollowed by another line.
@@ -374,8 +374,6 @@ const char *TEST_DoStandAloneTestsList[] = {
 	NULL
 };
 //	////////////////////////////////////////////////////////////////////////////
-
-} // Anonymous namespace
 
 //	////////////////////////////////////////////////////////////////////////////
 void TEST_DoStandAloneTests()
@@ -439,6 +437,8 @@ void TEST_AllErbFlagCombos()
 }
 //	////////////////////////////////////////////////////////////////////////////
 
+} // Anonymous namespace
+
 //	////////////////////////////////////////////////////////////////////////////
 int main(int argc, char **argv)
 {
@@ -461,14 +461,6 @@ int main(int argc, char **argv)
 		}
 		else
 			TEST_DoStandAloneTests();
-std::cout << std::endl;
-std::cout << "(ErbFlags::Mask & ErbFlags::CEscSeqE)   : " <<
-	ToType(ErbFlags::Mask & ErbFlags::CEscSeqE) << " = " <<
-	((ToType(ErbFlags::Mask & ErbFlags::CEscSeqE)) ? "TRUE" : "FALSE") << '\n';
-std::cout << "(!(ErbFlags::Mask & ErbFlags::CEscSeqE)): " <<
-//	(ToType(!(ErbFlags::Mask & ErbFlags::CEscSeqE))) << " = " <<
-	((!(ErbFlags::Mask & ErbFlags::CEscSeqE))) << " = " <<
-	((!ToType(ErbFlags::Mask & ErbFlags::CEscSeqE)) ? "TRUE" : "FALSE") << '\n';
 	}
 	catch (const std::exception &except) {
 		std::cerr << std::endl << "ERROR: " << except.what() << std::endl;
