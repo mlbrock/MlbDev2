@@ -94,6 +94,8 @@ std::vector<std::string> EmitRuledBuffer(const char *begin_ptr,
 	ErbFlags flags = ErbFlags::Default);
 std::vector<std::string> EmitRuledBuffer(const std::string &src,
 	unsigned long long start_offset = 0, ErbFlags flags = ErbFlags::Default);
+std::vector<std::string> EmitRuledBuffer(std::string_view src,
+	unsigned long long start_offset = 0, ErbFlags flags = ErbFlags::Default);
 //	////////////////////////////////////////////////////////////////////////////
 
 } // namespace Utility
