@@ -43,30 +43,21 @@ namespace Utility {
 
 //	////////////////////////////////////////////////////////////////////////////
 
-const int ErbFlag_None         = 0x00;
-const int ErbFlag_NoCEscSeqs   = 0x01;
-const int ErbFlag_UseHexNul    = 0x02;
-const int ErbFlag_Use8BitAscii = 0x04;
-const int ErbFlag_HexRule      = 0x08;
-const int ErbFlag_RuleOnTop    = 0x10;
-const int ErbFlag_CEscSeqE     = 0x20;
-const int ErbFlag_Default      = ErbFlag_None;
-
 enum class ErbFlags : uint32_t {
-	/* ErbFlag_*/ None         = 0x00,
-	/* ErbFlag_*/ NoCEscSeqs   = 0x01,
-	/* ErbFlag_*/ UseHexNul    = 0x02,
-	/* ErbFlag_*/ Use8BitAscii = 0x04,
-	/* ErbFlag_*/ HexRule      = 0x08,
-	/* ErbFlag_*/ RuleOnTop    = 0x10,
-					  CEscSeqE     = 0x20,
-	/* ErbFlag_*/ Mask         = NoCEscSeqs   |
-										  UseHexNul    |
-										  Use8BitAscii |
-										  HexRule      |
-										  RuleOnTop    |
-										  CEscSeqE,
-	/* ErbFlag_*/ Default      = /* ErbFlag_*/ None
+	None         = 0x00,
+	NoCEscSeqs   = 0x01,
+	UseHexNul    = 0x02,
+	Use8BitAscii = 0x04,
+	HexRule      = 0x08,
+	RuleOnTop    = 0x10,
+	CEscSeqE     = 0x20,
+	Mask         = NoCEscSeqs   |
+					   UseHexNul    |
+						Use8BitAscii |
+						HexRule      |
+						RuleOnTop    |
+					   CEscSeqE,
+	Default      = None
 };
 //	////////////////////////////////////////////////////////////////////////////
 
@@ -76,11 +67,11 @@ enum class ErbFlags : uint32_t {
 */
 std::underlying_type_t<ErbFlags> ToType(ErbFlags src);
 
-bool        operator ! (ErbFlags src);
 ErbFlags    operator & (ErbFlags lhs, ErbFlags rhs);
 ErbFlags    operator | (ErbFlags lhs, ErbFlags rhs);
 ErbFlags    operator ^ (ErbFlags lhs, ErbFlags rhs);
 
+bool        Bool(ErbFlags src);
 bool        IsSet(ErbFlags src);
 bool        IsValid(ErbFlags src);
 bool        CheckIsValid(ErbFlags src);
@@ -95,14 +86,14 @@ std::ostream & operator << (std::ostream &o_str, const ErbFlags &datum);
 */
 std::vector<std::string> EmitRuledBuffer(std::size_t src_length,
 	const char *src_ptr, unsigned long long start_offset = 0,
-	int flags = ErbFlag_Default);
+	ErbFlags flags = ErbFlags::Default);
 std::vector<std::string> EmitRuledBuffer(const char *src_ptr,
-	unsigned long long start_offset = 0, int flags = ErbFlag_Default);
+	unsigned long long start_offset = 0, ErbFlags flags = ErbFlags::Default);
 std::vector<std::string> EmitRuledBuffer(const char *begin_ptr,
 	const char *end_ptr, unsigned long long start_offset = 0,
-	int flags = ErbFlag_Default);
+	ErbFlags flags = ErbFlags::Default);
 std::vector<std::string> EmitRuledBuffer(const std::string &src,
-	unsigned long long start_offset = 0, int flags = ErbFlag_Default);
+	unsigned long long start_offset = 0, ErbFlags flags = ErbFlags::Default);
 //	////////////////////////////////////////////////////////////////////////////
 
 } // namespace Utility

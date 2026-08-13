@@ -65,13 +65,6 @@ std::underlying_type_t<ErbFlags> ToType(ErbFlags src)
 //	////////////////////////////////////////////////////////////////////////////
 
 //	////////////////////////////////////////////////////////////////////////////
-bool operator ! (ErbFlags src)
-{
-	return(!IsSet(src));
-}
-//	////////////////////////////////////////////////////////////////////////////
-
-//	////////////////////////////////////////////////////////////////////////////
 ErbFlags operator & (ErbFlags lhs, ErbFlags rhs)
 {
 	return(static_cast<ErbFlags>(ToType(lhs) & ToType(rhs)));
@@ -89,6 +82,13 @@ ErbFlags operator | (ErbFlags lhs, ErbFlags rhs)
 ErbFlags operator ^ (ErbFlags lhs, ErbFlags rhs)
 {
 	return(static_cast<ErbFlags>(ToType(lhs) ^ ToType(rhs)));
+}
+//	////////////////////////////////////////////////////////////////////////////
+
+//	////////////////////////////////////////////////////////////////////////////
+bool Bool(ErbFlags src)
+{
+	return(src != ErbFlags::None);
 }
 //	////////////////////////////////////////////////////////////////////////////
 
@@ -178,7 +178,7 @@ const char *MyHexDigitList = "0123456789abcdef";
 
 //	////////////////////////////////////////////////////////////////////////////
 void HandleRule(std::vector<std::string> &dst, std::size_t curr_index,
-	std::size_t &next_rule, unsigned long long start_offset, int flags)
+	std::size_t &next_rule, unsigned long long start_offset, ErbFlags flags)
 {
 	if (curr_index != next_rule)
 		return;
@@ -186,7 +186,7 @@ void HandleRule(std::vector<std::string> &dst, std::size_t curr_index,
 	unsigned long long rule_fixed = start_offset + next_rule;
 	char               rule_buffer[1 + 8 + 1];
 
-	if (!(flags & ErbFlag_HexRule))
+	if (!Bool(flags & ErbFlags::HexRule))
 		::sprintf(rule_buffer, "%s%llu",
 			(rule_fixed < 100000000) ? "" : "?", rule_fixed % 100000000);
 	else if (rule_fixed < 0x100000000)
@@ -215,20 +215,20 @@ void HandleRule(std::vector<std::string> &dst, std::size_t curr_index,
 */
 //	////////////////////////////////////////////////////////////////////////////
 std::vector<std::string> EmitRuledBuffer(std::size_t src_length,
-	const char *src_ptr, unsigned long long start_offset, int flags)
+	const char *src_ptr, unsigned long long start_offset, ErbFlags flags)
 {
 	std::vector <std::string> dst(3);
 
 	if (src_length < 1)
 		return(dst);
 
-	bool        use_c_sequences = !(flags & ErbFlag_NoCEscSeqs);
-	bool        use_simple_nul  = !(flags & ErbFlag_UseHexNul);
-	bool        use_8bit_ascii  = ((flags & ErbFlag_Use8BitAscii) != 0);
+	bool        use_c_sequences = !Bool(flags & ErbFlags::NoCEscSeqs);
+	bool        use_simple_nul  = !Bool(flags & ErbFlags::UseHexNul);
+	bool        use_8bit_ascii  =  Bool(flags & ErbFlags::Use8BitAscii);
 	const char *my_c_seq_src    = MyCSequenceSrc;
 	const char *my_c_seq_dst    = MyCSequenceDst;
 
-	if (!(flags & ErbFlag_CEscSeqE)) {
+	if (!Bool(flags & ErbFlags::CEscSeqE)) {
 		++my_c_seq_src;
 		++my_c_seq_dst;
 	}
@@ -269,7 +269,7 @@ std::vector<std::string> EmitRuledBuffer(std::size_t src_length,
 	if (curr_index == next_rule)
 		HandleRule(dst, curr_index, next_rule, start_offset, flags);
 
-	if (flags & ErbFlag_RuleOnTop)
+	if (Bool(flags & ErbFlags::RuleOnTop))
 		std::reverse(dst.begin(), dst.end());
 
 	return(dst);
@@ -278,7 +278,7 @@ std::vector<std::string> EmitRuledBuffer(std::size_t src_length,
 
 //	////////////////////////////////////////////////////////////////////////////
 std::vector<std::string> EmitRuledBuffer(const char *src_ptr,
-	unsigned long long start_offset, int flags)
+	unsigned long long start_offset, ErbFlags flags)
 {
 	return(EmitRuledBuffer(::strlen(src_ptr), src_ptr, start_offset, flags));
 }
@@ -286,7 +286,7 @@ std::vector<std::string> EmitRuledBuffer(const char *src_ptr,
 
 //	////////////////////////////////////////////////////////////////////////////
 std::vector<std::string> EmitRuledBuffer(const char *begin_ptr,
-	const char *end_ptr, unsigned long long start_offset, int flags)
+	const char *end_ptr, unsigned long long start_offset, ErbFlags flags)
 {
 	return(EmitRuledBuffer((end_ptr > begin_ptr) ?
 		static_cast<std::size_t>(end_ptr - begin_ptr) : 0, begin_ptr,
@@ -296,7 +296,7 @@ std::vector<std::string> EmitRuledBuffer(const char *begin_ptr,
 
 //	////////////////////////////////////////////////////////////////////////////
 std::vector<std::string> EmitRuledBuffer(const std::string &src,
-	unsigned long long start_offset, int flags)
+	unsigned long long start_offset, ErbFlags flags)
 {
 	return(EmitRuledBuffer(src.size(), src.c_str(), start_offset, flags));
 }
@@ -327,16 +327,16 @@ namespace {
 
 //	////////////////////////////////////////////////////////////////////////////
 void TEST_EmitStringContents(const std::string &src,
-	unsigned long long start_offset = 0, int flags = ErbFlag_Default)
+	unsigned long long start_offset = 0, ErbFlags flags = ErbFlags::Default)
 {
 	std::vector<std::string> dst(EmitRuledBuffer(src, start_offset, flags));
 
 	std::cout
 		<< EmitterSep('-')
 		<< "Offset: " << std::setw(10) << start_offset << " / "
-		<< "Flags: " << std::setw(3) << flags << " = 0x"
-		<< std::hex << flags << std::dec << " = "
-		<< ToString(static_cast<ErbFlags>(flags)) << '\n';
+		<< "Flags: " << std::setw(3) << ToType(flags) << " = 0x"
+		<< std::hex << ToType(flags) << std::dec << " = "
+		<< flags << '\n';
 
 	for (std::size_t count_1 = 0; count_1 < dst.size(); ++count_1) 
 		std::cout << dst[count_1] << '\n';
@@ -347,7 +347,7 @@ void TEST_EmitStringContents(const std::string &src,
 
 //	////////////////////////////////////////////////////////////////////////////
 void TEST_EmitFileContents(const std::string &file_name,
-	unsigned long long start_offset = 0, int flags = ErbFlag_Default)
+	unsigned long long start_offset = 0, ErbFlags flags = ErbFlags::Default)
 {
 	std::string file_data(ReadFileData(file_name));
 
@@ -386,17 +386,17 @@ void TEST_DoStandAloneTests()
 			<< EmitterSep('=')
 			<< "String: \"" << EmitRuledBuffer(list_ptr[-1])[0] << "\"\n";
 		TEST_EmitStringContents(list_ptr[-1],          0);
-		TEST_EmitStringContents(list_ptr[-1],          0, ErbFlag_NoCEscSeqs);
-		TEST_EmitStringContents(list_ptr[-1],          0, ErbFlag_UseHexNul);
-		TEST_EmitStringContents(list_ptr[-1],          0, ErbFlag_Use8BitAscii);
-		TEST_EmitStringContents(list_ptr[-1],          0, ErbFlag_HexRule);
-		TEST_EmitStringContents(list_ptr[-1],          0, ErbFlag_RuleOnTop);
+		TEST_EmitStringContents(list_ptr[-1],          0, ErbFlags::NoCEscSeqs);
+		TEST_EmitStringContents(list_ptr[-1],          0, ErbFlags::UseHexNul);
+		TEST_EmitStringContents(list_ptr[-1],          0, ErbFlags::Use8BitAscii);
+		TEST_EmitStringContents(list_ptr[-1],          0, ErbFlags::HexRule);
+		TEST_EmitStringContents(list_ptr[-1],          0, ErbFlags::RuleOnTop);
 		TEST_EmitStringContents(list_ptr[-1],        100);
-		TEST_EmitStringContents(list_ptr[-1],        100, ErbFlag_HexRule);
+		TEST_EmitStringContents(list_ptr[-1],        100, ErbFlags::HexRule);
 		TEST_EmitStringContents(list_ptr[-1], 4294967275);
-		TEST_EmitStringContents(list_ptr[-1], 4294967275, ErbFlag_HexRule);
+		TEST_EmitStringContents(list_ptr[-1], 4294967275, ErbFlags::HexRule);
 		TEST_EmitStringContents(list_ptr[-1], 0xfffffffe);
-		TEST_EmitStringContents(list_ptr[-1], 0xfffffffe, ErbFlag_HexRule);
+		TEST_EmitStringContents(list_ptr[-1], 0xfffffffe, ErbFlags::HexRule);
 		std::cout << EmitterSep('=') << std::endl;
 	}
 }
@@ -405,15 +405,11 @@ void TEST_DoStandAloneTests()
 //	////////////////////////////////////////////////////////////////////////////
 std::vector<ErbFlags> GetAllErbFlagCombos()
 {
-	std::vector<std::underlying_type_t<ErbFlags> > tmp(ToType(ErbFlags::Mask) + 1);
+	std::vector<ErbFlags> dst(ToType(ErbFlags::Mask) + 1);
 
-	std::iota(tmp.begin(), tmp.end(), ToType(ErbFlags::None));
+	std::generate(dst.begin(), dst.end(),
+		[start = 0]() mutable { return(static_cast<ErbFlags>(start++)); });
 
-	std::vector<ErbFlags> dst(tmp.size());
-
-	std::transform(tmp.begin(), tmp.end(), dst.begin(),
-		[](uint32_t val) { return(static_cast<ErbFlags>(val)); });
-	
 	return(dst);
 }
 //	////////////////////////////////////////////////////////////////////////////
@@ -431,7 +427,7 @@ void TEST_AllErbFlagCombos()
 		<< "All ErbFlags Combinations:\n";
 
 	for (const auto &this_element : all_flags)
-		TEST_EmitStringContents(datum, 0, ToType(this_element));
+		TEST_EmitStringContents(datum, 0, this_element);
 
 	std::cout << EmitterSep('=') << std::endl;
 }
@@ -461,13 +457,12 @@ int main(int argc, char **argv)
 		}
 		else
 			TEST_DoStandAloneTests();
+		TEST_AllErbFlagCombos();
 	}
 	catch (const std::exception &except) {
 		std::cerr << std::endl << "ERROR: " << except.what() << std::endl;
 		return_code = EXIT_FAILURE;
 	}
-
-	TEST_AllErbFlagCombos();
 
 	return(return_code);
 }
