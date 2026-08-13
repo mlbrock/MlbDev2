@@ -180,10 +180,11 @@ const char *MyHexDigitList = "0123456789abcdef";
 void HandleRule(std::vector<std::string> &dst, std::size_t curr_index,
 	std::size_t &next_rule, unsigned long long start_offset, ErbFlags flags)
 {
-	if (curr_index != next_rule)
+	if ((curr_index != next_rule) && (curr_index > 10))
 		return;
 
-	unsigned long long rule_fixed = start_offset + next_rule;
+	unsigned long long next_fixup = (curr_index > 10) ? next_rule : curr_index;
+	unsigned long long rule_fixed = start_offset + next_fixup;
 	char               rule_buffer[1 + 8 + 1];
 
 	if (!Bool(flags & ErbFlags::HexRule))
@@ -266,7 +267,7 @@ std::vector<std::string> EmitRuledBuffer(std::size_t src_length,
 		++curr_index;
 	}
 
-	if (curr_index == next_rule)
+	if ((curr_index == next_rule) || (curr_index < 10))
 		HandleRule(dst, curr_index, next_rule, start_offset, flags);
 
 	if (Bool(flags & ErbFlags::RuleOnTop))
