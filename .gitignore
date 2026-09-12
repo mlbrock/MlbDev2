@@ -40,3 +40,6 @@ testcoverage_*
 # The target platform directory
 TargetPlatform/
 
+# Build results logs
+/BuildResults.*.log
+
