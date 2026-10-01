@@ -49,6 +49,17 @@ namespace Utility {
 // ////////////////////////////////////////////////////////////////////////////
 const std::string &GetEscapeListRaw();
 const std::string &GetEscapeListMap();
+
+/*
+	The following two functions provide raw <-> map lists which include the
+	raw ASCII escape character (decimal 27, octal 33, hex 1B) mapped to the
+	sequence '\e'.
+
+	This escape sequence is supported by gcc/g++, clang, and tcc, but is not
+	a part of the C or C++ standards.
+*/
+const std::string &GetEscapeListRawWithEsc();
+const std::string &GetEscapeListMapWithEsc();
 // ////////////////////////////////////////////////////////////////////////////
 
 // ////////////////////////////////////////////////////////////////////////////

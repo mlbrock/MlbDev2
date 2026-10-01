@@ -383,6 +383,31 @@ bool ParseCsvState::ParseCsvLine(const ParseCsvControl &parse_control,
 namespace {
 
 // ////////////////////////////////////////////////////////////////////////////
+using TestElement = std::pair<std::string, std::vector<std::string_view> >;
+// ////////////////////////////////////////////////////////////////////////////
+
+// ////////////////////////////////////////////////////////////////////////////
+const std::vector<TestElement> TEST_TestList_1 = {
+//	{ ",",				{ } },
+//	{ "\n",				{ } },
+//	{ "\r\n",			{ } },
+//	{ "\r\n\n",			{ } },
+//	{ "\r\n\r\n",		{ } },
+	{ ",A,B",			{ "", "A", "B" } },
+	{ "A,B",				{ "A", "B" } },
+	{ "A\nB",			{ "A", "B" } },
+	{ "A\r\nB",			{ "A", "B" } },
+	{ "AA,BB",			{ "AA", "BB" } },
+	{ "",					{ "" } },
+	{ ",",				{ "", "" } },
+	{ ",,",				{ "", "", "" } },
+	{ ",,,,,",			{ "", "", "", "", "", "" } },
+	{ ",,,,,\n",		{ "", "", "", "", "", "", "" } },
+	{ ",,,,,\r\n",		{ "", "", "", "", "", "", "" } },
+};
+// ////////////////////////////////////////////////////////////////////////////
+
+// ////////////////////////////////////////////////////////////////////////////
 const std::vector<std::string> TEST_TestList =
 {
 //"A\"\"B",
@@ -436,10 +461,35 @@ void TEST_RunTest()
 	std::cout << EmitterSep('=') << std::endl;
 }
 */
+void TEST_RunTest(const std::vector<TestElement> &src_list)
+{
+	using namespace MLB::Utility;
+
+	ParseCsvControl parse_control(",", "\n", true, 2);
+//	ParseCsvColList col_list;
+
+	for (const auto &this_element : src_list) {
+		std::cout <<
+			EmitterSep((&this_element.first == &src_list.front().first) ? '=' : '-');
+		std::cout << "INPUT   : [" << XLateEscapeChars(this_element.first)
+			<< "]" << std::endl;
+		ParseCsvState csv_state(this_element.first);
+		ParseCsvPosition current_pos(csv_state.GetPosition());
+		ParseCsvColList col_list;
+		std::size_t   col_index = 0;
+//		csv_state.ParseCsvLine(col_list, parse_control);
+		csv_state.ParseCsvLine(parse_control, current_pos, col_list);
+		for (const auto &this_col : col_list)
+			std::cout << "   " << std::setw(5) << col_index++
+				<< ": [" << XLateEscapeChars(this_col) << "]\n";
+	}
+
+	std::cout << EmitterSep('=') << std::endl;
+}
 // ////////////////////////////////////////////////////////////////////////////
 
 // ////////////////////////////////////////////////////////////////////////////
-void TEST_RunTestStep()
+void TEST_RunTestStep_OLD()
 {
 	using namespace MLB::Utility;
 
@@ -515,6 +565,169 @@ void TEST_RunTestStep()
 // ////////////////////////////////////////////////////////////////////////////
 
 // ////////////////////////////////////////////////////////////////////////////
+void TEST_RunTestStep(const std::vector<TestElement> &src_list)
+{
+	using namespace MLB::Utility;
+
+	ParseCsvControl parse_control(",", "\n", true, 2);
+/*
+	std::vector<TestElement> src_list = {
+//		{ ",",				{ } },
+//		{ "\n",				{ } },
+//		{ "\r\n",			{ } },
+//		{ "\r\n\n",			{ } },
+//		{ "\r\n\r\n",		{ } },
+		{ ",A,B",			{ "", "A", "B" } },
+		{ "A,B",				{ "A", "B" } },
+		{ "A\nB",			{ "A", "B" } },
+		{ "A\r\nB",			{ "A", "B" } },
+		{ "AA,BB",			{ "AA", "BB" } },
+		{ "",					{ "" } },
+		{ ",",				{ "", "" } },
+		{ ",,",				{ "", "", "" } },
+		{ ",,,,,",			{ "", "", "", "", "", "" } },
+		{ ",,,,,\n",		{ "", "", "", "", "", "", "" } },
+		{ ",,,,,\r\n",		{ "", "", "", "", "", "", "" } },
+	};
+*/
+
+	for (const auto &this_element : src_list)
+	{
+		std::size_t start_offset = 0;
+		std::size_t end_offset   = 0;
+		std::size_t next_offset  = 0;
+		std::size_t error_offset = 0;
+		std::size_t test_index   = 0;
+		std::cout << EmitterSep('=');
+		std::cout << "INPUT   : [" << XLateEscapeChars(this_element.first)
+			<< "]" << std::endl;
+		while (start_offset <= this_element.first.size()) {
+/*
+			std::cout
+				<< std::setw(3) << test_index << ": "
+				<< "START=" << std::setw(10) << start_offset << " / "
+				<< "END  =" << std::setw(10) << end_offset   << " / "
+				<< "NEXT =" << std::setw(10) << next_offset  << '\n';
+*/
+			end_offset = parse_control.GetValueEnd(this_element.first,
+				start_offset, next_offset, error_offset);
+/*
+//			std::cout << EmitterSep('-') << std::endl;
+			std::cout
+				<< std::setw(3) << test_index << ": "
+				<< "START=" << std::setw(10) << start_offset << " / "
+				<< "END  =" << std::setw(10) << end_offset   << " / "
+				<< "NEXT =" << std::setw(10) << next_offset  << '\n';
+			std::cout << '[' << XLateEscapeChars(std::string(
+				this_element.first.c_str() + start_offset,
+				this_element.first.c_str() + end_offset)) << "]\n";
+*/
+			std::cout
+				<< "   START:" << std::setw(5) << start_offset
+				<< "  END:"    << std::setw(5) << end_offset
+				<< " NEXT:"    << std::setw(5) << next_offset
+				<< " ["        << XLateEscapeChars(std::string(
+				this_element.first.c_str() + start_offset,
+				this_element.first.c_str() + end_offset)) << "]\n";
+			if (next_offset == end_offset)
+				break;
+			++test_index;
+			start_offset = next_offset;
+			end_offset   = 0;
+			next_offset  = 0;
+		}
+	}
+
+	std::cout << EmitterSep('=') << std::endl;
+}
+// ////////////////////////////////////////////////////////////////////////////
+
+// ////////////////////////////////////////////////////////////////////////////
+void TEST_RunTestStep()
+{
+	TEST_RunTestStep(TEST_TestList_1);
+}
+// ////////////////////////////////////////////////////////////////////////////
+
+// ////////////////////////////////////////////////////////////////////////////
+#if 0
+void TEST_RunTestStep()
+{
+	using namespace MLB::Utility;
+
+	ParseCsvControl          parse_control(",", "\n", true, 2);
+	std::vector<TestElement> src_list = {
+//		{ ",",				{ } },
+//		{ "\n",				{ } },
+//		{ "\r\n",			{ } },
+//		{ "\r\n\n",			{ } },
+//		{ "\r\n\r\n",		{ } },
+		{ ",A,B",			{ "", "A", "B" } },
+		{ "A,B",				{ "A", "B" } },
+		{ "A\nB",			{ "A", "B" } },
+		{ "A\r\nB",			{ "A", "B" } },
+		{ "AA,BB",			{ "AA", "BB" } },
+		{ "",					{ "" } },
+		{ ",",				{ "", "" } },
+		{ ",,",				{ "", "", "" } },
+		{ ",,,,,",			{ "", "", "", "", "", "" } },
+		{ ",,,,,\n",		{ "", "", "", "", "", "", "" } },
+		{ ",,,,,\r\n",		{ "", "", "", "", "", "", "" } },
+	};
+
+	for (const auto &this_element : src_list)
+	{
+		std::size_t start_offset = 0;
+		std::size_t end_offset   = 0;
+		std::size_t next_offset  = 0;
+		std::size_t error_offset = 0;
+		std::size_t test_index   = 0;
+		std::cout << EmitterSep('=');
+		std::cout << "INPUT   : [" << XLateEscapeChars(this_element.first)
+			<< "]" << std::endl;
+		while (start_offset <= this_element.first.size()) {
+/*
+			std::cout
+				<< std::setw(3) << test_index << ": "
+				<< "START=" << std::setw(10) << start_offset << " / "
+				<< "END  =" << std::setw(10) << end_offset   << " / "
+				<< "NEXT =" << std::setw(10) << next_offset  << '\n';
+*/
+			end_offset = parse_control.GetValueEnd(this_element.first,
+				start_offset, next_offset, error_offset);
+/*
+//			std::cout << EmitterSep('-') << std::endl;
+			std::cout
+				<< std::setw(3) << test_index << ": "
+				<< "START=" << std::setw(10) << start_offset << " / "
+				<< "END  =" << std::setw(10) << end_offset   << " / "
+				<< "NEXT =" << std::setw(10) << next_offset  << '\n';
+			std::cout << '[' << XLateEscapeChars(std::string(
+				this_element.first.c_str() + start_offset,
+				this_element.first.c_str() + end_offset)) << "]\n";
+*/
+			std::cout
+				<< "   START:" << std::setw(5) << start_offset
+				<< "  END:"    << std::setw(5) << end_offset
+				<< " NEXT:"    << std::setw(5) << next_offset
+				<< " ["        << XLateEscapeChars(std::string(
+				this_element.first.c_str() + start_offset,
+				this_element.first.c_str() + end_offset)) << "]\n";
+			if (next_offset == end_offset)
+				break;
+			++test_index;
+			start_offset = next_offset;
+			end_offset   = 0;
+			next_offset  = 0;
+		}
+	}
+
+	std::cout << EmitterSep('=') << std::endl;
+}
+#endif // #if 0
+// ////////////////////////////////////////////////////////////////////////////
+
+// ////////////////////////////////////////////////////////////////////////////
 void TEST_RunTest()
 {
 	using namespace MLB::Utility;
@@ -566,12 +779,12 @@ std::cout
 	}
 */
 
-	for (const std::string &this_element : TEST_TestList) {
+	for (const auto &this_element : TEST_TestList_1) {
 		std::cout <<
-			EmitterSep((&this_element == &TEST_TestList.front()) ? '=' : '-');
-		std::cout << "INPUT   : [" << XLateEscapeChars(this_element)
-			<< "]" << std::endl;
-		ParseCsvState csv_state(this_element);
+			EmitterSep((&this_element.first == &TEST_TestList_1.front().first) ? '=' : '-');
+		std::cout << "INPUT            : [" <<
+			XLateEscapeChars(this_element.first) << "]" << std::endl;
+		ParseCsvState csv_state(this_element.first);
 //		const ParseCsvPosition &pos_ref(csv_state.GetPosition());
 //		ParseCsvPosition start_pos;
 		ParseCsvPosition end_pos;
@@ -582,6 +795,7 @@ std::cout
 				break;
 			std::size_t col_index = 0;
 			for (const auto &this_col : col_list)
+/*
 				std::cout << "   "
 					<< std::setfill('0')
 					<< "RIDX=" << std::setw(5) << start_pos.row_idx_ << ":"
@@ -590,6 +804,12 @@ std::cout
 					<< "CNUM=" << std::setw(5) << col_index++
 					<< std::setfill(' ')
 					<< ": [" << XLateEscapeChars(this_col) << "]\n";
+*/
+				std::cout <<
+					std::setw(5) << start_pos.row_idx_ << '/' <<
+					std::setw(5) << start_pos.col_idx_ << '/' <<
+					std::setw(5) << start_pos.row_off_ << ": ["<<
+					XLateEscapeChars(this_col) << "]\n";
 		}
 	}
 
