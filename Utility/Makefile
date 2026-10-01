@@ -27,7 +27,8 @@ TARGET_LIBS	=	libUtility.a
 
 TARGET_BINS	=
 
-PENDING_SRCS	=
+PENDING_SRCS	=	\
+			ParseCsv.cpp
 
 SRCS		=	\
 			CheckCmdLineArgs.cpp		\
@@ -51,7 +52,6 @@ SRCS		=	\
 			PageSize.cpp			\
 			ParseCfgFile.cpp		\
 			ParseCfgItem.cpp		\
-			ParseCsv.cpp			\
 			ParseLine.cpp			\
 			PathMetaChar.cpp		\
 			PathNameCanonicalizeSlashes.cpp	\
