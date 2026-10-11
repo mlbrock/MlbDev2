@@ -7,7 +7,8 @@
 
    File Description  :  Include file for critical event handling.
 
-   Revision History  :  1994-07-28 Creation in C genfuncs library as sighandl.c
+   Revision History  :  1994-07-28 --- Creation.
+                                       In C genfuncs library as sighandl.c.
                            Michael L. Brock
                         1998-04-08 --- Revision for the MlbDev Utility library.
                            Michael L. Brock
