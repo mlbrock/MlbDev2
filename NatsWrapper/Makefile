@@ -8,7 +8,7 @@
 #
 # File Description: NatsWrapper library make file.
 #
-# Revision History: 2024-08-XX --- Creation.
+# Revision History: 2024-08-17 --- Creation.
 #                       Michael L. Brock
 #
 #       Copyright Michael L. Brock 2024.
