@@ -7,7 +7,7 @@
 
    File Description  :  Implementation of right-trim string functions.
 
-   Revision History  :  1993-10-02 --- Creation.
+   Revision History  :  1998-04-08 --- Creation.
                            Michael L. Brock
                         2023-01-12 --- Migration to C++ MlbDev2/Utility.
                            Michael L. Brock
