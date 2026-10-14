@@ -13,7 +13,7 @@
                         2024-09-12 --- Added to MlbDev2 Utility library.
                            Michael L. Brock
 
-      Copyright Michael L. Brock 1998 - 2024.
+      Copyright Michael L. Brock 1998 - 2026.
       Distributed under the Boost Software License, Version 1.0.
       (See accompanying file LICENSE_1_0.txt or copy at
       http://www.boost.org/LICENSE_1_0.txt)
