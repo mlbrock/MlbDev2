@@ -13,7 +13,7 @@
 #                   2015-03-29 --- Modified for use with MASCaPS Version 3.
 #                       Michael L. Brock
 #
-#       Copyright Michael L. Brock 2000 - 2022.
+#       Copyright Michael L. Brock 2000 - 2026.
 #
 #       Distributed under the Boost Software License, Version 1.0.
 #       (See accompanying file LICENSE_1_0.txt or copy at
@@ -27,13 +27,15 @@ TARGET_LIBS	=	libUtility.a
 
 TARGET_BINS	=
 
-PENDING_SRCS	=
+PENDING_SRCS	=	\
+			ParseCsv.cpp
 
 SRCS		=	\
 			CheckCmdLineArgs.cpp		\
 			CriticalEventHandler.cpp	\
 			CurrentPath.cpp			\
 			DemangleCppName.cpp		\
+			EmitRuledBuffer.cpp		\
 			EnvElement.cpp			\
 			GetCmdLineArg.cpp		\
 			GetCmdLineArgRegex.cpp		\
@@ -50,7 +52,6 @@ SRCS		=	\
 			PageSize.cpp			\
 			ParseCfgFile.cpp		\
 			ParseCfgItem.cpp		\
-			ParseCsv.cpp			\
 			ParseLine.cpp			\
 			PathMetaChar.cpp		\
 			PathNameCanonicalizeSlashes.cpp	\
