@@ -41,5 +41,5 @@ testcoverage_*
 TargetPlatform/
 
 # Build results logs
-/BuildResults.*.log
+BuildResults.*.log
 
