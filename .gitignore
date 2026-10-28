@@ -1,3 +1,7 @@
+# #############################################################################
+# #############################################################################
+# Basic MLB .gitignore
+# #############################################################################
 # Prerequisites
 *.d
 
@@ -42,4 +46,32 @@ TargetPlatform/
 
 # Build results logs
 BuildResults.*.log
+
+# ----- MSVC++ files extensions to be ignored:
+*.bsc
+*.exp
+*.ilk
+*.map
+*.pdb
+*.sbr
+*.sdf
+*.suo
+*.ncb
+*.ipch
+*.recipe
+*.vcproj.User-PC.User.user
+*.vcxproj.user
+*.VC.db
+*.VC.db-shm
+*.VC.db-wal
+*.VC.opendb
+*.sln.docstates
+*.tlog
+*.lastbuildstate
+*.unsuccessfulbuild
+
+# ----- Windows file extensions to be ignored:
+Thumbs.db
+Desktop.ini
+# #############################################################################
 
